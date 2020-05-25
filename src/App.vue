@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-05-23 10:21:37
+ * @LastEditTime: 2020-05-25 21:27:10
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/App.vue
+ * @FilePath: /ducky-api-terminal/src/App.vue
  * @
 --> 
 <template>
@@ -12,7 +12,10 @@
     <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+}
+</script>
 <style lang="scss">
 
 </style>

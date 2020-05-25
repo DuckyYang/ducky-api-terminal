@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-23 09:04:22
- * @LastEditTime: 2020-05-24 20:40:16
+ * @LastEditTime: 2020-05-25 22:00:15
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/views/Home.vue
+ * @FilePath: /ducky-api-terminal/src/views/Home.vue
  * @
 --> 
 <template>
@@ -21,7 +21,7 @@
       <!-- View's Container -->
       <div class="ducky-layout-main">
         <div class="ducky-layout-container">
-         <router-view />
+          <router-view />
         </div>
       </div>
     </div>
@@ -29,20 +29,18 @@
   </div>
 </template>
 <script>
-import '../css/ducky-ui/layout.scss'
-import Nav from '../components/Navigation.vue'
-import Top from '../components/Top.vue'
-import Tab from '../components/Tabs.vue'
+import "../css/ducky-ui/layout.scss";
+import Nav from "../components/Navigation.vue";
+import Top from "../components/Top.vue";
+import Tab from "../components/Tabs.vue";
 export default {
-  components:{
-    'ducky-nav': Nav,
-    'ducky-top': Top,
-    'ducky-tab': Tab
+  components: {
+    "ducky-nav": Nav,
+    "ducky-top": Top,
+    "ducky-tab": Tab
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss" scope>
-
 </style>

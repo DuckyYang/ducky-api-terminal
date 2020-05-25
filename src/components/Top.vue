@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-05-25 18:02:59
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-25 21:54:02
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/components/Top.vue
+ * @FilePath: /ducky-api-terminal/src/components/Top.vue
  * @
 -->
 <template>
@@ -25,15 +25,25 @@
     <div class="ducky-user-center">
       <!-- Top Right Menu -->
       <!-- User Avatar -->
-      <span class="ducky-user-avatar">
-        <img src="@/assets/logo.png" alt srcset />
+      <span class="ducky-user-avatar" @click="onAvatarClick">
+        <img class="avatar" src="@/assets/logo.png" alt srcset />
       </span>
       <!-- User Menu -->
-      <div class="ducky-user-menu"></div>
+      <div class="ducky-user-menu" v-show="showUserMenu">
+        <span class="ducky-user-name">Ducky Yang</span>
+        <a href="javascript:;">Settings</a>
+        <a href="javascript:;">GitHub</a>
+        <a href="javascript:;">Sign Out</a>
+      </div>
       <!-- Message Center -->
       <span class="ducky-message-center">
         <i class="el-icon-message-solid"></i>
         <span class="tips"></span>
+      </span>
+      <!-- Zoom Page -->
+      <span class="ducky-full-screen" title="full screen" @click="onFullScreen">
+        <i v-if="fullScreen" class="el-icon-crop"></i>
+        <i v-else class="el-icon-full-screen"></i>
       </span>
       <!-- Top Right Menu End -->
     </div>
@@ -42,23 +52,68 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      showUserMenu: false,
+      fullScreen: false
+    };
   },
   methods: {
     onCollapse() {
       this.$store.commit("navCollapse");
     },
+    onAvatarClick() {
+      this.showUserMenu = !this.showUserMenu;
+    },
+    onFullScreen() {
+      if (!this.fullScreen) {
+        //W3C
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        }
+        //FireFox
+        else if (document.documentElement.mozRequestFullScreen) {
+          document.documentElement.mozRequestFullScreen();
+        }
+        //Chrome等
+        else if (document.documentElement.webkitRequestFullScreen) {
+          document.documentElement.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (document.documentElement.msRequestFullscreen) {
+          document.body.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+      this.fullScreen = !this.fullScreen;
+    }
   },
   computed: {
     navCollapsed() {
       return this.$store.state.navCollapsed;
-    },
+    }
   },
+  mounted() {
+    this.$nextTick(() => {
+      document.querySelector("body").addEventListener("click", e => {
+        if (e.target.className !== "avatar") {
+          this.showUserMenu = false;
+        }
+      });
+    });
+  }
 };
 </script>
 <style lang="scss" scoped>
 $base-color: #3498db;
-
 .ducky-collapse {
   width: 40px;
   margin-left: 20px;
@@ -85,15 +140,40 @@ $base-color: #3498db;
     }
   }
   .ducky-user-menu {
-    // display: none;
     position: absolute;
     width: 180px;
-    height: 300px;
-    border: 1px solid rgba(27,31,35,.15);
+    border: 1px solid rgba(27, 31, 35, 0.15);
     top: 70px;
     right: 20px;
     z-index: 1000;
     background-color: #fff;
+    .ducky-user-name {
+      display: inline-block;
+      width: 100%;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 18px;
+      height: 42px;
+      line-height: 22px;
+      border-bottom: 1px solid #ccc;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    a {
+      display: inline-block;
+      height: 40px;
+      width: 100%;
+      padding: 10px 10px 10px 20px;
+      box-sizing: border-box;
+      font-size: 16px;
+      text-decoration: none;
+      color: #24292e;
+      line-height: 20px;
+    }
+    a:hover {
+      background-color: #3498db;
+      color: #fff;
+    }
   }
   .ducky-user-menu::before,
   .ducky-user-menu::after {
@@ -104,12 +184,12 @@ $base-color: #3498db;
   }
   .ducky-user-menu::before {
     left: 146px;
-    top: -20px;
-    border-bottom-color: rgba(27,31,35,.15);
+    top: -21px;
+    border-bottom-color: rgba(27, 31, 35, 0.15);
   }
   .ducky-user-menu::after {
     left: 146px;
-    top: -19px;
+    top: -20px;
     border-bottom-color: #fff;
   }
   .ducky-message-center {
@@ -121,6 +201,7 @@ $base-color: #3498db;
     margin-right: 20px;
     color: $base-color;
     position: relative;
+    cursor: pointer;
     .tips {
       position: absolute;
       width: 5px;
@@ -130,6 +211,16 @@ $base-color: #3498db;
       right: 8px;
       top: 8px;
     }
+  }
+  .ducky-full-screen {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    line-height: 50px;
+    text-align: center;
+    color: $base-color;
+    position: relative;
+    cursor: pointer;
   }
 }
 </style>

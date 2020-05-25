@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:01:09
- * @LastEditTime: 2020-05-25 12:47:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-25 21:59:42
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/views/WorkBench.vue
+ * @FilePath: /ducky-api-terminal/src/views/DashBoard.vue
  * @
 --> 
 <template>
