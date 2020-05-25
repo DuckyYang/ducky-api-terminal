@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-05-25 13:19:11
+ * @LastEditTime: 2020-05-25 18:02:59
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/components/Top.vue
@@ -28,6 +28,8 @@
       <span class="ducky-user-avatar">
         <img src="@/assets/logo.png" alt srcset />
       </span>
+      <!-- User Menu -->
+      <div class="ducky-user-menu"></div>
       <!-- Message Center -->
       <span class="ducky-message-center">
         <i class="el-icon-message-solid"></i>
@@ -70,6 +72,7 @@ $base-color: #3498db;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  position: relative;
   .ducky-user-avatar {
     width: 50px;
     height: 50px;
@@ -80,6 +83,34 @@ $base-color: #3498db;
     img {
       width: 50px;
     }
+  }
+  .ducky-user-menu {
+    // display: none;
+    position: absolute;
+    width: 180px;
+    height: 300px;
+    border: 1px solid rgba(27,31,35,.15);
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #fff;
+  }
+  .ducky-user-menu::before,
+  .ducky-user-menu::after {
+    display: inline-block;
+    content: "";
+    position: absolute;
+    border: 10px solid transparent;
+  }
+  .ducky-user-menu::before {
+    left: 146px;
+    top: -20px;
+    border-bottom-color: rgba(27,31,35,.15);
+  }
+  .ducky-user-menu::after {
+    left: 146px;
+    top: -19px;
+    border-bottom-color: #fff;
   }
   .ducky-message-center {
     width: 50px;
