@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:01:09
- * @LastEditTime: 2020-05-24 22:28:40
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-25 12:47:56
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/views/WorkBench.vue
  * @
@@ -128,7 +128,7 @@ export default {
   width: 100%;
   height: 100%;
   padding: 20px 20px 0;
-  background-color: #f6f6f6;
+  background-color: #f0f2f5;
   box-sizing: border-box;
   overflow-y: auto;
   .ducky-card-wrapper {

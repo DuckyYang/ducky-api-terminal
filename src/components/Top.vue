@@ -1,12 +1,12 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-05-24 20:51:45
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-25 13:19:11
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/components/Top.vue
  * @
---> 
+-->
 <template>
   <div class="ducky-layout-top">
     <!-- Collapse Navigation -->
@@ -33,23 +33,25 @@
         <i class="el-icon-message-solid"></i>
         <span class="tips"></span>
       </span>
+      <!-- Top Right Menu End -->
     </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     onCollapse() {
-      this.$store.commit('navCollapse')
-    }
+      this.$store.commit("navCollapse");
+    },
   },
-  computed:{
-    navCollapsed(){return this.$store.state.navCollapsed}
-  }
+  computed: {
+    navCollapsed() {
+      return this.$store.state.navCollapsed;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -74,6 +76,7 @@ $base-color: #3498db;
     margin-right: 20px;
     border: 1px solid $base-color;
     border-radius: 5px;
+    cursor: pointer;
     img {
       width: 50px;
     }

@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-05-24 15:23:12
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-25 12:45:22
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/static/routes.js
  * @
@@ -11,8 +11,8 @@
 const Routes = [
     {
       path:'/',
-      name:'WorkBench',
-      component: ()=>import('../views/WorkBench.vue'),
+      name:'DashBoard',
+      component: ()=>import('../views/DashBoard.vue'),
       meta:{
         id:1,
         cnName:'工作台',

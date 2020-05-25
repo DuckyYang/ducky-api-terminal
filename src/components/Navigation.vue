@@ -1,12 +1,12 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:30:51
- * @LastEditTime: 2020-05-24 21:02:31
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-25 12:44:09
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/components/Navigation.vue
  * @
---> 
+-->
 <template>
   <div class="ducky-layout-left" :class="navCollapsedCls">
     <el-menu
@@ -17,11 +17,15 @@
       :default-active="activeIndex"
       router
       :collapse="collapsed"
-      :style="{width:navWidth}"
+      :style="{ width: navWidth }"
     >
-      <el-menu-item v-for="item in Routes" :key="item.meta.id" :index="item.path">
+      <el-menu-item
+        v-for="item in Routes"
+        :key="item.meta.id"
+        :index="item.path"
+      >
         <i :class="item.meta.icon"></i>
-        <span slot="title">{{item.name}}</span>
+        <span slot="title">{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -35,24 +39,26 @@ export default {
       Routes: Routes,
       navCollapsedCls: "",
       navWidth: "240px",
-      activeIndex:''
+      activeIndex: "",
     };
   },
-  computed:{
-    collapsed(){return this.$store.state.navCollapsed}
-  },
-  watch:{
-    '$route':function(to){
-      this.activeIndex = to.path
+  computed: {
+    collapsed() {
+      return this.$store.state.navCollapsed;
     },
-    collapsed(){
+  },
+  watch: {
+    $route: function(to) {
+      this.activeIndex = to.path;
+    },
+    collapsed() {
       this.navWidth = this.collapsed ? "64px" : "240px";
       this.navCollapsedCls = this.collapsed ? "ducky-layout-left-min" : "";
-    }
+    },
   },
-  created(){
-    this.activeIndex = this.$route.path
-  }
+  created() {
+    this.activeIndex = this.$route.path;
+  },
 };
 </script>
 <style lang="scss" scoped>
