@@ -1,28 +1,20 @@
-<<<<<<< HEAD
-# ducky-ui
+### ducky-api-terminal
+> ducky-api-terminal is a API manage system based on Vue.js and ElementUI
 
-## Project setup
-```
-yarn install
-```
+- DashBoard
+> DashBoard shows all API request analysis infomation
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+- Logs
+> Logs shows all registed API's request log
 
-### Compiles and minifies for production
-```
-yarn build
-```
+- Monitor 
+> Using Monitor to set API request alarm configs
 
-### Lints and fixes files
-```
-yarn lint
-```
+- Document
+> API document
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-=======
-# ducky-ui
->>>>>>> 71ada18e426ab62b22b36ca7057a39fd8db1369b
+- Registe
+> API server collections.
+
+- Users
+> System users manage
