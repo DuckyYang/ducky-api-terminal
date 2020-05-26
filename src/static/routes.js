@@ -1,7 +1,7 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-05-25 12:45:22
+ * @LastEditTime: 2020-05-26 11:59:51
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/static/routes.js
@@ -69,5 +69,15 @@ const Routes = [
         icon:'el-icon-s-custom'
       }
     },
+    {
+      path:'/settings',
+      name:'Settings',
+      component:()=>import('../views/Settings.vue'),
+      meta:{
+        id:7,
+        cnName:'系统设置',
+        icon:'el-icon-setting'
+      }
+    }
   ]
 export default Routes

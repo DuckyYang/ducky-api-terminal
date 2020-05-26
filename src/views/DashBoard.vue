@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:01:09
- * @LastEditTime: 2020-05-25 21:59:42
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-26 12:15:21
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/DashBoard.vue
  * @
@@ -48,7 +48,6 @@
       </div>
     </div>
   </div>
-  <!-- <ve-line :data="chartData" :settings="chartSettings"></ve-line> -->
 </template>
 <script>
 export default {

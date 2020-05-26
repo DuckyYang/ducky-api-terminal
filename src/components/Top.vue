@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-05-25 21:54:02
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-26 12:02:52
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Top.vue
  * @
@@ -31,9 +31,9 @@
       <!-- User Menu -->
       <div class="ducky-user-menu" v-show="showUserMenu">
         <span class="ducky-user-name">Ducky Yang</span>
-        <a href="javascript:;">Settings</a>
-        <a href="javascript:;">GitHub</a>
-        <a href="javascript:;">Sign Out</a>
+        <a href="javascript:;"><i class="el-icon-setting"></i> Settings</a>
+        <a href="javascript:;"><i class="el-icon-star-on"></i> GitHub</a>
+        <a href="javascript:;"><i class="el-icon-switch-button"></i> Sign Out</a>
       </div>
       <!-- Message Center -->
       <span class="ducky-message-center">
