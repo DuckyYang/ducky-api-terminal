@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-05-25 22:00:24
+ * @LastEditTime: 2020-05-26 21:49:16
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
@@ -9,9 +9,8 @@
 --> 
 <template>
   <div class="ducky-layout-container__wrapper">
-    <div class="ducky-users-container" ref="users">
-      <!-- Log Tool Bar -->
-      <div class="ducky-users-toolbar">
+    <table-layout>
+      <template #toolbar>
         <el-select v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -27,10 +26,9 @@
           <el-button type="primary">刷新</el-button>
           <el-button type="primary">重置</el-button>
         </el-button-group>
-      </div>
-      <!-- Log Data -->
-      <div class="ducky-users-data">
-        <el-table :data="tableData" :height="tableHeight" style="width: 100%" :fit="true">
+      </template>
+      <template v-slot="prop">
+        <el-table ref="table" :data="tableData" :height="prop.height" style="width: 100%" :fit="true">
           <el-table-column fixed prop="date" label="日期"></el-table-column>
           <el-table-column prop="name" label="姓名"></el-table-column>
           <el-table-column prop="province" label="省份"></el-table-column>
@@ -38,20 +36,19 @@
           <el-table-column prop="address" label="地址"></el-table-column>
           <el-table-column prop="zip" label="邮编"></el-table-column>
         </el-table>
-      </div>
-      <!-- Log Pager Bar -->
-      <div class="ducky-users-pager">
-        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="1000" ></el-pagination>
-      </div>
-    </div>
+      </template>
+      <template #pager>
+        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="1000"></el-pagination>
+      </template>
+    </table-layout>
   </div>
 </template>
 <script>
 import demoTableData from "../static/data/demo-table.js";
+import tableLayout from "../components/TableLayout.vue";
 export default {
   data() {
     return {
-      tableHeight: 600,
       options: [
         {
           value: "选项1",
@@ -79,62 +76,17 @@ export default {
       tableData: demoTableData
     };
   },
-  computed: {},
-  mounted() {
-    let _this = this;
-    this.$nextTick(() => {
-      this.tableHeight = this.$refs.users.clientHeight - 180;
-    });
-    window.onresize = function() {
-      _this.tableHeight = _this.$refs.users.clientHeight - 180;
-    };
+  components: {
+    "table-layout": tableLayout
   }
 };
 </script>
 <style lang="scss" scoped>
-.ducky-users-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  .ducky-users-toolbar {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    padding: 10px 0px 10px 20px;
-    background-color: #fff;
-    box-sizing: border-box;
-    flex: 0;
-    height: 60px;
-
-    .ducky-tool-input {
-      margin-left: 20px;
-      width: 280px;
-    }
-    .ducky-tool-buttons {
-      margin-left: 20px;
-    }
-  }
-  .ducky-users-data {
-    background-color: #fff;
-    width: 100%;
-    margin-top: 20px;
-    box-sizing: border-box;
-    flex: 1;
-  }
-  .ducky-users-pager {
-    padding-left: 20px;
-    height: 60px;
-    text-align: left;
-    width: 100%;
-    background-color: #fff;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-  }
+.ducky-tool-input {
+  margin-left: 20px;
+  width: 280px;
+}
+.ducky-tool-buttons {
+  margin-left: 20px;
 }
 </style>
