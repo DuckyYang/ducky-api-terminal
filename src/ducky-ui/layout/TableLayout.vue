@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-26 19:59:35
- * @LastEditTime: 2020-05-26 21:57:27
+ * @LastEditTime: 2020-05-27 21:22:04
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/components/TableLayout.vue
+ * @FilePath: /ducky-api-terminal/src/ducky-ui/layout/TableLayout.vue
  * @
 --> 
 <template>
@@ -26,21 +26,28 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       dataHeight: 600
     };
   },
-  mounted() {
-    let _this = this;
-    this.$nextTick(() => {
-      this.dataHeight = this.$refs.container.clientHeight - 180;
-    });
-    window.onresize = function() {
-      _this.dataHeight = _this.$refs.container.clientHeight - 180;
-    };
+  computed:{
+    ...mapState(['screenHeight'])
+  },
+  watch:{
+    screenHeight(){
+      this.dataHeight = this.screenHeight - 180 - 50 - 60; // top is 60,tab is 50
+    }
+  },
+  mounted(){
+    this.$nextTick(()=>{
+      //
+      this.dataHeight = document.documentElement.clientHeight - 180 - 50-60
+    })
   }
+
 };
 </script>
 <style lang="scss" scoped>

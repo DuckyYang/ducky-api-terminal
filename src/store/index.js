@@ -1,10 +1,10 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-05-24 20:49:12
+ * @LastEditTime: 2020-05-27 21:16:02
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/store/index.js
+ * @FilePath: /ducky-api-terminal/src/store/index.js
  * @
  */ 
 import Vue from 'vue'
@@ -16,10 +16,15 @@ export default new Vuex.Store({
   state: {
     // Left Navigation collapsed status
     navCollapsed:false,
+    // 
+    screenHeight:0
   },
   mutations: {
     navCollapse(state){
       state.navCollapsed = !state.navCollapsed
+    },
+    changeScreenHeight (state, val) {
+      state.screenHeight = val
     }
   },
   actions: {
