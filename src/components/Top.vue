@@ -1,14 +1,14 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-05-26 12:02:52
+ * @LastEditTime: 2020-05-27 12:30:41
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Top.vue
  * @
 -->
 <template>
-  <div class="ducky-layout-top">
+  <div class="ducky-top-container">
     <!-- Collapse Navigation -->
     <i
       class="ducky-collapse el-icon-s-unfold"
@@ -114,6 +114,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 $base-color: #3498db;
+
+.ducky-top-container{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .ducky-collapse {
   width: 40px;
   margin-left: 20px;

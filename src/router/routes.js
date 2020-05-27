@@ -1,7 +1,7 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-05-26 11:59:51
+ * @LastEditTime: 2020-05-27 13:39:36
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/static/routes.js
@@ -12,7 +12,7 @@ const Routes = [
     {
       path:'/',
       name:'DashBoard',
-      component: ()=>import('../views/DashBoard.vue'),
+      component: ()=>import('../views/DashBoard'),
       meta:{
         id:1,
         cnName:'工作台',
@@ -20,9 +20,9 @@ const Routes = [
       }
     },
     {
-      path:'/Logs',
+      path:'/logs',
       name:'Logs',
-      component:()=>import( '../views/Logs.vue' ),
+      component:()=>import( '../views/Logs' ),
       meta:{
         id:2,
         cnName:'接口日志',
@@ -30,19 +30,19 @@ const Routes = [
       }
     },
     {
-      path:'/Registe',
-      name:'ApiRegiste',
-      component:()=>import( '../views/ApiRegiste.vue' ),
+      path:'/servers',
+      name:'Servers',
+      component:()=>import( '../views/Servers' ),
       meta:{
         id:3,
-        cnName:'接口注册',
+        cnName:'接口列表',
         icon:'el-icon-s-promotion'
       }
     },
     {
-      path:'/Documents',
-      name:'ApiDocument',
-      component:()=>import( '../views/ApiDocument.vue' ),
+      path:'/documents',
+      name:'Documents',
+      component:()=>import( '../views/Documents' ),
       meta:{
         id:4,
         cnName:'接口文档',
@@ -52,7 +52,7 @@ const Routes = [
     {
       path:'/MockServer',
       name:'MockServer',
-      component:()=>import( '../views/MockServer.vue' ),
+      component:()=>import( '../views/MockServer' ),
       meta:{
         id:5,
         cnName:'Mock服务',
@@ -62,7 +62,7 @@ const Routes = [
     {
       path:'/Users',
       name:'Users',
-      component:()=>import( '../views/Users.vue' ),
+      component:()=>import( '../views/Users' ),
       meta:{
         id:6,
         cnName:'用户管理',
@@ -72,7 +72,7 @@ const Routes = [
     {
       path:'/settings',
       name:'Settings',
-      component:()=>import('../views/Settings.vue'),
+      component:()=>import('../views/Settings'),
       meta:{
         id:7,
         cnName:'系统设置',

@@ -1,46 +1,48 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-23 09:04:22
- * @LastEditTime: 2020-05-25 22:00:15
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-27 13:43:01
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Home.vue
  * @
---> 
+-->
 <template>
-  <!-- Every components must be in `ducky-layout` class -->
-  <div class="ducky-layout">
-    <!-- Navigation -->
-    <ducky-nav ref="nav"></ducky-nav>
-    <!-- Main Content Container -->
-    <div class="ducky-layout-right">
-      <!-- Top Menus -->
+  <!-- Default layout support to render left,top,tab,main -->
+  <ducky-layout :navCollapsed="collapsed">
+    <template #left>
+      <ducky-nav ref="nav"></ducky-nav>
+    </template>
+    <template #top>
       <ducky-top></ducky-top>
-      <!-- Route's Tabs -->
+    </template>
+    <template #tab>
       <ducky-tab></ducky-tab>
-      <!-- View's Container -->
-      <div class="ducky-layout-main">
-        <div class="ducky-layout-container">
-          <router-view />
-        </div>
-      </div>
-    </div>
-    <!-- <div class="ducky-layout-footer"></div> -->
-  </div>
+    </template>
+    <template>
+      <router-view />
+    </template>
+  </ducky-layout>
 </template>
 <script>
-import "../css/ducky-ui/layout.scss";
-import Nav from "../components/Navigation.vue";
-import Top from "../components/Top.vue";
-import Tab from "../components/Tabs.vue";
+import Nav from "../components/Navigation";
+import Top from "../components/Top";
+import Tab from "../components/Tabs";
 export default {
+  data() {
+    return {
+    };
+  },
   components: {
     "ducky-nav": Nav,
     "ducky-top": Top,
-    "ducky-tab": Tab
+    "ducky-tab": Tab,
   },
-  mounted() {}
+  computed: {
+    collapsed() {
+      return this.$store.state.navCollapsed;
+    },
+  }
 };
 </script>
-<style lang="scss" scope>
-</style>
+<style lang="scss" scope></style>

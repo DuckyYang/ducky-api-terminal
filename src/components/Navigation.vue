@@ -1,14 +1,13 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:30:51
- * @LastEditTime: 2020-05-25 12:44:09
+ * @LastEditTime: 2020-05-27 13:36:03
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-ui/src/components/Navigation.vue
  * @
 -->
 <template>
-  <div class="ducky-layout-left" :class="navCollapsedCls">
     <el-menu
       class="el-menu-vertical"
       :collapse-transition="false"
@@ -28,10 +27,9 @@
         <span slot="title">{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
-  </div>
 </template>
 <script>
-import Routes from "../static/routes.js";
+import Routes from "../router/routes";
 
 export default {
   data() {
@@ -53,7 +51,6 @@ export default {
     },
     collapsed() {
       this.navWidth = this.collapsed ? "64px" : "240px";
-      this.navCollapsedCls = this.collapsed ? "ducky-layout-left-min" : "";
     },
   },
   created() {
