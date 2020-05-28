@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-05-28 17:02:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-28 21:28:23
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -18,7 +18,7 @@
           placeholder="please input server name"
         ></el-input>
       </div>
-      <ducky-simple-tree :data="data"></ducky-simple-tree>
+      <ducky-simple-tree :data="data" @node-click="onNodeClick"></ducky-simple-tree>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right"></div>
@@ -33,15 +33,9 @@ export default {
     };
   },
   methods: {
-    onItemClick() {
-      console.log(this.$refs.item);
-    },
-    onItem1Click() {
-      console.log(this.$refs.item.$refs.item);
-    },
-    onItem2Click() {
-      console.log(this.$refs.item.$refs.item.$refs.item);
-    },
+    onNodeClick(node){
+        console.log(node)
+    }
   },
 };
 </script>
