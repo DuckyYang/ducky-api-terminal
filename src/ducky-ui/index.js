@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-27 13:15:22
- * @LastEditTime: 2020-05-27 13:41:58
+ * @LastEditTime: 2020-05-28 12:48:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\ducky-ui\index.js
@@ -12,6 +12,7 @@ import CardLayout from './layout/CardLayout'
 
 import CardRow from './components/CardRow'
 import Card from './components/Card'
+import SimpleTree from './components/simpletree/SimpleTree'
 
 const UI ={
     install(Vue){
@@ -21,6 +22,7 @@ const UI ={
 
         Vue.component('ducky-card-row',CardRow)
         Vue.component('ducky-card',Card)
+        Vue.component('ducky-simple-tree',SimpleTree)
     }
 }
 
