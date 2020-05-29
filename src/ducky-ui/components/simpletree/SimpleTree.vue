@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-05-28 21:52:56
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-05-29 13:42:32
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -24,7 +24,6 @@
           class="ducky-simpletree-node__panel"
           v-for="(child, index) in node.children"
           :key="index"
-          style="padding-left:10px;"
           v-show="node.open"
         >
           <simple-tree-node :node="child" @node-click="$emit('node-click',$event)"></simple-tree-node>
@@ -35,8 +34,13 @@
 </template>
 <script>
 import simpleTreeNode from "./SimpleTreeNode";
-import utils from "../../utils";
+import TreeStore from './model/tree-store'
 export default {
+  data(){
+    return{
+      store:null
+    }
+  },
   props: {
     data: Array
   },
@@ -44,25 +48,14 @@ export default {
     "simple-tree-node": simpleTreeNode
   },
   methods: {
-    recurse(node) {
-      node.children &&
-        node.children.forEach(x => {
-          utils.setProperty(x, "level", node.level + 1);
-          utils.setProperty(x, "isCurrent", false);
-          this.recurse(x);
-        });
-    },
     expandNode(node) {
-      node.open = !node.open;
+      node.open ? this.store.collapse(node) : this.store.expand(node)
     }
   },
-  mounted() {
-    // build data recurse level
-    this.data.forEach(item => {
-      utils.setProperty(item, "level", 0);
-      utils.setProperty(item, "isCurrent", false);
-      this.recurse(item);
-    });
+  created() {
+    this.store = new TreeStore({
+      nodes: this.data
+    })
   }
 };
 </script>
@@ -91,10 +84,10 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       cursor: pointer;
+      box-sizing: border-box;
     }
     .ducky-simpletree-node__panel {
       width: 100%;
-      padding-left: 10px;
       box-sizing: border-box;
       overflow: hidden;
     }
