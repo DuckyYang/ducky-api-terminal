@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-05-29 13:42:32
+ * @LastEditTime: 2020-05-29 18:51:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
 <template>
   <!-- tree root -->
-  <div class="ducky-simpletree">
+  <div class="ducky-simpletree" role="tree">
     <!-- tree root node list -->
-    <div class="ducky-simpletree-node" v-for="(node, index) in data" :key="index">
+    <div class="ducky-simpletree-node" v-for="(node, index) in store.nodes" :key="index">
       <!-- tree node wrapper panel -->
       <div class="ducky-simpletree-node__wrapper">
         <!-- tree title -->
@@ -38,7 +38,8 @@ import TreeStore from './model/tree-store'
 export default {
   data(){
     return{
-      store:null
+      store:null,
+      isTree:true
     }
   },
   props: {
@@ -49,13 +50,14 @@ export default {
   },
   methods: {
     expandNode(node) {
-      node.open ? this.store.collapse(node) : this.store.expand(node)
+      node.open =!node.open
     }
   },
   created() {
     this.store = new TreeStore({
-      nodes: this.data
+      data: this.data
     })
+    console.log(this.store)
   }
 };
 </script>

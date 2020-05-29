@@ -1,54 +1,43 @@
 /*
  * @Author: your name
  * @Date: 2020-05-29 12:50:22
- * @LastEditTime: 2020-05-29 13:42:59
+ * @LastEditTime: 2020-05-29 18:49:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\ducky-ui\components\simpletree\tree-store.js
  */
 
-import utils from "../../../utils";
+import Node from "./node";
 export default class TreeStore {
   constructor(options) {
+    const that = this;
+
+    this.data = [];
     this.nodes = [];
     this.currentNode = null;
 
     for (let option in options) {
-       if (Object.prototype.hasOwnProperty.call(options,option)) {
-           this[option] = options[option]
-       }
+      if (Object.prototype.hasOwnProperty.call(options, option)) {
+        this[option] = options[option];
+      }
     }
 
     // initial nodes
-    const recurse = function(node) {
-      node.children &&
-        node.children.forEach((x) => {
-          if (node.level === undefined) {
-            utils.setProperty(x, "level", node.level + 1);
-          }
-          if (node.isCurrent === undefined) {
-            utils.setProperty(x, "isCurrent", false);
-          }
-          this.recurse(x);
+    const recurse = function(item, node) {
+      item.children &&
+        item.children.forEach((x) => {
+          const child = new Node(x);
+          node.children.push(child);
+          recurse(x, child);
         });
     };
-    this.nodes.forEach((item) => {
-      if (item.level === undefined) {
-        utils.setProperty(item, "level", 0);
-      }
-      if (item.isCurrent === undefined) {
-        utils.setProperty(item, "isCurrent", false);
-      }
-      recurse(item);
+    this.data.forEach((item) => {
+      const node = new Node(item);
+      that.nodes.push(node);
+      recurse(item, node);
     });
   }
 
-  expand(node) {
-    node.open = true;
-  }
-  collapse(node) {
-    node.open = false;
-  }
   setCurrentNode(node) {
     const prevNode = this.currentNode;
     if (!prevNode) {

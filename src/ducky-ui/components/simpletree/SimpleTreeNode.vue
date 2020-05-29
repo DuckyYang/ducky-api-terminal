@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-05-29 12:48:53
+ * @LastEditTime: 2020-05-29 18:36:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
@@ -46,7 +46,7 @@ export default {
   name: "simpleTreeNode",
   data() {
     return {
-      prevCurrentNode:null
+      tree:null
     };
   },
   props: {
@@ -54,16 +54,20 @@ export default {
   },
   methods: {
     expandNode(node) {
-      node.open = !node.open;
+      console.log(node)
+      node.toggleExpanded()
     },
     onNodeClick(node) {
-      console.log(this.prevCurrentNode)
-      if (this.prevCurrentNode !== null) {
-        this.prevCurrentNode.isCurrent=false
-      }
-      this.prevCurrentNode = node
       node.isCurrent = true;
       this.$emit("node-click", node);
+    }
+  },
+  created(){
+    const parent = this.$parent
+    if (parent.isTree) {
+      this.tree = parent
+    }else{
+      this.tree = parent.tree
     }
   }
 };
