@@ -1,13 +1,14 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-28 21:45:41
- * @LastEditTime: 2020-05-28 21:50:34
+ * @LastEditTime: 2020-05-31 23:03:32
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/ducky-ui/utils.js
  * @
  */ 
 import Vue from 'vue'
+import lodash from 'lodash'
 const utils={
     /**
      * 
@@ -28,6 +29,9 @@ const utils={
                 Vue.set(item.obj,item.name,item.val)
             })
         }
+    },
+    deepClone(obj){
+        return lodash.cloneDeep(obj)
     }
 }
 

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-05-29 18:36:31
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-31 22:51:48
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -16,18 +16,20 @@
         class="ducky-simpletree-node__title"
         :class="{'is-current': node.isCurrent}"
         v-if="node.children.length === 0"
-        :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }"
-        
-      >{{ node.title }}</span>
-      <span 
-        @click="expandNode(node)" 
-        class="ducky-simpletree-node__title" 
+      >
+        <span :style="{paddingLeft: (node.level+1)*15+'px'}">{{ node.title }}</span>
+      </span>
+      <span
+        @click="onNodeClick(node)"
+        class="ducky-simpletree-node__title"
+        :class="{'is-current': node.isCurrent}"
         v-else
-        :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }"
-        >
-        <i :class="node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
-        {{ node.title }}
-        <i class="el-icon-plus"></i>
+      >
+        <span :style="{paddingLeft: (node.level+1)*15+'px'}">
+          <i :class="node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+          {{ node.title }}
+          <i class="el-icon-plus"></i>
+        </span>
       </span>
       <!-- else render node's child nodes -->
       <div
@@ -36,40 +38,27 @@
         v-for="(child, index) in node.children"
         :key="index"
       >
-        <simpleTreeNode :node="child" @node-click="$emit('node-click',$event)"></simpleTreeNode>
+        <simple-tree-node :node="child"></simple-tree-node>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "simpleTreeNode",
+  name: "simple-tree-node",
   data() {
-    return {
-      tree:null
-    };
+    return {};
   },
   props: {
     node: Object
   },
+  inject: ["setCurrentNode"],
   methods: {
-    expandNode(node) {
-      console.log(node)
-      node.toggleExpanded()
-    },
     onNodeClick(node) {
-      node.isCurrent = true;
-      this.$emit("node-click", node);
+      this.setCurrentNode(node)
     }
   },
-  created(){
-    const parent = this.$parent
-    if (parent.isTree) {
-      this.tree = parent
-    }else{
-      this.tree = parent.tree
-    }
-  }
+  created() {}
 };
 </script>
 <style lang="scss" scoped>
@@ -79,9 +68,6 @@ export default {
 }
 .is-current {
   background-color: #f6f6f6;
-}
-.is-collapsed{
-  height: 0px;
 }
 .ducky-simpletree-node__wrapper {
   width: 100%;
@@ -97,6 +83,11 @@ export default {
     text-overflow: ellipsis;
     cursor: pointer;
     box-sizing: border-box;
+    span {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
   }
   .ducky-simpletree-node__panel {
     width: 100%;

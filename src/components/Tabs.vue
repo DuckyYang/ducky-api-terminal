@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-05-27 13:39:51
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-31 10:48:09
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/components/Tabs.vue
+ * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
  * @
 -->
 <template>
@@ -116,7 +116,7 @@ export default {
 <style lang="scss" scoped>
 $tab-border-color: #f6f6f6;
 $tab-hover-color:#f6f6f6;
-.ducky-layout-tabs {
+.ducky-tab-container {
   flex: 0;
   height: 50px;
   line-height: 50px;

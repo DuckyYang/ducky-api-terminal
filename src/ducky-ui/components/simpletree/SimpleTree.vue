@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-05-29 18:51:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-31 23:07:21
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -10,54 +10,91 @@
   <!-- tree root -->
   <div class="ducky-simpletree" role="tree">
     <!-- tree root node list -->
-    <div class="ducky-simpletree-node" v-for="(node, index) in store.nodes" :key="index">
-      <!-- tree node wrapper panel -->
-      <div class="ducky-simpletree-node__wrapper">
-        <!-- tree title -->
-        <span class="ducky-simpletree-node__title" @click="expandNode(node)">
-          <i :class="node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
-          {{ node.title }}
-          <i class="el-icon-plus"></i>
-        </span>
-        <!-- tree node children panel -->
-        <div
-          class="ducky-simpletree-node__panel"
-          v-for="(child, index) in node.children"
-          :key="index"
-          v-show="node.open"
-        >
-          <simple-tree-node :node="child" @node-click="$emit('node-click',$event)"></simple-tree-node>
-        </div>
-      </div>
-    </div>
+    <simple-tree-node v-for="(node, index) in nodes" :key="index" :node="node"></simple-tree-node>
   </div>
 </template>
 <script>
 import simpleTreeNode from "./SimpleTreeNode";
-import TreeStore from './model/tree-store'
+import utils from "../../utils";
 export default {
-  data(){
-    return{
-      store:null,
-      isTree:true
-    }
+  data() {
+    return {
+      nodes: [],
+      defaultConfigs: {
+        simpleDataKey: { idKey: "id", pIdKey: "pid" }
+      },
+      isTree: true,
+      currentNode: null
+    };
   },
   props: {
-    data: Array
+    data: Array,
+    configs: Object
   },
   components: {
     "simple-tree-node": simpleTreeNode
   },
   methods: {
-    expandNode(node) {
-      node.open =!node.open
+    setCurrentNode(node) {
+      if (this.currentNode) {
+        this.currentNode.isCurrent = false;
+      }
+
+      node.isCurrent = true;
+      if (node.children.length > 0) {
+        node.open = !node.open;
+      }
+      this.currentNode = node;
+
+      this.$emit("node-click", node);
     }
   },
-  created() {
-    this.store = new TreeStore({
-      data: this.data
-    })
-    console.log(this.store)
+  provide() {
+    return {
+      setCurrentNode: this.setCurrentNode
+    };
+  },
+  mounted() {
+    let me = this;
+
+    // initial nodes from data
+    if (this.data && this.data.length > 0) {
+      let key = this.defaultConfigs.simpleDataKey.idKey;
+      let pidKey = this.defaultConfigs.simpleDataKey.pIdKey;
+
+      let buildChildren = function(node) {
+        // find children nodes
+        let children = me.data.filter(item => item[pidKey] === node[key]);
+        if (children.length > 0) {
+          children.forEach(item => {
+            let c = utils.deepClone(item)
+
+            c.level = node.level+1
+            c.isCurrent = false
+            c.children = []
+
+            node.children.push(c)
+            buildChildren(c);
+          });
+        }
+      };
+
+      let roots = this.data.filter(item => {
+        return item[pidKey] === 0 || item[pidKey] === "";
+      });
+
+      // foreach roots, build children node
+      roots.forEach(root => {
+        let r = utils.deepClone(root)
+
+        r.level = 0
+        r.isCurrent = false
+        r.children=[]
+        buildChildren(r);
+        me.nodes.push(r)
+      });
+      // this.nodes = roots;
+    }
   }
 };
 </script>
@@ -86,7 +123,6 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       cursor: pointer;
-      box-sizing: border-box;
     }
     .ducky-simpletree-node__panel {
       width: 100%;

@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-27 12:02:40
- * @LastEditTime: 2020-05-27 21:38:52
+ * @LastEditTime: 2020-05-31 10:50:08
  * @LastEditors: Ducky
  * @Description:  Default layout contains `Left view` and `Right view`,and `Right view` contains `Top view`,`Tab view` and `Main View` 
- * @FilePath: /ducky-api-terminal/src/ducky-ui/layout/Layout.vue
+ * @FilePath: /ducky-api-terminal/src/ducky-ui/components/layout/Layout.vue
 -->
 <template>
   <!-- Default layout contains `Left view` and `Right view`,and `Right view` contains `Top view`,`Tab view` and `Main View` -->
@@ -92,10 +92,12 @@ $border-color:#f6f6f6;
         top: 110px;
         bottom: 0;
         border-top: 1px solid #ccc;
+        box-sizing: border-box;
         .ducky-layout-container{
           height: 100%;
           width: 100%;
           overflow-y: auto;
+          box-sizing: border-box;
           .ducky-layout-container__wrapper{
             width: 100%;
             height: 100%;
