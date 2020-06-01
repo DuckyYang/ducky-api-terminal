@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-31 21:06:46
- * @LastEditTime: 2020-05-31 22:54:38
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-01 13:05:33
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/static/data/demo-documents_1.js
  * @
@@ -12,7 +12,7 @@ export default [
         id: 1,
         title: "Workflow 2.0",
         open: false,
-        pid: 0
+        pid: 0,
     },
     {
         id: 2,
@@ -24,25 +24,84 @@ export default [
         id: 3,
         title: "CreateTask",
         open: false,
-        pid: 2
+        pid: 2,
+        document:{
+            id:1,
+            path:['Workflow2.0','Task','CreateTask'],
+            method:'POST',
+            address:'http://oa.cnki.net/api/workflow2.0/task',
+            headers:[
+                {'accesstoken':'asdfafdsfsadfdsaf'},
+            ],
+            contentType:'json',
+            params:null,
+            body:'{"name":"hi ducky"}',
+            response:'{"Code": 200,"Success": true,"Data": null,"Total": 0,"Message": "Request Success!"}'
+        }
     },
     {
         id: 4,
         title: "GetTodoList",
         open: false,
-        pid: 2
+        pid: 2,
+        document:{
+            id:2,
+            path:['Workflow2.0','Task','GetTodoList'],
+            method:'GET',
+            address:'http://oa.cnki.net/api/workflow2.0/GetTodoList',
+            headers:[
+                {'accesstoken':'asdfafdsfsadfdsaf'},
+            ],
+            contentType:'',
+            params:{
+                pageIndex: 1,
+                pageSize:30,
+                query:''
+            },
+            body:'',
+            response:'{"Code": 200,"Success": true,"Data": null,"Total": 0,"Message": "Request Success!"}'
+        }
     },
     {
         id: 5,
-        title: "GetTaskList",
+        title: "EditTask",
         open: false,
-        pid: 2
+        pid: 2,
+        document:{
+            id:3,
+            path:['Workflow2.0','Task','EditTask'],
+            method:'PUT',
+            address:'http://oa.cnki.net/api/workflow2.0/{id}/EditTask',
+            headers:[
+                {'accesstoken':'asdfafdsfsadfdsaf'},
+            ],
+            contentType:'json',
+            params: null, // url parameters
+            body:'{"name":"hi ducky"}', // body parameter,json string or object
+            response:'{"Code": 200,"Success": true,"Data": null,"Total": 0,"Message": "Request Success!"}'
+        }
     },
     {
         id: 6,
-        title: "GetCreateMan",
+        title: "CreateThread",
         open: false,
         pid: 2,
+        document:{
+            id:4,
+            path:['Workflow2.0','Task','CreateThread'],
+            method:'PUT',
+            address:'http://oa.cnki.net/api/workflow2.0/{id}/CreateThread',
+            headers:[
+                {'accesstoken':'asdfafdsfsadfdsaf'},
+            ],
+            contentType:'form',
+            params: null, // url parameters
+            body:{
+                name: 'hi ducky',
+                userName:'ducky'
+            }, // body parameter,json string or object
+            response:'{"Code": 200,"Success": true,"Data": null,"Total": 0,"Message": "Request Success!"}'
+        }
     },
     {
         id: 7,

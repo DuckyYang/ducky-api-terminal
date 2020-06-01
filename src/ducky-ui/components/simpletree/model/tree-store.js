@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-05-29 12:50:22
- * @LastEditTime: 2020-05-29 18:49:51
+ * @LastEditTime: 2020-05-30 09:12:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\ducky-ui\components\simpletree\tree-store.js
@@ -31,6 +31,7 @@ export default class TreeStore {
           recurse(x, child);
         });
     };
+    debugger
     this.data.forEach((item) => {
       const node = new Node(item);
       that.nodes.push(node);

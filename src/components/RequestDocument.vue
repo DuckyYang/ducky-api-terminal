@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 20:52:37
- * @LastEditTime: 2020-05-31 21:03:03
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-01 16:52:26
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/RequestDocument.vue
  * @
@@ -27,9 +27,11 @@
           v-model="address"
           class="input-with-select"
         >
-          <el-select v-model="defaultProtocal" slot="prepend" placeholder="please choose protocal">
-            <el-option label="http://" value="http"></el-option>
-            <el-option label="https://" value="https"></el-option>
+          <el-select v-model="defaultMethod" slot="prepend" placeholder="please choose method">
+            <el-option label="GET" value="GET"></el-option>
+            <el-option label="POST" value="POST"></el-option>
+            <el-option label="PUT" value="PUT"></el-option>
+            <el-option label="DELETE" value="DELETE"></el-option>
           </el-select>
           <el-button slot="append">Send</el-button>
         </el-input>
@@ -61,6 +63,28 @@
       <el-divider content-position="left">Request Parameters</el-divider>
       <div class="ducky-request-info__parameters">
         <el-tabs stretch value="json" @tab-click="onTabClick">
+           <el-tab-pane label="params" name="params">
+            <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
+            <el-table
+              :data="tableData2"
+              :height="defaultParamTableHeight"
+              border
+              style="width:100%;margin-top:5px;"
+              ref="paramTable"
+            >
+              <el-table-column prop="Name" label="Key">
+                <el-input slot-scope="scope" v-model="scope.row.Name"></el-input>
+              </el-table-column>
+              <el-table-column prop="Value" label="Value">
+                <el-input slot-scope="scope" v-model="scope.row.Value"></el-input>
+              </el-table-column>
+              <el-table-column fixed="right" label width="100">
+                <template>
+                  <el-button type="danger" size="mini">Remove</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
           <el-tab-pane label="json" name="json">
             <el-button
               style="margin-left:10px;"
@@ -76,12 +100,12 @@
             <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
             <el-table
               :data="tableData1"
-              :height="defaultParamTableHeight"
+              :height="defaultBodyTableHeight"
               border
               style="width:100%;margin-top:5px;"
-              ref="paramTable"
+              ref="bodyTable"
             >
-              <el-table-column prop="Name" label="Header Name">
+              <el-table-column prop="Name" label="Key">
                 <el-input slot-scope="scope" v-model="scope.row.Name"></el-input>
               </el-table-column>
               <el-table-column prop="Value" label="Value">
@@ -108,7 +132,7 @@
 export default {
   data() {
     return {
-      defaultProtocal: "http",
+      defaultMethod: "GET",
       address: "",
       tableData: [
         {
@@ -117,6 +141,12 @@ export default {
         }
       ],
       tableData1: [
+        {
+          Name: "ID",
+          Value: "11"
+        }
+      ],
+      tableData2: [
         {
           Name: "ID",
           Value: "11"
@@ -133,10 +163,17 @@ export default {
         '{"Code":200,"Success":true,"Data":null,"Total":0,"Message":"Request Success!"}'
     };
   },
+  props:{
+    node:Object
+  },
   methods: {
-    
     onTabClick(tab) {
       if (tab.name === "form") {
+        this.$nextTick(() => {
+          this.$refs.bodyTable.doLayout();
+        });
+      }
+      if (tab.name === "params") {
         this.$nextTick(() => {
           this.$refs.paramTable.doLayout();
         });
@@ -162,16 +199,22 @@ export default {
     defaultHeaderTableHeight() {
       return this.tableData.length * 65 + 50;
     },
-    defaultParamTableHeight() {
+    defaultBodyTableHeight() {
       return this.tableData1.length * 65 + 50;
+    },
+    defaultParamTableHeight() {
+      return this.tableData2.length * 65 + 50;
     }
+  },
+  created(){
+    
   }
 };
 </script>
 <style lang="scss" scoped>
 .ducky-request-form {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   box-sizing: border-box;
   padding: 10px;
   background-color: #fff;
@@ -187,7 +230,16 @@ export default {
     margin-bottom: 10px;
     border-bottom: 1px solid #dcdfe6;
     position: relative;
+    
   }
+  .ducky-request-name:after{
+      content: '.';
+      height: 0;
+      width: 0;
+      // display:block; 
+      clear:both;
+      visibility: hidden;
+    }
   .ducky-request-info {
     display: flex;
     flex-direction: column;

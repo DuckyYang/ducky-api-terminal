@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-05-31 22:08:28
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-01 17:18:16
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -15,11 +15,15 @@
       <div class="ducky-tools">
         <el-input suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
       </div>
-      <ducky-simple-tree :data="data" @node-click="onNodeClick"></ducky-simple-tree>
+      <ducky-simple-tree :data="data" @node-click="onNodeClick">
+        <template v-slot:title="prop">
+          <span>{{prop.n.title}}</span>
+        </template>
+      </ducky-simple-tree>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document></request-document>
+      <request-document :node="node"></request-document>
     </div>
   </div>
 </template>
@@ -30,18 +34,19 @@ import data from '../static/data/demo-documents_1'
 export default {
   data() {
     return {
-      data: data
+      data: data,
+      currentNode: null
     };
   },
   components: {
     "request-document": RequestDoc
   },
   methods:{
-    onNodeClick() {
+    onNodeClick(node) {
       // the last stage node
-      // if (!node.children || node.children.length === 0) {
-      //   console.log(node)
-      // }
+      if (!node.children || node.children.length === 0) {
+        this.currentNode = node
+      }
     },
   }
 };
@@ -53,7 +58,7 @@ export default {
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow: hidden;
   .ducky-default-container__left {
     width: 280px;
     height: 100%;
@@ -78,6 +83,7 @@ export default {
     height: 100%;
     flex: 1;
     box-sizing: border-box;
+    overflow-y: auto;
   }
 }
 </style>
