@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-01 17:18:16
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-01 20:29:41
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -16,14 +16,17 @@
         <el-input suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
       </div>
       <ducky-simple-tree :data="data" @node-click="onNodeClick">
-        <template v-slot:title="prop">
-          <span>{{prop.n.title}}</span>
+        <template #title="slotProp">
+          <span>
+            <i v-if="slotProp.node.children.length>0" :class="slotProp.node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+            {{slotProp.node.title}}
+            </span>
         </template>
       </ducky-simple-tree>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document :node="node"></request-document>
+      <request-document :node="currentNode"></request-document>
     </div>
   </div>
 </template>

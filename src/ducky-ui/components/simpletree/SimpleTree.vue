@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-01 17:17:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-01 20:15:05
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -11,8 +11,8 @@
   <div class="ducky-simpletree" role="tree">
     <!-- tree root node list -->
     <simple-tree-node v-for="(node, index) in nodes" :key="index" :node="node">
-      <template #title="n">
-        <slot name="title" :prop="n"></slot>
+      <template #title="slotProp">
+        <slot name="title" :node="slotProp.node"></slot>
       </template>
     </simple-tree-node>
   </div>

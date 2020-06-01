@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 20:52:37
- * @LastEditTime: 2020-06-01 16:52:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-01 21:26:41
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/RequestDocument.vue
  * @
@@ -12,22 +12,30 @@
     <!-- Request Name -->
     <div class="ducky-request-name">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>Workflow2.0</el-breadcrumb-item>
-        <el-breadcrumb-item>Task</el-breadcrumb-item>
-        <el-breadcrumb-item>AddTask</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="(item,index) in data.path" :key="index">{{item}}</el-breadcrumb-item>
       </el-breadcrumb>
-      <el-button @click="onReset" type="primary" size="small" style="position:absolute;right:80px;top:0;">Reset</el-button>
-      <el-button @click="onSave" type="primary" size="small" style="position:absolute;right:10px;top:0;">Save</el-button>
+      <el-button
+        @click="onReset"
+        type="primary"
+        size="small"
+        style="position:absolute;right:80px;top:0;"
+      >Reset</el-button>
+      <el-button
+        @click="onSave"
+        type="primary"
+        size="small"
+        style="position:absolute;right:10px;top:0;"
+      >Save</el-button>
     </div>
     <div class="ducky-request-info">
       <!-- Protocal and Reuqest Address -->
       <div class="ducky-request-info__address">
         <el-input
           placeholder="please input request address"
-          v-model="address"
+          v-model="data.address"
           class="input-with-select"
         >
-          <el-select v-model="defaultMethod" slot="prepend" placeholder="please choose method">
+          <el-select v-model="data.method" slot="prepend" placeholder="please choose method">
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
             <el-option label="PUT" value="PUT"></el-option>
@@ -41,16 +49,16 @@
       <div class="ducky-request-info__headers">
         <el-button style="margin-left:10px;" type="primary" size="small">Add Header</el-button>
         <el-table
-          :data="tableData"
+          :data="data.headers"
           :height="defaultHeaderTableHeight"
           border
           style="width: 100%;margin-top:5px;"
         >
-          <el-table-column prop="Name" label="Header Name">
-            <el-input slot-scope="scope" v-model="scope.row.Name"></el-input>
+          <el-table-column prop="key" label="Header Name">
+            <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
           </el-table-column>
-          <el-table-column prop="Value" label="Value">
-            <el-input slot-scope="scope" v-model="scope.row.Value"></el-input>
+          <el-table-column prop="value" label="Value">
+            <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
           </el-table-column>
           <el-table-column fixed="right" label width="100">
             <template>
@@ -62,21 +70,21 @@
       <!-- Request Parameters, json Or form-urlencoded -->
       <el-divider content-position="left">Request Parameters</el-divider>
       <div class="ducky-request-info__parameters">
-        <el-tabs stretch value="json" @tab-click="onTabClick">
-           <el-tab-pane label="params" name="params">
+        <el-tabs stretch :value="data.contentType" @tab-click="onTabClick">
+          <el-tab-pane label="params" name="params">
             <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
             <el-table
-              :data="tableData2"
+              :data="data.params"
               :height="defaultParamTableHeight"
               border
               style="width:100%;margin-top:5px;"
               ref="paramTable"
             >
-              <el-table-column prop="Name" label="Key">
-                <el-input slot-scope="scope" v-model="scope.row.Name"></el-input>
+              <el-table-column prop="key" label="Key">
+                <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
-              <el-table-column prop="Value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.Value"></el-input>
+              <el-table-column prop="value" label="Value">
+                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
                 <template>
@@ -94,22 +102,22 @@
             >Format</el-button>
             <el-button size="mini" type="primary" @click="compactJson">Compact</el-button>
             <el-button size="mini" type="primary" @click="getJson">Get Value</el-button>
-            <ducky-json-editor v-bind="jsonEditorData" ref="jsonEditor"></ducky-json-editor>
+            <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.json" ref="jsonEditor"></ducky-json-editor>
           </el-tab-pane>
           <el-tab-pane label="form-urlencoded" name="form">
             <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
             <el-table
-              :data="tableData1"
+              :data="data.body"
               :height="defaultBodyTableHeight"
               border
               style="width:100%;margin-top:5px;"
               ref="bodyTable"
             >
-              <el-table-column prop="Name" label="Key">
-                <el-input slot-scope="scope" v-model="scope.row.Name"></el-input>
+              <el-table-column prop="key" label="Key">
+                <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
-              <el-table-column prop="Value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.Value"></el-input>
+              <el-table-column prop="value" label="Value">
+                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
                 <template>
@@ -123,7 +131,7 @@
       <!-- Server Response -->
       <el-divider content-position="left">Response Message</el-divider>
       <div class="ducky-response-info">
-        <ducky-json-editor v-bind="jsonEditorData" :jsonString="responseData"></ducky-json-editor>
+        <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.response"></ducky-json-editor>
       </div>
     </div>
   </div>
@@ -132,39 +140,30 @@
 export default {
   data() {
     return {
+      data: {
+        id: -1,
+        path: [],
+        method: "GET",
+        address: "",
+        headers: [{ key: "", value: "" }],
+        contentType: "params",
+        params: [{ key: "", value: "" }], // url parameters
+        body: [{ key: "", value: "" }], // body parameter
+        json: "", // json parameter
+        response: ""
+      },
       defaultMethod: "GET",
-      address: "",
-      tableData: [
-        {
-          Name: "accesstoken",
-          Value: "abcdefghijklmn"
-        }
-      ],
-      tableData1: [
-        {
-          Name: "ID",
-          Value: "11"
-        }
-      ],
-      tableData2: [
-        {
-          Name: "ID",
-          Value: "11"
-        }
-      ],
       jsonEditorData: {
         height: 280,
         configs: {
           mainMenuBar: false
         },
         jsonString: ""
-      },
-      responseData:
-        '{"Code":200,"Success":true,"Data":null,"Total":0,"Message":"Request Success!"}'
+      }
     };
   },
-  props:{
-    node:Object
+  props: {
+    node: Object
   },
   methods: {
     onTabClick(tab) {
@@ -188,27 +187,43 @@ export default {
     getJson() {
       console.log(this.$refs.jsonEditor.getText());
     },
-    onSave(){
-        this.$message({message:'the request has been saved!',type: 'success'})
+    onSave() {
+      this.$message({
+        message: "the request has been saved!",
+        type: "success"
+      });
     },
-    onReset(){
-        this.$message({message:'the request has been reset!',type:'success'})
+    onReset() {
+      this.$message({
+        message: "the request has been reset!",
+        type: "success"
+      });
     }
   },
   computed: {
     defaultHeaderTableHeight() {
-      return this.tableData.length * 65 + 50;
+      return this.data.headers.length * 65 + 50;
     },
     defaultBodyTableHeight() {
-      return this.tableData1.length * 65 + 50;
+      return this.data.body.length * 65 + 50;
     },
     defaultParamTableHeight() {
-      return this.tableData2.length * 65 + 50;
+      return this.data.params.length * 65 + 50;
     }
   },
-  created(){
-    
-  }
+  watch: {
+    node:function() {
+      if (this.node.document) {
+        let document = this.node.document;
+        for (const key in document) {
+          if (Object.prototype.hasOwnProperty.call(document, key)) {
+            this.data[key] = document[key];
+          }
+        }
+      }
+    }
+  },
+  created() {}
 };
 </script>
 <style lang="scss" scoped>
@@ -230,16 +245,15 @@ export default {
     margin-bottom: 10px;
     border-bottom: 1px solid #dcdfe6;
     position: relative;
-    
   }
-  .ducky-request-name:after{
-      content: '.';
-      height: 0;
-      width: 0;
-      // display:block; 
-      clear:both;
-      visibility: hidden;
-    }
+  .ducky-request-name:after {
+    content: ".";
+    height: 0;
+    width: 0;
+    // display:block;
+    clear: both;
+    visibility: hidden;
+  }
   .ducky-request-info {
     display: flex;
     flex-direction: column;

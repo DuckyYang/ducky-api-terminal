@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 14:13:49
- * @LastEditTime: 2020-05-31 15:18:16
+ * @LastEditTime: 2020-06-01 21:31:24
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/json-editor/JsonEditor.vue
@@ -49,6 +49,18 @@ export default {
     },
     getText() {
       return this.jsonEditor.getText();
+    }
+  },
+  watch: {
+    jsonString: function(newValue) {
+      try {
+        if (newValue) {
+          this.json = JSON.parse(newValue);
+          this.jsonEditor.set(this.json);
+        }
+      } catch {
+        throw Error("jsonString is not a valid json text");
+      }
     }
   },
   mounted() {

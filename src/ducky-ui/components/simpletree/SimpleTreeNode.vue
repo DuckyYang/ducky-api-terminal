@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-01 17:11:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-01 20:25:04
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -15,24 +15,22 @@
         @click="onNodeClick(node)"
         class="ducky-simpletree-node__title"
         :class="{'is-current': node.isCurrent}"
-        v-if="node.children.length === 0"
       >
         <span :style="{paddingLeft: (node.level+1)*15+'px'}">
           <slot name="title" :node="node"></slot>
         </span>
       </span>
-      <span
+      <!-- <span
         @click="onNodeClick(node)"
         class="ducky-simpletree-node__title"
         :class="{'is-current': node.isCurrent}"
         v-else
       >
         <span :style="{paddingLeft: (node.level+1)*15+'px'}">
-          <i :class="node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+          
           <slot name="title" :node="node"></slot>
-          <!-- <i class="el-icon-plus"></i> -->
         </span>
-      </span>
+      </span> -->
       <!-- else render node's child nodes -->
       <div
         class="ducky-simpletree-node__panel"
@@ -41,7 +39,9 @@
         :key="index"
       >
         <simple-tree-node :node="child">
-           <slot name="title" :node="child"></slot>
+          <template #title="slotProp">
+             <slot name="title" :node="slotProp.node"></slot>
+          </template>
         </simple-tree-node>
       </div>
     </div>
