@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-01 20:15:05
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-02 18:47:08
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -25,18 +25,18 @@ export default {
     return {
       nodes: [],
       defaultConfigs: {
-        simpleDataKey: { idKey: "id", pIdKey: "pid" }
+        simpleDataKey: { idKey: "id", pIdKey: "pid" },
       },
       isTree: true,
-      currentNode: null
+      currentNode: null,
     };
   },
   props: {
     data: Array,
-    configs: Object
+    configs: Object,
   },
   components: {
-    "simple-tree-node": simpleTreeNode
+    "simple-tree-node": simpleTreeNode,
   },
   methods: {
     setCurrentNode(node) {
@@ -51,55 +51,65 @@ export default {
       this.currentNode = node;
 
       this.$emit("node-click", node);
-    }
+    },
+    render(reRender) {
+      if (reRender) {
+        this.nodes=[]
+      }
+      let me = this;
+      // initial nodes from data
+      if (this.data && this.data.length > 0) {
+        let key = this.defaultConfigs.simpleDataKey.idKey;
+        let pidKey = this.defaultConfigs.simpleDataKey.pIdKey;
+
+        let buildChildren = function(node) {
+          // find children nodes
+          let children = me.data.filter((item) => item[pidKey] === node[key]);
+          if (children.length > 0) {
+            children.forEach((item) => {
+              let c = utils.deepClone(item);
+
+              c.level = node.level + 1;
+              c.isCurrent = false;
+              c.children = [];
+
+              node.children.push(c);
+              buildChildren(c);
+            });
+          }
+        };
+
+        let roots = this.data.filter((item) => {
+          return item[pidKey] === 0 || item[pidKey] === "";
+        });
+
+        // foreach roots, build children node
+        roots.forEach((root) => {
+          let r = utils.deepClone(root);
+
+          r.level = 0;
+          r.isCurrent = false;
+          r.children = [];
+          buildChildren(r);
+          me.nodes.push(r);
+        });
+        // this.nodes = roots;
+      }
+    },
   },
   provide() {
     return {
-      setCurrentNode: this.setCurrentNode
+      setCurrentNode: this.setCurrentNode,
     };
   },
   mounted() {
-    let me = this;
-
-    // initial nodes from data
-    if (this.data && this.data.length > 0) {
-      let key = this.defaultConfigs.simpleDataKey.idKey;
-      let pidKey = this.defaultConfigs.simpleDataKey.pIdKey;
-
-      let buildChildren = function(node) {
-        // find children nodes
-        let children = me.data.filter(item => item[pidKey] === node[key]);
-        if (children.length > 0) {
-          children.forEach(item => {
-            let c = utils.deepClone(item)
-
-            c.level = node.level+1
-            c.isCurrent = false
-            c.children = []
-
-            node.children.push(c)
-            buildChildren(c);
-          });
-        }
-      };
-
-      let roots = this.data.filter(item => {
-        return item[pidKey] === 0 || item[pidKey] === "";
-      });
-
-      // foreach roots, build children node
-      roots.forEach(root => {
-        let r = utils.deepClone(root)
-
-        r.level = 0
-        r.isCurrent = false
-        r.children=[]
-        buildChildren(r);
-        me.nodes.push(r)
-      });
-      // this.nodes = roots;
-    }
-  }
+    this.render(false)
+  },
+  watch: {
+    data: function() {
+      this.render(true)
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

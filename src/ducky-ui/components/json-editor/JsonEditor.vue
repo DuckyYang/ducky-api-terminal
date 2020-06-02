@@ -1,17 +1,17 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 14:13:49
- * @LastEditTime: 2020-06-01 21:31:24
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-02 18:36:08
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/json-editor/JsonEditor.vue
  * @
---> 
+-->
 <template>
   <div
     class="ducky-json-editor"
     style="margin-top:5px;"
-    :style="{height:height+'px'}"
+    :style="{ height: height + 'px' }"
     ref="jsonEditor"
   ></div>
 </template>
@@ -30,15 +30,15 @@ export default {
         mainMenuBar: true,
         statusBar: false,
         enableTransform: false,
-        navigationBar: false
+        navigationBar: false,
       },
-      json: null
+      json: null,
     };
   },
   props: {
     jsonString: String,
     height: Number,
-    configs: Object
+    configs: Object,
   },
   methods: {
     format() {
@@ -49,7 +49,7 @@ export default {
     },
     getText() {
       return this.jsonEditor.getText();
-    }
+    },
   },
   watch: {
     jsonString: function(newValue) {
@@ -57,11 +57,13 @@ export default {
         if (newValue) {
           this.json = JSON.parse(newValue);
           this.jsonEditor.set(this.json);
+        } else if (newValue === "") {
+          this.jsonEditor.setText("{}");
         }
       } catch {
         throw Error("jsonString is not a valid json text");
       }
-    }
+    },
   },
   mounted() {
     let container = this.$refs.jsonEditor;
@@ -83,7 +85,7 @@ export default {
       }
       this.jsonEditor.set(this.json);
     }
-  }
+  },
 };
 </script>
 <style lang="scss">

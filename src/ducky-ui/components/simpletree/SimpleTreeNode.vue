@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-01 20:25:04
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-02 18:32:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -73,6 +73,7 @@ export default {
 .is-current {
   background-color: #f6f6f6;
 }
+
 .ducky-simpletree-node__wrapper {
   width: 100%;
   height: 100%;
@@ -92,6 +93,9 @@ export default {
       width: 100%;
       box-sizing: border-box;
     }
+  }
+  .ducky-simpletree-node__title:hover{
+    background-color: #f6f6f6;
   }
   .ducky-simpletree-node__panel {
     width: 100%;

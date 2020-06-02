@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-01 20:29:41
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-02 18:52:43
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -13,7 +13,7 @@
     <!-- left -->
     <div class="ducky-default-container__left">
       <div class="ducky-tools">
-        <el-input suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
+        <el-input v-model="filterKey" suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
       </div>
       <ducky-simple-tree :data="data" @node-click="onNodeClick">
         <template #title="slotProp">
@@ -26,7 +26,15 @@
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document :node="currentNode"></request-document>
+      <request-document v-if="currentNode !== null" :node="currentNode"></request-document>
+      <div class="no-data" v-else>
+          <dl>
+            <dt>
+              <img src="@/assets/no-data.png" alt="">
+            </dt>
+            <dd style="text-align:center;font-size:14px;">choose a request</dd>
+          </dl>
+      </div>
     </div>
   </div>
 </template>
@@ -37,8 +45,10 @@ import data from '../static/data/demo-documents_1'
 export default {
   data() {
     return {
+      origin:data,
       data: data,
-      currentNode: null
+      currentNode: null,
+      filterKey:''
     };
   },
   components: {
@@ -50,7 +60,18 @@ export default {
       if (!node.children || node.children.length === 0) {
         this.currentNode = node
       }
+      console.log(node)
     },
+  },
+  watch:{
+    filterKey:function(newValue){
+      if (newValue) {
+        this.data = this.data.filter(r=>r.title.indexOf(newValue) > -1)
+        console.log(this.data)
+      }else{
+        this.data = this.origin
+      }
+    }
   }
 };
 </script>
@@ -87,6 +108,16 @@ export default {
     flex: 1;
     box-sizing: border-box;
     overflow-y: auto;
+    .no-data{
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+      border-left: 1px solid #f6f6f6;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 </style>

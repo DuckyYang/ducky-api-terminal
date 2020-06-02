@@ -1,31 +1,35 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 20:52:37
- * @LastEditTime: 2020-06-01 21:26:41
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-02 18:33:45
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/RequestDocument.vue
  * @
---> 
+-->
 <template>
   <div class="ducky-request-form">
     <!-- Request Name -->
     <div class="ducky-request-name">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item v-for="(item,index) in data.path" :key="index">{{item}}</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="(item, index) in data.path" :key="index">{{
+          item
+        }}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-button
         @click="onReset"
         type="primary"
         size="small"
         style="position:absolute;right:80px;top:0;"
-      >Reset</el-button>
+        >Reset</el-button
+      >
       <el-button
         @click="onSave"
         type="primary"
         size="small"
         style="position:absolute;right:10px;top:0;"
-      >Save</el-button>
+        >Save</el-button
+      >
     </div>
     <div class="ducky-request-info">
       <!-- Protocal and Reuqest Address -->
@@ -35,7 +39,11 @@
           v-model="data.address"
           class="input-with-select"
         >
-          <el-select v-model="data.method" slot="prepend" placeholder="please choose method">
+          <el-select
+            v-model="data.method"
+            slot="prepend"
+            placeholder="please choose method"
+          >
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
             <el-option label="PUT" value="PUT"></el-option>
@@ -47,7 +55,13 @@
       <!-- Request Headers  -->
       <el-divider content-position="left">Request Headers</el-divider>
       <div class="ducky-request-info__headers">
-        <el-button style="margin-left:10px;" type="primary" size="small">Add Header</el-button>
+        <el-button
+          @click="onAddHeader"
+          style="margin-left:10px;"
+          type="primary"
+          size="small"
+          >Add Header</el-button
+        >
         <el-table
           :data="data.headers"
           :height="defaultHeaderTableHeight"
@@ -61,8 +75,13 @@
             <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
           </el-table-column>
           <el-table-column fixed="right" label width="100">
-            <template>
-              <el-button type="danger" size="mini">Remove</el-button>
+            <template slot-scope="scope">
+              <el-button
+                @click="onRemoveHeader(scope.row)"
+                type="danger"
+                size="mini"
+                >Remove</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -72,7 +91,13 @@
       <div class="ducky-request-info__parameters">
         <el-tabs stretch :value="data.contentType" @tab-click="onTabClick">
           <el-tab-pane label="params" name="params">
-            <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
+            <el-button
+              @click="onAddParameter"
+              style="margin-left:10px;"
+              type="primary"
+              size="small"
+              >Add Parameter</el-button
+            >
             <el-table
               :data="data.params"
               :height="defaultParamTableHeight"
@@ -84,11 +109,19 @@
                 <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
               <el-table-column prop="value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
+                <el-input
+                  slot-scope="scope"
+                  v-model="scope.row.value"
+                ></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
-                <template>
-                  <el-button type="danger" size="mini">Remove</el-button>
+                <template slot-scope="scope">
+                  <el-button
+                    @click="onRemoveParam(scope.row)"
+                    type="danger"
+                    size="mini"
+                    >Remove</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -99,13 +132,28 @@
               type="primary"
               @click="formatJson"
               size="mini"
-            >Format</el-button>
-            <el-button size="mini" type="primary" @click="compactJson">Compact</el-button>
-            <el-button size="mini" type="primary" @click="getJson">Get Value</el-button>
-            <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.json" ref="jsonEditor"></ducky-json-editor>
+              >Format</el-button
+            >
+            <el-button size="mini" type="primary" @click="compactJson"
+              >Compact</el-button
+            >
+            <el-button size="mini" type="primary" @click="getJson"
+              >Get Value</el-button
+            >
+            <ducky-json-editor
+              v-bind="jsonEditorData"
+              :jsonString="data.json"
+              ref="jsonEditor"
+            ></ducky-json-editor>
           </el-tab-pane>
           <el-tab-pane label="form-urlencoded" name="form">
-            <el-button style="margin-left:10px;" type="primary" size="small">Add Parameter</el-button>
+            <el-button
+              @click="onAddBodyParam"
+              style="margin-left:10px;"
+              type="primary"
+              size="small"
+              >Add Parameter</el-button
+            >
             <el-table
               :data="data.body"
               :height="defaultBodyTableHeight"
@@ -117,11 +165,19 @@
                 <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
               <el-table-column prop="value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
+                <el-input
+                  slot-scope="scope"
+                  v-model="scope.row.value"
+                ></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
-                <template>
-                  <el-button type="danger" size="mini">Remove</el-button>
+                <template slot-scope="scope">
+                  <el-button
+                    @click="onRemoveBodyParam(scope)"
+                    type="danger"
+                    size="mini"
+                    >Remove</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -131,12 +187,16 @@
       <!-- Server Response -->
       <el-divider content-position="left">Response Message</el-divider>
       <div class="ducky-response-info">
-        <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.response"></ducky-json-editor>
+        <ducky-json-editor
+          v-bind="jsonEditorData"
+          :jsonString="data.response"
+        ></ducky-json-editor>
       </div>
     </div>
   </div>
 </template>
 <script>
+import utils from "../plugin/utils";
 export default {
   data() {
     return {
@@ -145,25 +205,25 @@ export default {
         path: [],
         method: "GET",
         address: "",
-        headers: [{ key: "", value: "" }],
+        headers: [{ id: utils.uuid(), key: "", value: "" }],
         contentType: "params",
-        params: [{ key: "", value: "" }], // url parameters
-        body: [{ key: "", value: "" }], // body parameter
+        params: [{ id: utils.uuid(), key: "", value: "" }], // url parameters
+        body: [{ id: utils.uuid(), key: "", value: "" }], // body parameter
         json: "", // json parameter
-        response: ""
+        response: "",
       },
       defaultMethod: "GET",
       jsonEditorData: {
         height: 280,
         configs: {
-          mainMenuBar: false
+          mainMenuBar: false,
         },
-        jsonString: ""
-      }
+        jsonString: "",
+      },
     };
   },
   props: {
-    node: Object
+    node: Object,
   },
   methods: {
     onTabClick(tab) {
@@ -190,15 +250,50 @@ export default {
     onSave() {
       this.$message({
         message: "the request has been saved!",
-        type: "success"
+        type: "success",
       });
     },
     onReset() {
-      this.$message({
-        message: "the request has been reset!",
-        type: "success"
+      this.data = {
+        id: -1,
+        path: [],
+        method: "GET",
+        address: "",
+        headers: [{ id: utils.uuid(), key: "", value: "" }],
+        contentType: "params",
+        params: [{ id: utils.uuid(), key: "", value: "" }], // url parameters
+        body: [{ id: utils.uuid(), key: "", value: "" }], // body parameter
+        json: "", // json parameter
+        response: "",
+      };
+      this.$nextTick(() => {
+        this.$message({
+          message: "the request has been reset!",
+          type: "success",
+        });
       });
-    }
+    },
+    onAddHeader() {
+      this.data.headers.push({ id: utils.uuid(), key: "", value: "" });
+    },
+    onRemoveHeader(row) {
+      let index = this.data.headers.findIndex((x) => x.id === row.id);
+      this.data.headers.splice(index, 1);
+    },
+    onAddParameter() {
+      this.data.params.push({ id: utils.uuid(), key: "", value: "" });
+    },
+    onRemoveParam(row) {
+      let index = this.data.params.findIndex((x) => x.id === row.id);
+      this.data.params.splice(index, 1);
+    },
+    onAddBodyParam() {
+      this.data.body.push({ id: utils.uuid(), key: "", value: "" });
+    },
+    onRemoveBodyParam(row) {
+      let index = this.data.body.findIndex((x) => x.id === row.id);
+      this.data.body.splice(index, 1);
+    },
   },
   computed: {
     defaultHeaderTableHeight() {
@@ -209,21 +304,22 @@ export default {
     },
     defaultParamTableHeight() {
       return this.data.params.length * 65 + 50;
-    }
+    },
   },
   watch: {
-    node:function() {
+    node: function() {
       if (this.node.document) {
         let document = this.node.document;
-        for (const key in document) {
-          if (Object.prototype.hasOwnProperty.call(document, key)) {
-            this.data[key] = document[key];
-          }
-        }
+        utils.assign(this.data, document);
       }
+    },
+  },
+  created() {
+    if (this.node.document) {
+      let document = this.node.document;
+      utils.assign(this.data, document);
     }
   },
-  created() {}
 };
 </script>
 <style lang="scss" scoped>
