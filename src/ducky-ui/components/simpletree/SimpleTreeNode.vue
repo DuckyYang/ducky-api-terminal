@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-02 18:32:00
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-02 22:19:07
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -15,6 +15,7 @@
         @click="onNodeClick(node)"
         class="ducky-simpletree-node__title"
         :class="{'is-current': node.isCurrent}"
+        v-show="node.visible"
       >
         <span :style="{paddingLeft: (node.level+1)*15+'px'}">
           <slot name="title" :node="node"></slot>

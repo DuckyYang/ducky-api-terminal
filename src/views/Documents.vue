@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-02 18:52:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-02 22:04:12
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -13,14 +13,21 @@
     <!-- left -->
     <div class="ducky-default-container__left">
       <div class="ducky-tools">
-        <el-input v-model="filterKey" suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
+        <el-input
+          v-model="filterKey"
+          suffix-icon="el-icon-search"
+          placeholder="please input server name"
+        ></el-input>
       </div>
-      <ducky-simple-tree :data="data" @node-click="onNodeClick">
+      <ducky-simple-tree :data="data" :filter="filterKey" @node-click="onNodeClick">
         <template #title="slotProp">
           <span>
-            <i v-if="slotProp.node.children.length>0" :class="slotProp.node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+            <i
+              v-if="slotProp.node.children.length>0"
+              :class="slotProp.node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"
+            ></i>
             {{slotProp.node.title}}
-            </span>
+          </span>
         </template>
       </ducky-simple-tree>
     </div>
@@ -28,12 +35,12 @@
     <div class="ducky-default-container__right">
       <request-document v-if="currentNode !== null" :node="currentNode"></request-document>
       <div class="no-data" v-else>
-          <dl>
-            <dt>
-              <img src="@/assets/no-data.png" alt="">
-            </dt>
-            <dd style="text-align:center;font-size:14px;">choose a request</dd>
-          </dl>
+        <dl>
+          <dt>
+            <img src="@/assets/no-data.png" alt />
+          </dt>
+          <dd style="text-align:center;font-size:14px;">choose a request</dd>
+        </dl>
       </div>
     </div>
   </div>
@@ -41,37 +48,29 @@
 <script>
 // import demoData from "../static/data/demo-documents";
 import RequestDoc from "../components/RequestDocument";
-import data from '../static/data/demo-documents_1'
+import data from "../static/data/demo-documents_1";
 export default {
   data() {
     return {
-      origin:data,
+      origin: data,
       data: data,
       currentNode: null,
-      filterKey:''
+      filterKey: ""
     };
   },
   components: {
     "request-document": RequestDoc
   },
-  methods:{
+  methods: {
     onNodeClick(node) {
       // the last stage node
       if (!node.children || node.children.length === 0) {
-        this.currentNode = node
+        this.currentNode = node;
       }
-      console.log(node)
-    },
-  },
-  watch:{
-    filterKey:function(newValue){
-      if (newValue) {
-        this.data = this.data.filter(r=>r.title.indexOf(newValue) > -1)
-        console.log(this.data)
-      }else{
-        this.data = this.origin
-      }
+      console.log(node);
     }
+  },
+  watch: {
   }
 };
 </script>
@@ -108,7 +107,7 @@ export default {
     flex: 1;
     box-sizing: border-box;
     overflow-y: auto;
-    .no-data{
+    .no-data {
       height: 100%;
       width: 100%;
       background-color: #fff;
