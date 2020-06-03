@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:05
- * @LastEditTime: 2020-05-27 13:43:31
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-03 22:15:44
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Logs.vue
  * @
@@ -10,83 +10,127 @@
 <template>
   <ducky-table-layout>
     <template #toolbar>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
+      <el-select v-model="value" placeholder="please choose server">
+        <el-option v-for="item in servers" :key="item.name" :label="item.name" :value="item.name"></el-option>
       </el-select>
-      <el-input
-        placeholder="请输入内容"
-        v-model="input3"
-        class="ducky-tool-input"
-      >
+      <el-input placeholder="please input search key" v-model="searchKey" class="ducky-tool-input">
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
-        <el-button type="primary">刷新</el-button>
-        <el-button type="primary">重置</el-button>
+        <el-button type="primary">Refresh</el-button>
+        <el-button type="primary">Reset</el-button>
       </el-button-group>
     </template>
     <template v-slot="prop">
-      <el-table
-        ref="table"
-        :data="tableData"
-        :height="prop.height"
-        style="width: 100%"
-        :fit="true"
-      >
-        <el-table-column fixed prop="date" label="日期"></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="province" label="省份"></el-table-column>
-        <el-table-column prop="city" label="市区"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="zip" label="邮编"></el-table-column>
+      <el-table ref="table" :data="tableData" :height="prop.height" style="width: 100%" :fit="true">
+        <el-table-column prop="host" label="host" width="120"></el-table-column>
+        <el-table-column prop="method" label="method" width="100"></el-table-column>
+        <el-table-column prop="route" label="route" width="280"></el-table-column>
+        <el-table-column prop="request" label="request" width="380">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :content="scope.row.request"
+            >
+              <div slot="reference" class="ducky-table-row__content">{{scope.row.request}}</div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="response" label="response" width="380">
+          <template slot-scope="scope">
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :content="scope.row.response"
+            >
+              <div slot="reference" class="ducky-table-row__content">{{scope.row.response}}</div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="requestTime" label="request time" width="180"></el-table-column>
+        <el-table-column prop="duration" label="duration" width="100"></el-table-column>
+        <el-table-column prop="error" label="error" width="100">
+          <template slot-scope="scope">
+            <el-popover
+              v-if="scope.row.isError"
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :content="scope.row.error"
+            >
+              <el-button slot="reference" type="danger" size="mini">View</el-button>
+            </el-popover>
+            <span v-else></span>
+          </template>
+        </el-table-column>
       </el-table>
     </template>
     <template #pager>
       <el-pagination
+        @current-change="onPagerChange"
+        @size-change="onPagerSizeChange"
+        @prev-click="onPagerPrev"
+        @next-click="onPagerNext"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="1000"
+        :total="total"
       ></el-pagination>
     </template>
   </ducky-table-layout>
 </template>
 <script>
-import demoTableData from "../static/data/demo-logs";
+import servers from "../static/data/demo-apiserver";
+import logs from "../static/data/demo-logs";
 export default {
   data() {
     return {
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      value: "",
-      input3: "",
-      tableData: demoTableData,
+      servers: servers,
+      value: servers[0].name,
+      searchKey: "",
+      tableData: logs,
+      pageIndex: 1,
+      pageSize: 10,
+      total: 0
     };
   },
+  methods: {
+    onPagerChange(curPage) {
+      this.pageIndex = curPage;
+    },
+    onPagerSizeChange(pageSize) {
+      this.pageSize = pageSize;
+    },
+    onPagerPrev(curPage) {
+      this.pageIndex = curPage;
+    },
+    onPagerNext(curPage) {
+      this.pageIndex = curPage;
+    },
+    getPagerData() {
+      return logs.filter((item, index) => {
+        return (
+          index > (this.pageIndex - 1) * this.pageSize &&
+          index <= this.pageIndex * this.pageSize
+        );
+      });
+    }
+  },
+  watch: {
+    pageIndex() {
+      this.tableData = this.getPagerData();
+    },
+    pageSize(){
+      this.tableData = this.getPagerData();
+    }
+  },
+
+  beforeMount() {
+    this.tableData = this.getPagerData();
+    this.total = logs.length;
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -96,5 +140,12 @@ export default {
 }
 .ducky-tool-buttons {
   margin-left: 20px;
+}
+.ducky-table-row__content {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 24px;
 }
 </style>
