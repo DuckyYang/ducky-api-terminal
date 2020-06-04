@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-06-02 12:28:43
- * @LastEditTime: 2020-06-02 13:10:43
+ * @LastEditTime: 2020-06-04 15:15:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\plugin\utils.js
@@ -62,4 +62,38 @@ export default {
   deepClone(obj) {
     return lodash.cloneDeep(obj);
   },
+  /**
+   * serialize an object to json string
+   * @param {Object} obj 
+   */
+  serialize(obj){
+    return JSON.stringify(obj)
+  },
+  /**
+   * parse a json string to object
+   * @param {String} jsonString 
+   */
+  parse(jsonString){
+    return JSON.parse(jsonString)
+  },
+  /**
+   * get parameters from url
+   * @param {String} url 
+   */
+  getParams(url){
+    if (typeof url !== 'string') {
+      return
+    }
+    if (!url || url.indexOf('?') === -1) {
+      return
+    }
+    let params = url.trim().split('?')[1].replace('?','')
+
+    let result = {}
+    params.split('&').forEach(x=>{
+      let keyValue = x.split('=')
+      result[keyValue[0]] = keyValue[1].trim()
+    })
+    return result
+  }
 };

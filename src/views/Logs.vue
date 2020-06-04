@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:05
- * @LastEditTime: 2020-06-03 22:15:44
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-04 16:35:53
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Logs.vue
  * @
@@ -11,9 +11,18 @@
   <ducky-table-layout>
     <template #toolbar>
       <el-select v-model="value" placeholder="please choose server">
-        <el-option v-for="item in servers" :key="item.name" :label="item.name" :value="item.name"></el-option>
+        <el-option
+          v-for="item in servers"
+          :key="item.name"
+          :label="item.name"
+          :value="item.name"
+        ></el-option>
       </el-select>
-      <el-input placeholder="please input search key" v-model="searchKey" class="ducky-tool-input">
+      <el-input
+        placeholder="please input search key"
+        v-model="searchKey"
+        class="ducky-tool-input"
+      >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
@@ -22,19 +31,35 @@
       </el-button-group>
     </template>
     <template v-slot="prop">
-      <el-table ref="table" :data="tableData" :height="prop.height" style="width: 100%" :fit="true">
+      <el-table
+        ref="table"
+        :data="tableData"
+        :height="prop.height"
+        style="width: 100%"
+        :fit="true"
+      >
         <el-table-column prop="host" label="host" width="120"></el-table-column>
-        <el-table-column prop="method" label="method" width="100"></el-table-column>
-        <el-table-column prop="route" label="route" width="280"></el-table-column>
+        <el-table-column
+          prop="method"
+          label="method"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="route"
+          label="route"
+          width="280"
+        ></el-table-column>
         <el-table-column prop="request" label="request" width="380">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
               width="200"
-              trigger="hover"
+              trigger="click"
               :content="scope.row.request"
             >
-              <div slot="reference" class="ducky-table-row__content">{{scope.row.request}}</div>
+              <div slot="reference" class="ducky-table-row__content">
+                {{ scope.row.request }}
+              </div>
             </el-popover>
           </template>
         </el-table-column>
@@ -43,25 +68,37 @@
             <el-popover
               placement="top-start"
               width="200"
-              trigger="hover"
+              trigger="click"
               :content="scope.row.response"
             >
-              <div slot="reference" class="ducky-table-row__content">{{scope.row.response}}</div>
+              <div slot="reference" class="ducky-table-row__content">
+                {{ scope.row.response }}
+              </div>
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="requestTime" label="request time" width="180"></el-table-column>
-        <el-table-column prop="duration" label="duration" width="100"></el-table-column>
+        <el-table-column
+          prop="requestTime"
+          label="request time"
+          width="180"
+        ></el-table-column>
+        <el-table-column
+          prop="duration"
+          label="duration"
+          width="100"
+        ></el-table-column>
         <el-table-column prop="error" label="error" width="100">
           <template slot-scope="scope">
             <el-popover
               v-if="scope.row.isError"
               placement="top-start"
               width="200"
-              trigger="hover"
+              trigger="click"
               :content="scope.row.error"
             >
-              <el-button slot="reference" type="danger" size="mini">View</el-button>
+              <el-button slot="reference" type="danger" size="mini"
+                >View</el-button
+              >
             </el-popover>
             <span v-else></span>
           </template>
@@ -83,17 +120,18 @@
 </template>
 <script>
 import servers from "../static/data/demo-apiserver";
-import logs from "../static/data/demo-logs";
+
+import api from "../api/logs";
 export default {
   data() {
     return {
       servers: servers,
       value: servers[0].name,
       searchKey: "",
-      tableData: logs,
+      tableData: [],
       pageIndex: 1,
-      pageSize: 10,
-      total: 0
+      pageSize: 16,
+      total: 0,
     };
   },
   methods: {
@@ -110,27 +148,23 @@ export default {
       this.pageIndex = curPage;
     },
     getPagerData() {
-      return logs.filter((item, index) => {
-        return (
-          index > (this.pageIndex - 1) * this.pageSize &&
-          index <= this.pageIndex * this.pageSize
-        );
+      api.getLogs.get("", this.pageIndex, this.pageSize).then((response) => {
+          this.tableData = response.data
+          this.total = response.total
       });
-    }
+    },
   },
   watch: {
     pageIndex() {
       this.tableData = this.getPagerData();
     },
-    pageSize(){
+    pageSize() {
       this.tableData = this.getPagerData();
-    }
+    },
   },
-
   beforeMount() {
     this.tableData = this.getPagerData();
-    this.total = logs.length;
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

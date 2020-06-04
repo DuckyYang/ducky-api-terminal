@@ -1,7 +1,7 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-05-27 13:23:48
+ * @LastEditTime: 2020-06-04 14:18:15
  * @LastEditors: Please set LastEditors
  * @Description:
  * @FilePath: /ducky-ui/src/main.js
@@ -18,6 +18,8 @@ import VCharts from "v-charts";
 import DuckyUI from "../src/ducky-ui/index";
 
 Vue.config.productionTip = false;
+// using mock
+require('./mock')
 
 Vue.use(VCharts);
 Vue.use(ElementUI);
