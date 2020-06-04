@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-04 12:30:16
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-04 21:13:59
+ * @LastEditors: Ducky
  * @Description:
  * @FilePath: /ducky-api-terminal/src/store/index.js
  * @
@@ -23,7 +23,8 @@ export default new Vuex.Store({
     screenHeight: 0,
     // user's identity when user login system
     identity:{},
-    accesstoken:null
+    accesstoken:null,
+    mock:false
   },
   mutations: {
     navCollapse(state) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
       cookie.set('accesstoken',accesstoken)
       // store token
       state.accesstoken = accesstoken || ''
+    },
+    setMockMode(state){
+      state.mock = true
     }
   },
   getters:{

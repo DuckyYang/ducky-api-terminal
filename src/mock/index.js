@@ -1,11 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 13:13:54
- * @LastEditTime: 2020-06-04 16:53:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-04 22:09:22
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
- * @FilePath: \ducky-api-terminal\src\mock\index.js
- */ 
+ * @FilePath: /ducky-api-terminal/src/mock/index.js
+ */
 
 import Mock from 'mockjs'
 import utils from '../plugin/utils'
@@ -20,25 +20,26 @@ files.keys().forEach((key) => {
 
 // registe all mock method
 configArray.forEach((item) => {
-  for (const [,target] of Object.entries(item)) {
-   
-    Mock.mock(new RegExp('^' + target.url+'.*'),target.type,(options)=>{
+  for (const [, target] of Object.entries(item)) {
+    if (target.type === 'get') {
+      target.type = 'post'
+    }
+    Mock.mock(target.url, target.type, (options) => {
       let param = {}
-
-      if (target.type.toLowerCase() === 'get') {
-        // if mock method need some params
-        if (target.mock.params && target.mock.params.length > 0) {
-          const p = utils.getParams(options.url)
-          target.mock.params.forEach(key=>{
-            param[key] = p[key]
-          })
-        }
+      // if mock method need some params
+      if (target.mock.params && target.mock.params.length > 0) {
+        const p = utils.parse(options.body)
+        target.mock.params.forEach(key => {
+          param[key] = p[key]
+        })
       }
       // return default data
       return {
-        data:target.mock.data(param),
-        total:100,
-        message:'success'
+        Success:true,
+        Message:'request successful',
+        Content:target.mock.data(param),
+        Total: 100,
+        Count:0
       }
     })
   }

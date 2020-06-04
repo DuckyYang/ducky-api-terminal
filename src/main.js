@@ -1,10 +1,10 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-04 14:18:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-04 22:05:50
+ * @LastEditors: Ducky
  * @Description:
- * @FilePath: /ducky-ui/src/main.js
+ * @FilePath: /ducky-api-terminal/src/main.js
  * @
  */
 
@@ -20,6 +20,7 @@ import DuckyUI from "../src/ducky-ui/index";
 Vue.config.productionTip = false;
 // using mock
 require('./mock')
+store.commit('setMockMode')
 
 Vue.use(VCharts);
 Vue.use(ElementUI);

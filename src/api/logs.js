@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 12:44:04
- * @LastEditTime: 2020-06-04 15:28:52
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-04 21:21:07
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
- * @FilePath: \ducky-api-terminal\src\api\logs.js
+ * @FilePath: /ducky-api-terminal/src/api/logs.js
  */
 
 import request from "../plugin/request";
@@ -15,9 +15,8 @@ const api = {
   getLogs: {
     url: "api/workflow2.0/task/getlogs",
     type: "get",
-    get(filter,pageIndex,pageSize) {
-      let url = this.url+'?filter='+filter+'&pageIndex='+pageIndex+'&pageSize='+pageSize;
-      return request.get(url);
+    get(params) {
+      return request.get(this.url,params);
     },
     mock: {
       params: ["pageSize"],

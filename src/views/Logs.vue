@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:05
- * @LastEditTime: 2020-06-04 16:35:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-04 22:18:27
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Logs.vue
  * @
@@ -49,7 +49,7 @@
           label="route"
           width="280"
         ></el-table-column>
-        <el-table-column prop="request" label="request" width="380">
+        <el-table-column prop="request" label="request" min-width="380">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
@@ -63,7 +63,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="response" label="response" width="380">
+        <el-table-column prop="response" label="response" min-width="380">
           <template slot-scope="scope">
             <el-popover
               placement="top-start"
@@ -148,7 +148,11 @@ export default {
       this.pageIndex = curPage;
     },
     getPagerData() {
-      api.getLogs.get("", this.pageIndex, this.pageSize).then((response) => {
+      api.getLogs.get({
+        filter:'',
+        pageIndex:this.pageIndex,
+        pageSize:this.pageSize
+      }).then((response) => {
           this.tableData = response.data
           this.total = response.total
       });
