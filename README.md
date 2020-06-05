@@ -7,7 +7,7 @@
  * @FilePath: \ducky-api-terminal\README.md
 --> 
 ### ducky-api-terminal
-> ducky-api-terminal is an API manage system based on Vue.js and ElementUI
+> DAT is based on Vue.js and ElementUI
 
 - DashBoard
 > DashBoard shows all API request analysis infomation
