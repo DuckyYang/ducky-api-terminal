@@ -1,12 +1,11 @@
 /*
- * @Author: your name
+ * @Description: 
+ * @Version: 1.0
+ * @Author: Ducky Yang
  * @Date: 2020-06-04 09:23:32
- * @LastEditTime: 2020-06-04 09:30:04
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \ducky-api-terminal\src\plugin\cookie.js
- */
-
+ * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-05 10:58:27
+ */ 
 class Cookie {
   get(name) {
     let arr,
@@ -28,6 +27,7 @@ class Cookie {
     if (cval != null)
       document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
   }
-}
-
+}   
+  
 export default new Cookie();
+  
