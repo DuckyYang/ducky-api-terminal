@@ -1,12 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-25 11:43:33
- * @LastEditTime: 2020-06-05 10:44:24
+ * @LastEditTime: 2020-06-05 13:23:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\README.md
 --> 
 ### ducky-api-terminal
+> Author: Ducky Yang
+
+
 > ducky-api-terminal is an API manage system based on Vue.js and ElementUI
 
 - DashBoard
@@ -29,3 +32,4 @@
 
 - Settings
 > global settings for system
+
