@@ -1,16 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-25 11:43:33
- * @LastEditTime: 2020-06-05 13:29:27
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-05 13:38:10
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\README.md
 --> 
 ### ducky-api-terminal
 > Author: Ducky Yang. The DAT(ducky-api-terminal) is my first idea from my daily work, and I want it to be a good tools for everyone.
-
-
-> ducky-api-terminal is an API manage system based on Vue.js and ElementUI
 
 - DashBoard
 > DashBoard shows all API request analysis infomation
