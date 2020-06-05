@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-06-04 17:18:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-05 17:04:40
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
  * @
@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import "../plugin/ArrayExt";
+import "../plugin/array";
 export default {
   data() {
     return {

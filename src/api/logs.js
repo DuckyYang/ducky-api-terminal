@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 12:44:04
- * @LastEditTime: 2020-06-04 21:21:07
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-05 17:15:41
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/api/logs.js
  */
@@ -19,8 +19,10 @@ const api = {
       return request.get(this.url,params);
     },
     mock: {
+      // if mock data needs some other params from request, set name into params array
       params: ["pageSize"],
       data(params) {
+        // params contains value that method needs, you can try to get from it
         let pageSize = params['pageSize']
         
         let data = [];

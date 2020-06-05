@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\plugin\utils.js
  */
-import Vue from "vue";
+
 import lodash from "lodash";
 
 export default {
@@ -33,26 +33,6 @@ export default {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         target[key] = obj[key];
       }
-    }
-  },
-  /**
-   *
-   * @param {Object} obj object
-   * @param {String} name key name
-   * @param {Object} val value
-   */
-  setProperty(obj, name, val) {
-    Vue.set(obj, name, val);
-  },
-  /**
-   *
-   * @param {Array} objArr a array of object that contains `obj`,`name`,`val` properties
-   */
-  setProperties(objArr) {
-    if (objArr && Array.isArray(objArr)) {
-      objArr.forEach((item) => {
-        Vue.set(item.obj, item.name, item.val);
-      });
     }
   },
   /**
