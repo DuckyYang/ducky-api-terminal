@@ -16,22 +16,22 @@
 > Come on!
 
 - DashBoard
-> DashBoard shows all API request analysis infomation
+> DashBoard shows all api request analysis infomation
 
 - Logs
-> Logs shows all registed API's request log
+> Logs shows all api request log
 
 - Servers 
 > Servers shows all the api server collection
 
 - Documents
-> API server's documents
+> api documents
 
 - MockServer 
-> MockServer supported to make a simple mock server using mock configs,and the others can request the api like real server
+> MockServer supports to make a simple mock server using mock configs,and the others can request the api like real server
 
 - Users
-> System users manage
+> System users management
 
 - Settings
-> global settings for system
+> global settings of system
