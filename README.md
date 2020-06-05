@@ -1,13 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-25 11:43:33
- * @LastEditTime: 2020-06-05 10:44:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-05 16:36:15
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\README.md
 --> 
 ### ducky-api-terminal
-> DAT is based on Vue.js and ElementUI
+> Author: Ducky Yang
+
+> DAT(ducky-api-terminal) is my first idea from my daily work, and I want to provide some API management just like documents, server collection, mock server.
+> The frontend use Vue.js, ElementUI and my own UI to program, the backend I'd like to use nodejs or .net core to program.(Uh,maybe python or other)
+> Come on!
 
 - DashBoard
 > DashBoard shows all API request analysis infomation
