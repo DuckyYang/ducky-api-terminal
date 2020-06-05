@@ -6,8 +6,10 @@
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\README.md
 --> 
-### ducky-api-terminal
+## DAT (ducky-api-terminal)
 > Author: Ducky Yang
+
+<p align="center"><img src="https://github.com/DuckyYang/ducky-api-terminal/blob/dev/src/assets/logo.png" /></p>
 
 > DAT(ducky-api-terminal) is my first idea from my daily work, and I want to provide some API management just like documents, server collection, mock server.
 > The frontend use Vue.js, ElementUI and my own UI to program, the backend I'd like to use nodejs or .net core to program.(Uh,maybe python or other)
