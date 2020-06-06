@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 13:13:54
- * @LastEditTime: 2020-06-04 22:09:22
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-06 09:30:54
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/mock/index.js
  */
@@ -21,6 +21,10 @@ files.keys().forEach((key) => {
 // registe all mock method
 configArray.forEach((item) => {
   for (const [, target] of Object.entries(item)) {
+    // if api doesn't need mock
+    if (!target.mock) {
+      return
+    }
     if (target.type === 'get') {
       target.type = 'post'
     }
