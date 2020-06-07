@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-06-05 17:04:40
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-07 21:04:53
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
  * @
@@ -14,19 +14,18 @@
       <i class="el-icon-d-arrow-left"></i>
     </span>
     <!-- Tab Container -->
-    <div
-      ref="tabs"
-      class="ducky-tab-items"
-      :style="{ left: tabLeft + 'px' }"
-    >
+    <div ref="tabs" class="ducky-tab-items" :style="{ left: tabLeft + 'px' }">
       <span
-        v-for="item in tabs"
+        v-for="(item,index) in tabs"
         :key="item.meta.id"
         @click="onTabClick(item.meta.id)"
         class="ducky-tab"
-        >{{ item.name
-        }}<i class="el-icon-close" @click="onTabClose(item.meta.id)"></i
-      ></span>
+        :class="{'is-current':index===curTabIndex}"
+      >
+        {{ item.name
+        }}
+        <i class="el-icon-close" @click.stop="onTabClose(item.meta.id)"></i>
+      </span>
     </div>
     <!-- Move Tag Next -->
     <span class="ducky-tab-next" @click="onTabNext">
@@ -35,25 +34,38 @@
   </div>
 </template>
 <script>
+import routes from '../router/routes'
 import "../plugin/array";
 export default {
   data() {
     return {
       tabLeft: 50,
+      thisEndTabIndex: 0,
       curTabIndex: 0,
       tabs: [],
-      nextHistories: [],
+      nextHistories: []
     };
   },
   methods: {
     onTabClick(id) {
-      const route = this.tabs.find((x) => x.meta.id === id);
+      this.curTabIndex = this.tabs.findIndex(x => x.meta.id === id);
+      const route = this.tabs[this.curTabIndex];
       if (route) {
-        this.$router.push({ path: route.path }).catch((x) => x);
+        this.$router.push({ path: route.path }).catch(x => x);
       }
     },
     onTabClose(id) {
-      this.tabs = this.tabs.remove((x) => x.meta.id === id);
+      let tabIndex = this.tabs.findIndex(x => x.meta.id === id);
+      // Home tab can not close 
+      if (tabIndex > 0) {
+        // close current tab then open prev tab
+        if (this.curTabIndex === tabIndex) {
+          this.curTabIndex--;
+          let prevTab = this.tabs[this.curTabIndex];
+          this.$router.push({path:prevTab.path})
+        }
+        this.tabs = this.tabs.remove(x => x.meta.id === id);
+      }
     },
     onTabPrev() {
       if (this.nextHistories.length === 0) {
@@ -61,14 +73,14 @@ export default {
         return;
       }
       let prev = this.nextHistories[this.nextHistories.length - 1];
-      this.curTabIndex = prev;
+      this.thisEndTabIndex = prev;
       let nodes = this.$refs.tabs.childNodes;
       [].slice
         .call(nodes)
         .filter((item, index) => {
           return index === prev;
         })
-        .forEachExt((item) => {
+        .forEachExt(item => {
           this.tabLeft = -item.offsetLeft + 50;
           this.nextHistories.pop();
           return false;
@@ -82,40 +94,46 @@ export default {
       [].slice
         .call(nodes)
         .filter((item, index) => {
-          return index >= this.curTabIndex;
+          return index >= this.thisEndTabIndex;
         })
         .forEachExt((item, index) => {
           let left = item.getBoundingClientRect().left;
           let right = item.getBoundingClientRect().right;
           let offsetLeft = item.offsetLeft;
           if (left < viewWidth && right > viewWidth) {
-            this.nextHistories.push(this.curTabIndex);
-            this.curTabIndex += index;
+            this.nextHistories.push(this.thisEndTabIndex);
+            this.thisEndTabIndex += index;
             this.tabLeft = -offsetLeft + 50;
             return false;
           }
         });
-    },
+    }
   },
   watch: {
     $route: function(to) {
       if (
-        !this.tabs.some((x) => {
+        !this.tabs.some(x => {
           return x.meta.id === to.meta.id;
         })
       ) {
         this.tabs.push(to);
+        this.curTabIndex = this.tabs.length-1;
       }
-    },
+    }
   },
   created() {
+    if (this.$route.path !== '/') {
+      const home = routes.find(x=>x.path==='/');
+      this.tabs.push(home)
+    }
     this.tabs.push(this.$route);
-  },
+    this.curTabIndex = 1
+  }
 };
 </script>
 <style lang="scss" scoped>
 $tab-border-color: #f6f6f6;
-$tab-hover-color:#f6f6f6;
+$tab-hover-color: #f6f6f6;
 .ducky-tab-container {
   flex: 0;
   height: 50px;
@@ -125,6 +143,9 @@ $tab-hover-color:#f6f6f6;
   position: relative;
   padding: 0 50px 0 50px;
   box-sizing: border-box;
+  .is-current{
+    background-color: #f6f6f6;
+  }
   .ducky-tab-prev,
   .ducky-tab-next {
     display: inline-block;
@@ -160,53 +181,52 @@ $tab-hover-color:#f6f6f6;
     white-space: nowrap;
     box-sizing: border-box;
     z-index: 998;
-    transition: all .2s;
-    .ducky-tab{
-        display: inline-block;
+    transition: all 0.2s;
+    .ducky-tab {
+      display: inline-block;
+      box-sizing: border-box;
+      height: 50px;
+      line-height: 54px;
+      text-align: center;
+      padding: 0 20px;
+      border-right: 1px solid $tab-border-color;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      position: relative;
+      i {
+        margin-left: 5px;
         box-sizing: border-box;
-        height: 50px;
-        line-height: 54px;
-        text-align: center;
-        padding: 0 20px;
-        border-right: 1px solid $tab-border-color;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all .2s;
-        position: relative;
-        i{
-            margin-left: 5px;
-            box-sizing: border-box;
-            border: 1px solid #fff;
-        }
-        i:hover{
-            border: 1px solid #ccc;
-            border-radius: 50%;
-            color: #fff;
-            background-color: #ccc;
-        }
+        border: 1px solid #fff;
+      }
+      i:hover {
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #ccc;
+      }
     }
-    .ducky-tab:hover{
-        i{
-            border: 1px solid #f6f6f6;
-        }
-        background-color:#f6f6f6;
+    .ducky-tab:hover {
+      i {
+        border: 1px solid #f6f6f6;
+      }
+      background-color: #f6f6f6;
     }
-    .ducky-tab::after{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        border-radius: 0;
-        background-color: #292B34;
-        transition: all .3s;
-        -webkit-transition: all .3s;
+    .ducky-tab::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 0;
+      background-color: #292b34;
+      transition: all 0.3s;
+      -webkit-transition: all 0.3s;
     }
-    .ducky-tab:hover::after{
-        width: 100%;
+    .ducky-tab:hover::after {
+      width: 100%;
     }
-    
   }
 }
 </style>
