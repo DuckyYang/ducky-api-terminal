@@ -1,12 +1,12 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-06-07 09:28:23
- * @LastEditTime: 2020-06-07 20:17:15
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-08 11:27:23
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/MockDocument.vue
  * @
---> 
+-->
 <template>
   <div class="ducky-request-form">
     <!-- Request Name -->
@@ -52,23 +52,31 @@
           <el-button slot="append">Send</el-button>
         </el-input>
       </div>
-      <!-- Request Headers  -->
-      <el-divider content-position="left">Request Headers</el-divider>
-      <div class="ducky-request-info__headers">
+      <!-- Request Rules  -->
+      <el-divider content-position="left">Request Rules</el-divider>
+      <div class="ducky-request-info__rules">
         <el-button
-          @click="onAddHeader"
+          @click="onAddRule"
           style="margin-left:10px;"
           type="primary"
           size="small"
-          >Add Header</el-button
+          >Add Rule</el-button
+        >
+        <el-link
+          target="_blank"
+          href="https://github.com/nuysoft/Mock/wiki/Syntax-Specification"
+          :underline="false"
+          type="primary"
+          icon="el-icon-s-promotion"
+          >learn mock rules</el-link
         >
         <el-table
-          :data="data.headers"
-          :height="defaultHeaderTableHeight"
+          :data="data.rules"
+          :height="defaultRuleTableHeight"
           border
           style="width: 100%;margin-top:5px;"
         >
-          <el-table-column prop="key" label="Header Name">
+          <el-table-column prop="key" label="Rule">
             <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
           </el-table-column>
           <el-table-column prop="value" label="Value">
@@ -77,7 +85,7 @@
           <el-table-column fixed="right" label width="100">
             <template slot-scope="scope">
               <el-button
-                @click="onRemoveHeader(scope.row)"
+                @click="onRemoveRule(scope.row)"
                 type="danger"
                 size="mini"
                 >Remove</el-button
@@ -107,7 +115,7 @@ export default {
         path: [],
         method: "GET",
         address: "",
-        headers: [{ id: utils.uuid(), key: "", value: "" }],
+        rules: [{ id: utils.uuid(), key: "", value: "" }],
         response: "",
       },
       defaultMethod: "GET",
@@ -124,18 +132,6 @@ export default {
     node: Object,
   },
   methods: {
-    onTabClick(tab) {
-      if (tab.name === "form") {
-        this.$nextTick(() => {
-          this.$refs.bodyTable.doLayout();
-        });
-      }
-      if (tab.name === "params") {
-        this.$nextTick(() => {
-          this.$refs.paramTable.doLayout();
-        });
-      }
-    },
     onSave() {
       this.$message({
         message: "the request has been saved!",
@@ -148,7 +144,7 @@ export default {
         path: [],
         method: "GET",
         address: "",
-        headers: [{ id: utils.uuid(), key: "", value: "" }],
+        rules: [{ id: utils.uuid(), key: "", value: "" }],
         contentType: "params",
         params: [{ id: utils.uuid(), key: "", value: "" }], // url parameters
         body: [{ id: utils.uuid(), key: "", value: "" }], // body parameter
@@ -162,17 +158,17 @@ export default {
         });
       });
     },
-    onAddHeader() {
-      this.data.headers.push({ id: utils.uuid(), key: "", value: "" });
+    onAddRule() {
+      this.data.rules.push({ id: utils.uuid(), key: "", value: "" });
     },
-    onRemoveHeader(row) {
-      let index = this.data.headers.findIndex((x) => x.id === row.id);
-      this.data.headers.splice(index, 1);
+    onRemoveRule(row) {
+      let index = this.data.rules.findIndex((x) => x.id === row.id);
+      this.data.rules.splice(index, 1);
     },
   },
   computed: {
-    defaultHeaderTableHeight() {
-      return this.data.headers.length * 65 + 50;
+    defaultRuleTableHeight() {
+      return this.data.rules.length * 65 + 50;
     },
   },
   watch: {
@@ -231,9 +227,14 @@ export default {
         width: 120px;
       }
     }
-    .ducky-request-info__headers {
+    .ducky-request-info__rules {
       width: 100%;
       padding-bottom: 20px;
+      a {
+        display: inline-block;
+        vertical-align: bottom;
+        font-size: 14px;
+      }
     }
   }
 }

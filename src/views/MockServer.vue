@@ -1,12 +1,12 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:40
- * @LastEditTime: 2020-06-07 20:36:00
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-08 11:17:27
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/MockServer.vue
  * @
---> 
+-->
 <template>
   <div class="ducky-default-container">
     <div class="ducky-default-container__left">
@@ -17,20 +17,31 @@
           placeholder="please input server name"
         ></el-input>
       </div>
-      <ducky-simple-tree :data="data" :filter="filterKey" @node-click="onNodeClick">
+      <ducky-simple-tree
+        :data="data"
+        :filter="filterKey"
+        @node-click="onNodeClick"
+      >
         <template #title="slotProp">
           <span>
             <i
-              v-if="slotProp.node.children.length>0"
-              :class="slotProp.node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"
+              v-if="slotProp.node.children.length > 0"
+              :class="
+                slotProp.node.open
+                  ? 'el-icon-caret-bottom'
+                  : 'el-icon-caret-right'
+              "
             ></i>
-            {{slotProp.node.title}}
+            {{ slotProp.node.title }}
           </span>
         </template>
       </ducky-simple-tree>
     </div>
     <div class="ducky-default-container__right">
-      <mock-document v-if="currentNode !== null" :node="currentNode"></mock-document>
+      <mock-document
+        v-if="currentNode !== null"
+        :node="currentNode"
+      ></mock-document>
       <div class="no-data" v-else>
         <dl>
           <dt>
@@ -43,7 +54,7 @@
   </div>
 </template>
 <script>
-import data from "../static/data/demo-documents_1";
+import data from "../static/data/demo-mocker";
 import MockDocument from "../components/MockDocument";
 export default {
   data() {
@@ -51,17 +62,19 @@ export default {
       origin: data,
       data: data,
       currentNode: null,
-      filterKey: ""
+      filterKey: "",
     };
   },
   components: {
-    "mock-document": MockDocument
+    "mock-document": MockDocument,
   },
   methods: {
     onNodeClick(node) {
-      this.currentNode = node;
-    }
-  }
+      if (node.children.length === 0) {
+        this.currentNode = node;
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
