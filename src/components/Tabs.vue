@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-06-08 19:45:45
+ * @LastEditTime: 2020-06-08 19:47:14
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
@@ -16,14 +16,13 @@
     <!-- Tab Container -->
     <div ref="tabs" class="ducky-tab-items" :style="{ left: tabLeft + 'px' }">
       <span
-        v-for="(item,index) in tabs"
+        v-for="item in tabs"
         :key="item.meta.id"
         @click="onTabClick(item.meta.id)"
         class="ducky-tab"
-        :class="{'is-current':index===curTabIndex}"
+        :class="{ 'is-current': item.meta.id === curTab.meta.id }"
       >
-        {{ item.name
-        }}
+        {{ item.name }}
         <i class="el-icon-close" @click.stop="onTabClose(item.meta.id)"></i>
       </span>
     </div>
@@ -34,37 +33,39 @@
   </div>
 </template>
 <script>
-import routes from '../router/routes'
+import routes from "../router/routes";
 import "../plugin/array";
+import cache from "../plugin/cache";
 export default {
   data() {
     return {
       tabLeft: 50,
       thisEndTabIndex: 0,
-      curTabIndex: 0,
       tabs: [],
-      nextHistories: []
+      nextHistories: [],
+      curTab: null,
     };
   },
   methods: {
     onTabClick(id) {
-      this.curTabIndex = this.tabs.findIndex(x => x.meta.id === id);
-      const route = this.tabs[this.curTabIndex];
+      const route = this.tabs.find((x) => x.meta.id === id);
       if (route) {
-        this.$router.push({ path: route.path }).catch(x => x);
+        this.$router.push({ path: route.path }).catch((x) => x);
       }
     },
     onTabClose(id) {
-      let tabIndex = this.tabs.findIndex(x => x.meta.id === id);
-      // Home tab can not close 
-      if (tabIndex > 0) {
-        // close current tab then open prev tab
-        if (this.curTabIndex === tabIndex) {
-          let prevTab = this.tabs[this.curTabIndex];
-          this.$router.push({path:prevTab.path})
-        }
-        this.tabs = this.tabs.remove(x => x.meta.id === id);
+      let index = this.tabs.findIndex((x) => x.meta.id === id);
+      let target = this.tabs[index];
+      // Home tab can not close
+      if (target.path === "/") {
+        return;
       }
+      // if close current tab
+      if (target.meta.id === this.curTab.meta.id) {
+        let prev = this.tabs[index - 1];
+        this.$router.push({ path: prev.path }).catch((x) => x);
+      }
+      this.tabs = this.tabs.remove((x) => x.meta.id === id);
     },
     onTabPrev() {
       if (this.nextHistories.length === 0) {
@@ -79,7 +80,7 @@ export default {
         .filter((item, index) => {
           return index === prev;
         })
-        .forEachExt(item => {
+        .forEachExt((item) => {
           this.tabLeft = -item.offsetLeft + 50;
           this.nextHistories.pop();
           return false;
@@ -106,28 +107,52 @@ export default {
             return false;
           }
         });
-    }
+    },
   },
   watch: {
     $route: function(to) {
       if (
-        !this.tabs.some(x => {
+        !this.tabs.some((x) => {
           return x.meta.id === to.meta.id;
         })
       ) {
         this.tabs.push(to);
-        this.curTabIndex = this.tabs.length-1;
       }
-    }
+      this.curTab = to;
+    },
+    tabs() {
+      // if tabs changed,push new value to cache
+      cache.update(
+        "user-tabs",
+        this.tabs.map((x) => {
+          return x.meta.id;
+        })
+      );
+    },
   },
+  mounted() {},
   created() {
-    if (this.$route.path !== '/') {
-      const home = routes.find(x=>x.path==='/');
-      this.tabs.push(home)
+    /**
+     * if user has tab cache, then recovery user tabs
+     * else show current route tab or home
+     */
+    const userTabs = cache.get("user-tabs");
+    if (userTabs) {
+      userTabs.forEach((id) => {
+        let tab = routes.find((item) => item.meta.id === id);
+        if (tab) {
+          this.tabs.push(tab);
+        }
+      });
+    } else {
+      if (this.$route.path !== "/") {
+        const home = routes.find((x) => x.path === "/");
+        this.tabs.push(home);
+      }
+      this.tabs.push(this.$route);
     }
-    this.tabs.push(this.$route);
-    this.curTabIndex = 1
-  }
+    this.curTab = this.$route;
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -142,9 +167,7 @@ $tab-hover-color: #f6f6f6;
   position: relative;
   padding: 0 50px 0 50px;
   box-sizing: border-box;
-  .is-current{
-    background-color: #f6f6f6;
-  }
+
   .ducky-tab-prev,
   .ducky-tab-next {
     display: inline-block;
@@ -225,6 +248,12 @@ $tab-hover-color: #f6f6f6;
     }
     .ducky-tab:hover::after {
       width: 100%;
+    }
+    .is-current {
+      background-color: #f6f6f6;
+      i {
+        border: 1px solid #f6f6f6;
+      }
     }
   }
 }

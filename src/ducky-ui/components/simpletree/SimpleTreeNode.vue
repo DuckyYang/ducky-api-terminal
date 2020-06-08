@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-02 22:19:07
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-08 15:13:52
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -14,10 +14,10 @@
       <span
         @click="onNodeClick(node)"
         class="ducky-simpletree-node__title"
-        :class="{'is-current': node.isCurrent}"
+        :class="{ 'is-current': node.isCurrent }"
         v-show="node.visible"
       >
-        <span :style="{paddingLeft: (node.level+1)*15+'px'}">
+        <span :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }">
           <slot name="title" :node="node"></slot>
         </span>
       </span>
@@ -33,18 +33,21 @@
         </span>
       </span> -->
       <!-- else render node's child nodes -->
-      <div
-        class="ducky-simpletree-node__panel"
-        v-show="node.open"
-        v-for="(child, index) in node.children"
-        :key="index"
-      >
-        <simple-tree-node :node="child">
-          <template #title="slotProp">
-             <slot name="title" :node="slotProp.node"></slot>
-          </template>
-        </simple-tree-node>
-      </div>
+      <el-collapse-transition>
+        <div v-show="node.open">
+          <div
+            class="ducky-simpletree-node__panel"
+            v-for="child in node.children"
+            :key="child.id"
+          >
+            <simple-tree-node :node="child">
+              <template #title="slotProp">
+                <slot name="title" :node="slotProp.node"></slot>
+              </template>
+            </simple-tree-node>
+          </div>
+        </div>
+      </el-collapse-transition>
     </div>
   </div>
 </template>
@@ -55,15 +58,15 @@ export default {
     return {};
   },
   props: {
-    node: Object
+    node: Object,
   },
   inject: ["setCurrentNode"],
   methods: {
     onNodeClick(node) {
-      this.setCurrentNode(node)
-    }
+      this.setCurrentNode(node);
+    },
   },
-  created() {}
+  created() {},
 };
 </script>
 <style lang="scss" scoped>
@@ -95,7 +98,7 @@ export default {
       box-sizing: border-box;
     }
   }
-  .ducky-simpletree-node__title:hover{
+  .ducky-simpletree-node__title:hover {
     background-color: #f6f6f6;
   }
   .ducky-simpletree-node__panel {

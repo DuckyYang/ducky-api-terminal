@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-07 20:31:50
+ * @LastEditTime: 2020-06-08 21:29:11
  * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
@@ -34,7 +34,8 @@ export default {
   props: {
     data: Array,
     configs: Object,
-    filter: String
+    filter: String,
+    simple: Boolean
   },
   components: {
     "simple-tree-node": simpleTreeNode
@@ -54,12 +55,16 @@ export default {
       this.$emit("node-click", node);
     },
     render(reRender) {
+      if (!this.data || this.data.length === 0) {
+        return;
+      }
       if (reRender) {
         this.nodes = [];
       }
       let me = this;
+
       // initial nodes from data
-      if (this.data && this.data.length > 0) {
+      if (this.simple) {
         let key = this.defaultConfigs.simpleDataKey.idKey;
         let pidKey = this.defaultConfigs.simpleDataKey.pIdKey;
 
@@ -96,9 +101,37 @@ export default {
           buildChildren(r);
           me.nodes.push(r);
         });
-        // this.nodes = roots;
+      } else {
+        const buildChildren = function(node, root) {
+          if (node.children && node.children.length > 0) {
+            node.children.forEach(child => {
+              let r = utils.deepClone(child);
+
+              r.level = root.level + 1;
+              r.isCurrent = false;
+              r.visible = true;
+              r.children = [];
+
+              root.children.push(r);
+              buildChildren(child, r);
+            });
+          }
+        };
+
+        this.data.forEach(root => {
+          let r = utils.deepClone(root);
+
+          r.level = 0;
+          r.isCurrent = false;
+          r.visible = true;
+          r.children = [];
+
+          me.nodes.push(r);
+          buildChildren(root, r);
+        });
+        console.log(this.nodes);
       }
-    },
+    }
   },
   provide() {
     return {
@@ -127,14 +160,14 @@ export default {
       } else {
         // search nodes contains filter key
         const rec = function(node) {
-          
           if (node.children.length > 0) {
             node.visible = false;
             node.children.forEach(item => {
-              node.visible = (rec(item) || node.visible );
+              node.visible = rec(item) || node.visible;
             });
           } else {
-            node.visible = node.title.toLowerCase().indexOf(val.trim().toLowerCase()) > -1;
+            node.visible =
+              node.title.toLowerCase().indexOf(val.trim().toLowerCase()) > -1;
           }
           return node.visible;
         };
@@ -142,7 +175,7 @@ export default {
           if (item.children.length > 0) {
             item.visible = false;
             item.children.forEach(x => {
-              item.visible = (rec(x) || item.visible) ;
+              item.visible = rec(x) || item.visible;
             });
           }
         });

@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:05
- * @LastEditTime: 2020-06-04 22:18:27
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-08 12:14:53
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Logs.vue
  * @
@@ -160,14 +160,14 @@ export default {
   },
   watch: {
     pageIndex() {
-      this.tableData = this.getPagerData();
+      this.getPagerData();
     },
     pageSize() {
-      this.tableData = this.getPagerData();
+      this.getPagerData();
     },
   },
   beforeMount() {
-    this.tableData = this.getPagerData();
+    this.getPagerData();
   },
 };
 </script>

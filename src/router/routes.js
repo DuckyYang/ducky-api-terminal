@@ -1,10 +1,10 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-05-27 13:39:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-08 20:02:48
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-ui/src/static/routes.js
+ * @FilePath: /ducky-api-terminal/src/router/routes.js
  * @
  */ 
 
@@ -70,11 +70,21 @@ const Routes = [
       }
     },
     {
+      path:'/roles',
+      name:'Roles',
+      component:()=>import('../views/Roles'),
+      meta:{
+        id:7,
+        cnName:'角色管理',
+        icon:'el-icon-s-platform'
+      }
+    },
+    {
       path:'/settings',
       name:'Settings',
       component:()=>import('../views/Settings'),
       meta:{
-        id:7,
+        id:8,
         cnName:'系统设置',
         icon:'el-icon-setting'
       }

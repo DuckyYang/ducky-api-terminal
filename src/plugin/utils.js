@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-06-02 12:28:43
- * @LastEditTime: 2020-06-04 15:15:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-08 09:52:24
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: \ducky-api-terminal\src\plugin\utils.js
  */
@@ -36,44 +36,59 @@ export default {
     }
   },
   /**
-   * 
-   * @param {Object} obj deep clone a object 
+   *
+   * @param {Object} obj deep clone a object
    */
   deepClone(obj) {
     return lodash.cloneDeep(obj);
   },
   /**
    * serialize an object to json string
-   * @param {Object} obj 
+   * @param {Object} obj
    */
-  serialize(obj){
-    return JSON.stringify(obj)
+  serialize(obj) {
+    if (!obj) {
+      return;
+    }
+    let self = this
+    if (Array.isArray(obj)) {
+      let newArray = [];
+      obj.forEach((x) => {
+        newArray.push(self.deepClone(x));
+      });
+      return JSON.stringify(newArray);
+    } else {
+      return JSON.stringify(self.deepClone(obj));
+    }
   },
   /**
    * parse a json string to object
-   * @param {String} jsonString 
+   * @param {String} jsonString
    */
-  parse(jsonString){
-    return JSON.parse(jsonString)
+  parse(jsonString) {
+    return JSON.parse(jsonString);
   },
   /**
    * get parameters from url
-   * @param {String} url 
+   * @param {String} url
    */
-  getParams(url){
-    if (typeof url !== 'string') {
-      return
+  getParams(url) {
+    if (typeof url !== "string") {
+      return;
     }
-    if (!url || url.indexOf('?') === -1) {
-      return
+    if (!url || url.indexOf("?") === -1) {
+      return;
     }
-    let params = url.trim().split('?')[1].replace('?','')
+    let params = url
+      .trim()
+      .split("?")[1]
+      .replace("?", "");
 
-    let result = {}
-    params.split('&').forEach(x=>{
-      let keyValue = x.split('=')
-      result[keyValue[0]] = keyValue[1].trim()
-    })
-    return result
-  }
+    let result = {};
+    params.split("&").forEach((x) => {
+      let keyValue = x.split("=");
+      result[keyValue[0]] = keyValue[1].trim();
+    });
+    return result;
+  },
 };
