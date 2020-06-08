@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-03 08:45:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-07 20:29:16
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -15,7 +15,7 @@
       <div class="ducky-tools">
         <el-input v-model="filterKey" suffix-icon="el-icon-search" placeholder="please input server name"></el-input>
       </div>
-      <ducky-simple-tree :data="data" @node-click="onNodeClick">
+      <ducky-simple-tree :data="data" :filter="filterKey" @node-click="onNodeClick">
         <template #title="slotProp">
           <span>
             <i v-if="slotProp.node.children.length>0" :class="slotProp.node.open ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>

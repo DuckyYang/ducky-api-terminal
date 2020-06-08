@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-05-27 13:39:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-08 10:44:07
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-ui/src/static/routes.js
  * @
