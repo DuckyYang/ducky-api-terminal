@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-02 22:56:31
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-08 08:30:37
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -80,7 +80,7 @@ export default {
             });
           }
         };
-
+        
         let roots = this.data.filter(item => {
           return item[pidKey] === 0 || item[pidKey] === "";
         });
@@ -127,7 +127,6 @@ export default {
       } else {
         // search nodes contains filter key
         const rec = function(node) {
-          
           if (node.children.length > 0) {
             node.visible = false;
             node.children.forEach(item => {
