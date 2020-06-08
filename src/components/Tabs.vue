@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-06-07 21:04:53
+ * @LastEditTime: 2020-06-08 19:45:45
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
@@ -60,7 +60,6 @@ export default {
       if (tabIndex > 0) {
         // close current tab then open prev tab
         if (this.curTabIndex === tabIndex) {
-          this.curTabIndex--;
           let prevTab = this.tabs[this.curTabIndex];
           this.$router.push({path:prevTab.path})
         }
