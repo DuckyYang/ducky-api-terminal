@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-09 13:16:51
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-09 22:34:20
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -19,14 +19,9 @@
           placeholder="please input server name"
         ></el-input>
       </div>
-      <ducky-simple-tree
-        :data="data"
-        :simple="true"
-        :filter="filterKey"
-        @node-click="onNodeClick"
-      >
+      <ducky-simple-tree :data="data" :simple="true" :filter="filterKey" @node-click="onNodeClick">
         <template #title="slotProp">
-          <span style="display:block;height:40px;line-height:40px;">
+          <div style="height:40px;line-height:40px;position:relative;">
             <i
               v-if="slotProp.node.children.length > 0"
               :class="
@@ -36,20 +31,30 @@
               "
             ></i>
             {{ slotProp.node.title }}
-          </span>
+            <div
+              v-if="slotProp.node.children.length > 0"
+              @click.stop="onNodeMenu(slotProp.node)"
+              style="position:absolute;top:0px;right:5px;height:40px;line-height:40px;"
+            >
+              <i class="el-icon-more"></i>
+              <div
+                v-if="slotProp.node.children.length > 0"
+                style="position:absolute;top:40px;right:0px;width:180px;z-index:999;"
+              >
+                <span>Add Request</span>
+              </div>
+            </div>
+          </div>
         </template>
       </ducky-simple-tree>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document
-        v-if="currentNode !== null"
-        :node="currentNode"
-      ></request-document>
+      <request-document v-if="currentNode !== null" :node="currentNode"></request-document>
       <div class="no-data" v-else>
         <dl>
           <dt>
-            <img src="@/assets/no-data.png" alt="" />
+            <img src="@/assets/no-data.png" alt />
           </dt>
           <dd style="text-align:center;font-size:14px;">choose a request</dd>
         </dl>
@@ -67,11 +72,11 @@ export default {
       origin: data,
       data: data,
       currentNode: null,
-      filterKey: "",
+      filterKey: ""
     };
   },
   components: {
-    "request-document": RequestDoc,
+    "request-document": RequestDoc
   },
   methods: {
     onNodeClick(node) {
@@ -80,7 +85,10 @@ export default {
         this.currentNode = node;
       }
     },
-  },
+    onNodeMenu(node) {
+      console.log(node);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

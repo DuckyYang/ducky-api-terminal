@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-06-08 19:51:15
- * @LastEditTime: 2020-06-09 15:19:53
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-09 21:05:32
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Roles.vue
  * @
@@ -18,7 +18,7 @@
           <el-table  :data="[slotProp.node]" :show-header="false">
             <el-table-column prop="title" width="280">
               <template slot-scope="scope">
-                <span style="display:block;">{{scope.row.title}}</span>
+                <span style="display:block;text-align:center;">{{scope.row.title}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="menu" width="280">
@@ -75,6 +75,7 @@ export default {
           menu:'',
           view: "",
           operate: "",
+          open:true,
           children: [
             {
               id: utils.uuid(),
@@ -98,6 +99,8 @@ export default {
           menu:'',
           view: "",
           operate: "",
+
+          open:true,
           children: [
             {
               id: utils.uuid(),
