@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-08 21:29:11
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-09 12:46:38
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
 -->
@@ -129,7 +129,6 @@ export default {
           me.nodes.push(r);
           buildChildren(root, r);
         });
-        console.log(this.nodes);
       }
     }
   },

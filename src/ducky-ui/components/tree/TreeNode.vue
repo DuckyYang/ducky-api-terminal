@@ -1,38 +1,37 @@
 <!--
- * @Author: your name
- * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-09 13:16:02
+ * @Description: 
+ * @Version: 1.0
+ * @Author: Ducky Yang
+ * @Date: 2020-06-09 12:41:39
  * @LastEditors: Ducky Yang
- * @Description: In User Settings Edit
- * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
--->
+ * @LastEditTime: 2020-06-09 13:06:53
+--> 
 <template>
-  <!-- node item -->
-  <div class="ducky-simpletree-node">
-    <div class="ducky-simpletree-node__wrapper">
-      <!-- only render node's title if node doesn't have any child nodes -->
+  <div class="tree-table-row">
+    <div class="tree-table-row__wrapper">
       <span
         @click="onNodeClick(node)"
-        class="ducky-simpletree-node__title"
+        class="tree-table-row__title"
         :class="{ 'is-current': node.isCurrent }"
         v-show="node.visible"
       >
-        <span :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }">
-          <slot name="title" :node="node"></slot>
+       <!-- :style="{ 'text-indent': (node.level + 1) * 15 + 'px' }" -->
+        <span>
+            <slot name="title"  :node="node"></slot>
         </span>
       </span>
       <el-collapse-transition>
         <div v-show="node.open">
           <div
-            class="ducky-simpletree-node__panel"
+            class="tree-table-row__panel"
             v-for="child in node.children"
             :key="child.id"
           >
-            <simple-tree-node :node="child">
+            <tree-node :node="child">
               <template #title="slotProp">
                 <slot name="title" :node="slotProp.node"></slot>
               </template>
-            </simple-tree-node>
+            </tree-node>
           </div>
         </div>
       </el-collapse-transition>
@@ -41,7 +40,7 @@
 </template>
 <script>
 export default {
-  name: "simple-tree-node",
+  name: "tree-node",
   data() {
     return {};
   },
@@ -58,7 +57,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.ducky-simpletree-node {
+.tree-table-row {
   width: 100%;
   display: block;
 }
@@ -66,15 +65,12 @@ export default {
   background-color: #f6f6f6;
 }
 
-.ducky-simpletree-node__wrapper {
+.tree-table-row__wrapper {
   width: 100%;
   height: 100%;
 
-  .ducky-simpletree-node__title {
-    display: block;
+  .tree-table-row__title {
     width: 100%;
-    // height: 32px;
-    // line-height: 32px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -86,10 +82,10 @@ export default {
       box-sizing: border-box;
     }
   }
-  .ducky-simpletree-node__title:hover {
+  .tree-table-row__title:hover {
     background-color: #f6f6f6;
   }
-  .ducky-simpletree-node__panel {
+  .tree-table-row__panel {
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;

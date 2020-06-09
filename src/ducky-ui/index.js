@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-05-27 13:15:22
- * @LastEditTime: 2020-05-31 14:34:34
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-09 15:06:39
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/index.js
  */ 
@@ -16,6 +16,8 @@ import SimpleTree from './components/simpletree/SimpleTree'
 
 import JsonEditor from './components/json-editor/JsonEditor'
 
+import Tree from './components/tree/Tree'
+
 const UI ={
     install(Vue){
         Vue.component('ducky-layout',Layout)
@@ -27,6 +29,7 @@ const UI ={
         Vue.component('ducky-simple-tree',SimpleTree)
 
         Vue.component('ducky-json-editor',JsonEditor)
+        Vue.component('ducky-tree',Tree)
     }
 }
 

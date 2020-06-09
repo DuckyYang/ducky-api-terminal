@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:40
- * @LastEditTime: 2020-06-08 11:17:27
+ * @LastEditTime: 2020-06-09 13:17:23
  * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/MockServer.vue
@@ -24,7 +24,7 @@
         @node-click="onNodeClick"
       >
         <template #title="slotProp">
-          <span>
+          <span style="display:block;height:40px;line-height:40px;">
             <i
               v-if="slotProp.node.children.length > 0"
               :class="
