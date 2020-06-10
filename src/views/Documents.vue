@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-09 22:34:20
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-10 14:45:45
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -19,7 +19,12 @@
           placeholder="please input server name"
         ></el-input>
       </div>
-      <ducky-simple-tree :data="data" :simple="true" :filter="filterKey" @node-click="onNodeClick">
+      <ducky-simple-tree
+        :data="data"
+        :simple="true"
+        :filter="filterKey"
+        @node-click="onNodeClick"
+      >
         <template #title="slotProp">
           <div style="height:40px;line-height:40px;position:relative;">
             <i
@@ -33,16 +38,20 @@
             {{ slotProp.node.title }}
             <div
               v-if="slotProp.node.children.length > 0"
-              @click.stop="onNodeMenu(slotProp.node)"
+              @click.stop=""
               style="position:absolute;top:0px;right:5px;height:40px;line-height:40px;"
             >
-              <i class="el-icon-more"></i>
-              <div
-                v-if="slotProp.node.children.length > 0"
-                style="position:absolute;top:40px;right:0px;width:180px;z-index:999;"
-              >
-                <span>Add Request</span>
-              </div>
+              <el-dropdown trigger="click" @command="onAddCollection">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-if="slotProp.node.level === 0" :command="{node:slotProp.node,type:0}"
+                    >Add Collection</el-dropdown-item
+                  >
+                  <el-dropdown-item :command="{node:slotProp.node,type:1}">Add Request</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
           </div>
         </template>
@@ -50,7 +59,10 @@
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document v-if="currentNode !== null" :node="currentNode"></request-document>
+      <request-document
+        v-if="currentNode !== null"
+        :node="currentNode"
+      ></request-document>
       <div class="no-data" v-else>
         <dl>
           <dt>
@@ -72,11 +84,11 @@ export default {
       origin: data,
       data: data,
       currentNode: null,
-      filterKey: ""
+      filterKey: "",
     };
   },
   components: {
-    "request-document": RequestDoc
+    "request-document": RequestDoc,
   },
   methods: {
     onNodeClick(node) {
@@ -85,10 +97,10 @@ export default {
         this.currentNode = node;
       }
     },
-    onNodeMenu(node) {
+    onAddCollection(node) {
       console.log(node);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

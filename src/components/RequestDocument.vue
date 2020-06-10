@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 20:52:37
- * @LastEditTime: 2020-06-02 18:33:45
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-10 14:50:48
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/components/RequestDocument.vue
  * @
@@ -16,6 +16,13 @@
           item
         }}</el-breadcrumb-item>
       </el-breadcrumb>
+      <el-button
+        @click="onRemove"
+        type="danger"
+        size="small"
+        style="position:absolute;right:160px;top:0;"
+        >Remove</el-button
+      >
       <el-button
         @click="onReset"
         type="primary"
@@ -294,6 +301,23 @@ export default {
       let index = this.data.body.findIndex((x) => x.id === row.id);
       this.data.body.splice(index, 1);
     },
+    onRemove(){
+       this.$confirm('Please confirm whether to remove the current request!', 'Warning', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: 'remove success!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'remove canceld'
+          });          
+        });
+    }
   },
   computed: {
     defaultHeaderTableHeight() {

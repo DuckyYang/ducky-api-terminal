@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-09 22:25:09
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-10 14:22:56
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
 -->
@@ -16,12 +16,13 @@
         class="ducky-simpletree-node__title"
         :class="{ 'is-current': node.isCurrent }"
         v-show="node.visible"
+        style="position:relative;z-index:99;"
       >
         <span :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }">
           <slot name="title" :node="node"></slot>
         </span>
       </span>
-      <el-collapse-transition>
+      <el-collapse-transition :style="{position:'relative','z-index':'98'}">
         <div v-show="node.open">
           <div
             class="ducky-simpletree-node__panel"
