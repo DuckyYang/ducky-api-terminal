@@ -13,7 +13,7 @@ import utils from '../plugin/utils'
 let configArray = [];
 
 // 
-const files = require.context('../api', true, /\.js$/);
+const files = require.context('./api', true, /\.js$/);
 files.keys().forEach((key) => {
   configArray = configArray.concat(files(key).default);
 });

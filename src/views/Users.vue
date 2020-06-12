@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-06-08 12:36:35
+ * @LastEditTime: 2020-06-12 13:04:23
  * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
@@ -10,7 +10,11 @@
 <template>
   <ducky-table-layout>
     <template #toolbar>
-      <el-select v-model="role" placeholder="please choose role" @change="onRoleChange">
+      <el-select
+        v-model="role"
+        placeholder="please choose role"
+        @change="onRoleChange"
+      >
         <el-option
           v-for="item in roles"
           :key="item.value"
@@ -23,7 +27,11 @@
         v-model="filterKey"
         class="ducky-tool-input"
       >
-        <el-button slot="append" icon="el-icon-search" @click="onSearch"></el-button>
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="onSearch"
+        ></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
         <el-button type="primary">Refresh</el-button>
@@ -38,31 +46,50 @@
         style="width: 100%"
         :fit="true"
       >
-        <el-table-column prop="id" label="ID" min-width="140"></el-table-column>
-        <el-table-column
-          prop="name"
-          label="Name"
-          min-width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="account"
-          label="Account"
-          width="200"
-        ></el-table-column>
-        <el-table-column
-          prop="password"
-          label="Password"
-          width="200"
-        ></el-table-column>
+        <el-table-column prop="id" label="ID" width="120">
+          <template slot-scope="scope">
+            <div
+              style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+            >
+              {{ scope.row.id }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="Name" width="100"></el-table-column>
         <el-table-column
           prop="email"
           label="Email"
-          width="240"
+          width="200"
         ></el-table-column>
-        <el-table-column prop="role" label="Role" width="180"></el-table-column>
-        <el-table-column prop="role" label="Role" width="140">
+        <el-table-column
+          prop="mobile"
+          label="Mobile"
+          width="140"
+        ></el-table-column>
+        <el-table-column prop="locked" label="Locked" width="120">
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="onRemoveUser(scope.row)">remove</el-button>
+            <span v-if="scope.row.locked === 0">unlock</span>
+            <span v-else style="color:red;">locked</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="enabled" label="Enabled" width="120">
+          <template slot-scope="scope">
+            <span>{{scope.row.enabled === 1 ? 'enabled' : 'not enabled'}}</span>
+          </template>
+        </el-table-column>
+         <el-table-column
+          prop="role"
+          label="Role"
+          width="140"
+        ></el-table-column>
+        <el-table-column label="Operation" min-width="140">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              size="mini"
+              @click="onEditUser(scope.row)"
+              >Edit</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -82,20 +109,24 @@
 </template>
 <script>
 // import demoTableData from "../static/data/demo-users";
-import api from "../api/users";
+import user from "../api/users";
 export default {
   data() {
     return {
-      roles:[{
-        key:'all',
-        value:''
-      },{
-        key:'admin',
-        value:'admin'
-      },{
-        key:'user',
-        value:'user'
-      }],
+      roles: [
+        {
+          key: "all",
+          value: "",
+        },
+        {
+          key: "admin",
+          value: "admin",
+        },
+        {
+          key: "user",
+          value: "user",
+        },
+      ],
       role: "",
       input3: "",
       tableData: [],
@@ -119,27 +150,22 @@ export default {
       this.pageIndex = curPage;
     },
     getPagerData() {
-      api.getUsers
-        .get({
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize,
-          filterKey: this.filterKey,
-          role: this.role,
-        })
+      user
+        .getUsers(this.filterKey, this.role, this.pageIndex, this.pageSize)
         .then((response) => {
           this.tableData = response.data;
           this.total = response.total;
         });
     },
-    onRemoveUser(row){
-      console.log(row)
+    onEditUser(row) {
+      console.log(row);
     },
-    onSearch(){
-      this.getPagerData()
+    onSearch() {
+      this.getPagerData();
     },
-    onRoleChange(){
-      this.getPagerData()
-    }
+    onRoleChange() {
+      this.getPagerData();
+    },
   },
   watch: {
     pageIndex() {

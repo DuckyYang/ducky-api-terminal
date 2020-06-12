@@ -1,7 +1,7 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-08 08:48:44
+ * @LastEditTime: 2020-06-12 12:45:21
  * @LastEditors: Ducky Yang
  * @Description:
  * @FilePath: /ducky-api-terminal/src/store/index.js
@@ -48,6 +48,13 @@ export default new Vuex.Store({
     setMockMode(state){
       state.mock = true
     },
+    signOut(state){
+      // clear token and identity
+      cookie.remove('accesstoken');
+      cookie.remove('user');
+      state.accesstoken = '';
+      state.identity = {};
+    }
   },
   getters:{
     accesstoken(state){

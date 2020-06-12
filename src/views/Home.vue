@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-23 09:04:22
- * @LastEditTime: 2020-05-27 13:43:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-12 12:46:51
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Home.vue
  * @
@@ -30,8 +30,7 @@ import Top from "../components/Top";
 import Tab from "../components/Tabs";
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   components: {
     "ducky-nav": Nav,
@@ -42,7 +41,17 @@ export default {
     collapsed() {
       return this.$store.state.navCollapsed;
     },
-  }
+    accesstoken() {
+      return this.$store.state.accesstoken;
+    },
+  },
+  watch: {
+    accesstoken(val) {
+      if (!val) {
+        this.$router.push({ path: "/signin" });
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scope></style>

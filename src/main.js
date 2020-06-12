@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-04 22:05:50
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-12 12:12:30
+ * @LastEditors: Ducky Yang
  * @Description:
  * @FilePath: /ducky-api-terminal/src/main.js
  * @
@@ -19,8 +19,8 @@ import DuckyUI from "../src/ducky-ui/index";
 
 Vue.config.productionTip = false;
 // using mock
-require('./mock')
-store.commit('setMockMode')
+// require('./mock')
+// store.commit('setMockMode')
 
 Vue.use(VCharts);
 Vue.use(ElementUI);

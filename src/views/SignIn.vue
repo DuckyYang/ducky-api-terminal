@@ -4,10 +4,10 @@
  * @Author: Ducky Yang
  * @Date: 2020-06-10 14:57:29
  * @LastEditors: Ducky Yang
- * @LastEditTime: 2020-06-10 15:40:50
+ * @LastEditTime: 2020-06-12 12:40:15
 -->
 <template>
-  <div class="ducky-signin">
+  <div class="ducky-signin" @keyup.enter="onSignIn">
     <div class="ducky-signin-container">
       <div class="ducky-signin-container__title">
         <span>welcome</span>
@@ -16,8 +16,8 @@
         <div class="ducky-signin-container__form">
           <div class="ducky-signin-container__form-item">
             <el-input
-              v-model="account"
-              placeholder="please input account"
+              v-model="email"
+              placeholder="please input your email"
               size="small"
             >
               <template slot="prepend"
@@ -28,7 +28,7 @@
           <div class="ducky-signin-container__form-item">
             <el-input
               v-model="password"
-              placeholder="please input password"
+              placeholder="please input your password"
               show-password
               size="small"
             >
@@ -53,19 +53,20 @@
   </div>
 </template>
 <script>
+import user from '../api/users'
 export default {
   data() {
     return {
-      account: "",
+      email: "",
       password: "",
     };
   },
   methods: {
     onSignIn() {
-      if (!this.account) {
+      if (!this.email) {
         this.$message({
           type: "error",
-          message: "account can't be empty",
+          message: "email can't be empty",
         });
         return;
       }
@@ -76,10 +77,17 @@ export default {
         });
         return;
       }
-      this.$message({
-        type: "success",
-        message: "sign in success!",
-      });
+      user.signIn(this.email,this.password).then(response=>{
+        this.$store.commit('setToken',response.data.accesstoken)
+        this.$store.commit('setUserIdentity',response.data)
+
+        this.$router.push({path:'/'})
+      }).catch(reason=>{
+        this.$message({
+          type:"error",
+          message: reason
+        })
+      })
     },
   },
 };

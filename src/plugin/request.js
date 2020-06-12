@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 08:47:45
- * @LastEditTime: 2020-06-04 22:11:03
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-12 12:41:38
+ * @LastEditors: Ducky Yang
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/plugin/request.js
  */
@@ -17,29 +17,34 @@ const instance = axios.create({
   headers: [],
 });
 instance.interceptors.request.use((config) => {
-  let accesstoken = store.getters.accesstoken;
+  // let accesstoken = store.getters.accesstoken;
   // if (!accesstoken) {
   //     return Promise.reject('user status is invalid')
   // }
-  // let request use accesstoken
-  config.headers["accesstoken"] = accesstoken;
+  // // let request use accesstoken
+  // config.headers["accesstoken"] = accesstoken;
   return config;
 });
 instance.interceptors.response.use(
   (response) => {
+    // server will response like : {"code":200,"message":"用户名或密码错误!","success":false,"total":0,"count":0}
+    // The `code` is http status,200 means success
+    // The `success` means request execute successfully or not
+
     let res = response.data;
-    // request success
-    if (res.Success && res.Success) {
-      // return default request data
-      return Promise.resolve(
-        {
-          data: res.Content,
-          total: res.Total,
-          count: res.Count,
-        }
-      );
+    if (res) {
+      // if request sucess and execute successfully
+      if (res.code === 200 && res.success) {
+        return Promise.resolve({
+          data: res.content,
+          total: res.total,
+          count: res.count,
+        });
+      } else {
+        return Promise.reject(res.message || "server error");
+      }
     } else {
-      return Promise.reject(res.Message || "request failed");
+      return Promise.reject(response.statusText);
     }
   },
   (error) => {
@@ -49,23 +54,23 @@ instance.interceptors.response.use(
 
 const http = {
   buildParams(url, params) {
-    let p = []
+    let p = [];
     for (const key in params) {
-      let val = params[key]
-      p.push(key + '=' + val)
+      let val = params[key];
+      p.push(key + "=" + val);
     }
-    return url.trim().replace('?', '') + '?' + p.join('&')
-  }
-}
+    return url.trim().replace("?", "") + "?" + p.join("&");
+  },
+};
 
 const request = {
   get(url, params) {
     // build params
     if (store.state.mock) {
       // mock mode needs to put params to body,and then change http method to post
-      return instance.post(url, params)
+      return instance.post(url, params);
     } else {
-      url = http.buildParams(url, params)
+      url = http.buildParams(url, params);
       return instance.get(url);
     }
   },
