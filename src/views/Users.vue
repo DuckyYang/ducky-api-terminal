@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-06-12 13:04:23
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-12 20:53:44
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
  * @
@@ -26,6 +26,7 @@
         placeholder="please input something..."
         v-model="filterKey"
         class="ducky-tool-input"
+        @keyup.enter="onSearch"
       >
         <el-button
           slot="append"
@@ -34,7 +35,7 @@
         ></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
-        <el-button type="primary">Refresh</el-button>
+        <el-button @click="onRefresh" type="primary">Refresh</el-button>
         <el-button type="primary">Add User</el-button>
       </el-button-group>
     </template>
@@ -90,6 +91,40 @@
               @click="onEditUser(scope.row)"
               >Edit</el-button
             >
+            <el-button
+              type="primary"
+              size="mini"
+              @click="onUnlockUser(scope.row)"
+              v-if="scope.row.locked === 1"
+              >Unlock</el-button
+            >
+            <el-button
+              type="primary"
+              size="mini"
+              @click="onLockUser(scope.row)"
+              v-else
+              >Lock</el-button
+            >
+            <el-button
+              type="primary"
+              size="mini"
+              @click="onDisableUser(scope.row)"
+              v-if="scope.row.enabled === 1"
+              >Disable</el-button
+            >
+            <el-button
+              type="primary"
+              size="mini"
+              @click="onEnableUser(scope.row)"
+              v-else
+              >Enable</el-button
+            >
+             <el-button
+              type="primary"
+              size="mini"
+              @click="onChangeRole(scope.row)"
+              >Role</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -102,7 +137,7 @@
         @next-click="onPagerNext"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="1000"
+        :total="total"
       ></el-pagination>
     </template>
   </ducky-table-layout>
@@ -110,6 +145,7 @@
 <script>
 // import demoTableData from "../static/data/demo-users";
 import user from "../api/users";
+import roles from '../api/roles';
 export default {
   data() {
     return {
@@ -117,18 +153,9 @@ export default {
         {
           key: "all",
           value: "",
-        },
-        {
-          key: "admin",
-          value: "admin",
-        },
-        {
-          key: "user",
-          value: "user",
-        },
+        }
       ],
       role: "",
-      input3: "",
       tableData: [],
       total: 0,
       pageIndex: 1,
@@ -137,6 +164,25 @@ export default {
     };
   },
   methods: {
+    onLockUser(user){
+      console.log(user)
+    },
+    onUnlockUser(user){
+      console.log(user)
+    },
+    onDisableUser(user){
+      console.log(user)
+    },
+    onEnableUser(user){
+      console.log(user)
+    },
+    onChangeRole(user){
+      console.log(user)
+    },
+    onRefresh(){
+      this.pageIndex = 1;
+      this.getPagerData();
+    },
     onPagerChange(curPage) {
       this.pageIndex = curPage;
     },
@@ -176,6 +222,15 @@ export default {
     },
   },
   created() {
+    roles.getAll().then(response=>{
+      response.data.forEach(item=>{
+        this.roles.push({
+          key:item.role,
+          value: item.role
+        })
+      })
+      
+    }).catch(r=>r);
     this.getPagerData();
   },
 };
