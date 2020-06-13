@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-06-13 15:30:21
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-13 20:22:35
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
  * @
@@ -129,9 +129,8 @@
         </el-table-column>
         <el-table-column prop="enabled" label="Enabled" width="120">
           <template slot-scope="scope">
-            <span>{{
-              scope.row.enabled === 1 ? "enabled" : "not enabled"
-            }}</span>
+            <span v-if="scope.row.enabled === 1">enabled</span>
+            <span v-else style="color:red;">disabled</span>
           </template>
         </el-table-column>
         <el-table-column prop="role" label="Role" width="140"></el-table-column>
@@ -248,12 +247,7 @@ export default {
           user
             .edit(this.addUserForm.id, this.addUserForm)
             .then((response) => {
-              this.tableData.forEach((r) => {
-                if (r.id === response.data.id) {
-                  r = response.data;
-                }
-              });
-
+              console.log(response)
               this.$refs.addUserForm.resetFields();
               this.addUserLayerVisible = false;
             })
@@ -267,9 +261,9 @@ export default {
       });
     },
     onRemoveUser(row){
-      user.remove(row.id).then( response =>{
+      user.remove(row.id).then( () =>{
         // remove user from table
-        this.tableData.remove(r=>r.id === response.data);
+          this.getPagerData();
       }).catch(r=>r);
     },
     getPagerData() {
@@ -290,15 +284,13 @@ export default {
         this.addUserLayerVisible = true;
       }
     },
-    onLockUser(row) {
-      user.lock(row.id).then(response=>{
-        console.log(response)
+    onUnlockUser(row) {
+      user.lock(row.id).then(()=>{
         this.getPagerData();
       }).catch(r=>r)
     },
     onDisableUser(row) {
-      user.enable(row.id).then(response=>{
-        console.log(response)
+      user.enable(row.id).then(()=>{
         this.getPagerData();
       }).catch(r=>r)
     },

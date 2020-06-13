@@ -1,3 +1,12 @@
+/*
+ * @Author: Ducky
+ * @Date: 2020-05-22 22:14:00
+ * @LastEditTime: 2020-06-13 20:19:32
+ * @LastEditors: Ducky
+ * @Description: 
+ * @FilePath: /ducky-api-terminal/.eslintrc.js
+ * @
+ */ 
 module.exports = {
   root: true,
   env: {
@@ -12,6 +21,6 @@ module.exports = {
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   }
 }
