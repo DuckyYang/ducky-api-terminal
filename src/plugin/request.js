@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-06-04 08:47:45
- * @LastEditTime: 2020-06-12 12:41:38
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-16 20:06:32
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/plugin/request.js
  */

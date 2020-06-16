@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-06-12 19:57:51
- * @LastEditTime: 2020-06-16 15:39:49
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-16 20:07:15
+ * @LastEditors: Ducky
  * @Description:
  * @FilePath: /ducky-api-terminal/src/api/roles.js
  * @
@@ -16,7 +16,7 @@ const api = {
     return request.get(baseURL);
   },
   getAuths() {
-    return request.get(baseURL + "/auths");
+    return request.get(baseURL + 'auths');
   },
   add(roleName) {
     return request.post(baseURL, { role: roleName });

@@ -1,142 +1,107 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:50
- * @LastEditTime: 2020-05-27 13:21:59
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-16 21:12:25
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/views/ApiRegiste.vue
+ * @FilePath: /ducky-api-terminal/src/views/Servers.vue
  * @
 -->
 <template>
   <ducky-table-layout>
     <template #toolbar>
-      <el-select v-model="value" placeholder="please choose...">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <el-input
-        placeholder="please input..."
-        v-model="input3"
-        class="ducky-tool-input"
-      >
-        <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input placeholder="please input..." v-model="filter" class="ducky-tool-input">
+        <el-button slot="append" icon="el-icon-search" @click="onSearch"></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
-        <el-button type="primary">Refresh</el-button>
-        <el-button type="primary">Reset</el-button>
-        <el-button type="primary" @click="dialogFormVisible = true"
-          >Add API Server</el-button
-        >
+        <el-button type="primary" @click="onRefresh">Refresh</el-button>
+        <el-button type="primary" @click="addServerFormVisible = true">Add Server</el-button>
       </el-button-group>
     </template>
     <template v-slot="prop">
-      <el-table
-        :data="tableData"
-        :height="prop.height"
-        style="width: 100%"
-        :fit="true"
-      >
-        <el-table-column fixed prop="name" label="Name"></el-table-column>
-        <el-table-column prop="host" label="Host"></el-table-column>
-        <el-table-column
-          prop="contentType"
-          label="ContentType"
-        ></el-table-column>
-        <el-table-column
-          prop="defaultHeaders"
-          label="Default Headers"
-        ></el-table-column>
-        <el-table-column prop="enableRequest" label="Enable Request">
+      <el-table :data="tableData" :height="prop.height">
+        <el-table-column prop="name" label="Name" width="240"></el-table-column>
+        <el-table-column prop="baseUrl" label="BaseURL" width="360"></el-table-column>
+        <el-table-column prop="defaultHeaders" label="Default Headers" width="300"></el-table-column>
+        <el-table-column prop="order" label="Order" width="80"></el-table-column>
+        <el-table-column prop="enabled" label="Enabled" width="120">
           <template slot-scope="scope">
             <el-switch
               @change="onRowEnableRequest(scope.row)"
-              v-model="scope.row.enableRequest"
+              v-model="scope.row.enabled"
+              :inactive-value="0"
+              :active-value="1"
               active-color="#13ce66"
             ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="Operation">
+        <el-table-column label="Operation" min-width="180">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="onRowEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
-            <el-button
-              size="mini"
-              type="danger"
-              @click="onRowDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
+            <el-button size="mini" type="primary" @click="onRowEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="onRowDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="API Server" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="Name" :label-width="formLabelWidth">
+      <el-dialog title="API Server" :visible.sync="addServerFormVisible">
+        <el-form :model="form" :rules="rules" ref="addServerForm">
+          <el-form-item label="Name" prop="name">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Host" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+           <el-form-item label="BaseURL">
+            <el-input v-model="form.baseUrl" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="ContentType" :label-width="formLabelWidth">
-            <el-select v-model="form.region">
-              <el-option
-                label="application/json"
-                value="application/json"
-              ></el-option>
-            </el-select>
+          <el-form-item label="Default Headers">
+            <el-input v-model="form.defautl_headers" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="Enable Request" :label-width="formLabelWidth">
-            <el-switch v-model="form.value" active-color="#13ce66"></el-switch>
+          <el-form-item label="Order">
+            <el-input type="number" v-model.number="form.order" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >OK</el-button
-          >
+          <el-button @click="addServerFormVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="onAddServer">OK</el-button>
         </div>
       </el-dialog>
     </template>
     <template #pager>
-      <el-pagination
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="1000"
-      ></el-pagination>
+      <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
     </template>
   </ducky-table-layout>
 </template>
 <script>
-import demoTableData from "../static/data/demo-apiserver.js";
+import servers from "../api/servers";
+
 export default {
   data() {
     return {
-      dialogFormVisible: false,
+      addServerFormVisible: false,
       form: {
+        id: "",
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-        value: false,
+        defaultHeaders: "",
+        order: 0,
+        baseUrl:''
       },
-      formLabelWidth: "120px",
-      value: "",
-      input3: "",
-      tableData: demoTableData,
+      rules: {
+        name: [
+          { required: true, message: "please input name", trigger: "blur" }
+        ]
+      },
+      tableData: [],
+      pageIndex: 1,
+      pageSize: 15,
+      total: 0,
+      filter: ""
     };
   },
   methods: {
+    onSearch(){
+      this.getPagerData();
+    },
+    onRefresh(){
+      this.pageIndex= 1;
+      this.getPagerData();
+    },
     onRowEnableRequest(api) {
       console.log(api);
     },
@@ -146,22 +111,48 @@ export default {
     onRowDelete(index, row) {
       console.log(index, row);
     },
-  },
-  computed: {
-    options() {
-      return demoTableData.map((x) => {
-        return {
-          value: x.name,
-          label: x.name,
-        };
+    onAddServer() {
+      this.$refs.addServerForm.validate(valid => {
+        if (valid) {
+          if (!this.form.id) {
+            servers
+              .add(this.form)
+              .then(() => {
+                this.$refs.addServerForm.resetFields();
+                this.addServerFormVisible = false;
+                this.getPagerData();
+              })
+              .catch(r => r);
+          } else {
+            servers
+              .edit(this.form.id, this.form)
+              .then(() => {
+                this.getPagerData();
+              })
+              .catch(r => r);
+          }
+        }
       });
     },
+    getPagerData() {
+      servers
+        .get(this.filter, this.pageIndex, this.pageSize)
+        .then(response => {
+          this.tableData = response.data;
+          this.total=response.total;
+        })
+        .catch(r => r);
+    }
   },
+  computed: {
+  },
+  mounted() {
+    this.getPagerData();
+  }
 };
 </script>
 <style lang="scss" scoped>
 .ducky-tool-input {
-  margin-left: 20px;
   width: 280px;
 }
 .ducky-tool-buttons {

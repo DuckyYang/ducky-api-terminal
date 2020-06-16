@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-06-13 20:22:35
+ * @LastEditTime: 2020-06-16 18:32:08
  * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
@@ -246,10 +246,10 @@ export default {
         if (valid) {
           user
             .edit(this.addUserForm.id, this.addUserForm)
-            .then((response) => {
-              console.log(response)
+            .then(() => {
               this.$refs.addUserForm.resetFields();
               this.addUserLayerVisible = false;
+              this.getPagerData()
             })
             .catch((r) => {
               this.$message({
