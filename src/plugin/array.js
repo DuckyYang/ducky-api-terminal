@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 18:29:49
- * @LastEditTime: 2020-06-08 20:34:02
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-16 13:04:31
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/plugin/array.js
  * @
@@ -72,4 +72,10 @@ Array.prototype.transform = function () {
         });
     }
     return result
+}
+/**
+ * remove duplicate item from array
+ */
+Array.prototype.unique = function(){
+    return [...new Set(this)];
 }
