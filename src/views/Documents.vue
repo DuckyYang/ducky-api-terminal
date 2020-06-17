@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-10 14:45:45
+ * @LastEditTime: 2020-06-17 17:35:14
  * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
@@ -78,6 +78,7 @@
 // import demoData from "../static/data/demo-documents";
 import RequestDoc from "../components/RequestDocument";
 import data from "../static/data/demo-documents_1";
+// import servers from '../api/servers';
 export default {
   data() {
     return {
@@ -101,6 +102,11 @@ export default {
       console.log(node);
     },
   },
+  mounted(){
+    // servers.get('',1,99).then(response=>{
+
+    // }).catch(r=>r);
+  }
 };
 </script>
 <style lang="scss" scoped>

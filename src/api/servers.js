@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-06-16 18:33:56
- * @LastEditTime: 2020-06-16 20:34:06
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-17 12:41:52
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/api/servers.js
  * @
@@ -23,6 +23,9 @@ const api = {
     },
     edit(id,data){
         return request.put(baseURL+'/'+id,data);
+    },
+    remove(id){
+        return request.delete(baseURL+'/'+id);
     }
 }
 
