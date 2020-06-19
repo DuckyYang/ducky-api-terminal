@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:10:09
- * @LastEditTime: 2020-06-16 18:32:08
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-18 14:20:33
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Users.vue
  * @
@@ -72,7 +72,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="Password" prop="password">
+            <el-form-item label="Password">
               <el-input
                 v-model="addUserForm.password"
                 autocomplete="off"
@@ -123,13 +123,13 @@
         ></el-table-column>
         <el-table-column prop="locked" label="Locked" width="120">
           <template slot-scope="scope">
-            <span v-if="scope.row.locked === 0">unlock</span>
-            <span v-else style="color:red;">locked</span>
+            <span v-if="scope.row.locked" style="color:red;">locked</span>
+            <span v-else>unlock</span>
           </template>
         </el-table-column>
         <el-table-column prop="enabled" label="Enabled" width="120">
           <template slot-scope="scope">
-            <span v-if="scope.row.enabled === 1">enabled</span>
+            <span v-if="scope.row.enabled">enabled</span>
             <span v-else style="color:red;">disabled</span>
           </template>
         </el-table-column>
@@ -143,13 +143,13 @@
               type="primary"
               size="mini"
               @click="onUnlockUser(scope.row)"
-              >{{scope.row.locked === 1 ? 'unlock' : 'lock'}}</el-button
+              >{{scope.row.locked? 'unlock' : 'lock'}}</el-button
             >
             <el-button
               type="primary"
               size="mini"
               @click="onDisableUser(scope.row)"
-              >{{scope.row.enabled === 1 ? 'disable' : 'enable'}}</el-button
+              >{{scope.row.enabled? 'disable' : 'enable'}}</el-button
             >
                <el-button
               type="danger"
@@ -213,9 +213,6 @@ export default {
             message: "please choose a role for user",
             trigger: "blur",
           },
-        ],
-        password: [
-          { required: true, message: "please input password", trigger: "blur" },
         ],
       },
     };

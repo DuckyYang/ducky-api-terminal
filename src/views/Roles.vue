@@ -1,7 +1,7 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-06-08 19:51:15
- * @LastEditTime: 2020-06-16 15:40:10
+ * @LastEditTime: 2020-06-18 16:04:57
  * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Roles.vue
@@ -29,21 +29,21 @@
         </el-table-column>
         <el-table-column prop="menu_path" label="Menu Path" width="180">
         </el-table-column>
-        <el-table-column prop="view" label="Viewable" min-width="180">
+        <el-table-column prop="viewable" label="Viewable" min-width="180">
           <template slot-scope="scope">
             <el-switch
               v-if="scope.row.view !== ''"
-              v-model="scope.row.view"
+              v-model="scope.row.viewable"
               active-color="#13ce66"
               @change="onViewAuthChange(scope.row)"
             ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column prop="operate" label="Operable" min-width="180">
+        <el-table-column prop="operable" label="Operable" min-width="180">
           <template slot-scope="scope">
             <el-switch
               v-if="scope.row.operate !== ''"
-              v-model="scope.row.operate"
+              v-model="scope.row.operable"
               active-color="#13ce66"
               @change="onOperateAuthChange(scope.row)"
             ></el-switch>
@@ -115,9 +115,9 @@ export default {
               id: utils.uuid(),
               role: x,
               menu: "",
-              menu_path: "",
-              view: "",
-              operate: "",
+              menuPath: "",
+              viewable: "",
+              operable: "",
               children: response.data
                 .filter((r) => r.role === x)
                 .map((r) => {
@@ -125,9 +125,9 @@ export default {
                     id: r.id,
                     role: "",
                     menu: r.menu,
-                    menu_path: r.menu_path,
-                    view: r.view === 1,
-                    operate: r.operate === 1,
+                    menuPath: r.menuPath,
+                    viewable: r.viewable,
+                    operable: r.operable,
                   };
                   return data;
                 }),
