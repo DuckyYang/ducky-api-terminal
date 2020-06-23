@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-23 19:05:49
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-23 20:05:12
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Documents.vue
  * @
@@ -12,7 +12,7 @@
   <div class="ducky-default-container">
     <!-- left -->
     <div class="ducky-default-container__left">
-      <server-select></server-select>
+      <server-select :currentNode="currentNode"></server-select>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
@@ -37,6 +37,7 @@ import ServerSelect from '../components/ServerSelect'
 export default {
   data() {
     return {
+      currentNode: null
     };
   },
   components: {
@@ -45,6 +46,11 @@ export default {
   },
   methods: {
     
+  },
+  watch:{
+    currentNode(){
+      console.log(this.currentNode)
+    }
   },
   mounted() {
    
