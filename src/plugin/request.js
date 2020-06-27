@@ -1,7 +1,8 @@
+/* eslint-disable no-dupe-class-members */
 /*
  * @Author: your name
  * @Date: 2020-06-04 08:47:45
- * @LastEditTime: 2020-06-16 20:06:32
+ * @LastEditTime: 2020-06-26 12:12:10
  * @LastEditors: Ducky
  * @Description: In User Settings Edit
  * @FilePath: /ducky-api-terminal/src/plugin/request.js
@@ -9,6 +10,8 @@
 
 import axios from "axios";
 import store from "../store/index";
+import utils from '../plugin/http-utils'
+import './string'
 
 const instance = axios.create({
   // baseUrl:
@@ -52,37 +55,63 @@ instance.interceptors.response.use(
   }
 );
 
-const http = {
-  buildParams(url, params) {
-    let p = [];
-    for (const key in params) {
-      let val = params[key];
-      p.push(key + "=" + val);
-    }
-    return url.trim().replace("?", "") + "?" + p.join("&");
-  },
-};
-
-const request = {
-  get(url, params) {
-    // build params
+class Request {
+  /**
+   * 
+   * @param {String} baseURL request base url,just like 'api/documents'
+   */
+  constructor(baseURL) {
+    this.baseURL = baseURL;
+  }
+  /**
+   * Get data from server
+   * @param {String} url request url
+   * @param {Object} params request data, get method will build params to url
+   * @param {Object} restfulParams restful api's parameters
+   */
+  get(url, params, restfulParams) {
+    const uri = utils.resolveUri(this.combine(url), restfulParams);
     if (store.state.mock) {
-      // mock mode needs to put params to body,and then change http method to post
-      return instance.post(url, params);
+      return instance.post(uri, params);
     } else {
-      url = http.buildParams(url, params);
-      return instance.get(url);
+      return instance.get(utils.buildParams(uri, params));
     }
-  },
-  post(url, data) {
-    return instance.post(url, data);
-  },
-  put(url, data) {
-    return instance.put(url, data);
-  },
-  delete(url) {
-    return instance.delete(url);
-  },
-};
+  }
+  /**
+   * Post data to server
+   * @param {String} url request url
+   * @param {Object} data request data
+   * @param {Object} restfulParams restful api's parameters
+   */
+  post(url, data, restfulParams) {
+    const uri = utils.resolveUri(this.combine(url), restfulParams);
+    return instance.post(uri, data);
+  }
+  /**
+   * Put data to server
+   * @param {String} url request url
+   * @param {Object} data request data
+   * @param {Object} restfulParams restful api's parameters
+   */
+  put(url, data, restfulParams) {
+    const uri = utils.resolveUri(this.combine(url), restfulParams);
+    return instance.put(uri, data);
+  }
+  /**
+   * Delete data
+   * @param {String} url request url
+   * @param {Object} restfulParams restful api's parameters
+   */
+  delete(url, restfulParams) {
+    const uri = utils.resolveUri(this.combine(url), restfulParams);
+    return instance.delete(uri);
+  }
+  combine(url) {
+    if (!url || typeof url !== 'string') {
+      url = ''
+    }
+    return this.baseURL.trimEnd('/') + (url ? ( '/' + url.trimStart('/')) : '');
+  }
+}
 
-export default request;
+export default Request;

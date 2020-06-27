@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:50
- * @LastEditTime: 2020-06-17 12:45:20
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:29:01
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Servers.vue
  * @
@@ -10,61 +10,33 @@
 <template>
   <ducky-table-layout>
     <template #toolbar>
-      <el-input
-        placeholder="please input..."
-        v-model="filter"
-        class="ducky-tool-input"
-      >
-        <el-button
-          slot="append"
-          icon="el-icon-search"
-          @click="onSearch"
-        ></el-button>
+      <el-input placeholder="please input..." v-model="filter" class="ducky-tool-input">
+        <el-button slot="append" icon="el-icon-search" @click="onSearch"></el-button>
       </el-input>
       <el-button-group class="ducky-tool-buttons">
         <el-button type="primary" @click="onRefresh">Refresh</el-button>
-        <el-button type="primary" @click="addServerFormVisible = true"
-          >Add Server</el-button
-        >
+        <el-button type="primary" @click="addServerFormVisible = true">Add Server</el-button>
       </el-button-group>
     </template>
     <template v-slot="prop">
       <el-table :data="tableData" :height="prop.height">
         <el-table-column prop="name" label="Name" width="240"></el-table-column>
-        <el-table-column
-          prop="baseUrl"
-          label="BaseURL"
-          width="360"
-        ></el-table-column>
-        <el-table-column
-          prop="defaultHeaders"
-          label="Default Headers"
-          width="300"
-        ></el-table-column>
-        <el-table-column
-          prop="order"
-          label="Order"
-          width="80"
-        ></el-table-column>
+        <el-table-column prop="baseUrl" label="BaseURL" width="360"></el-table-column>
+        <el-table-column prop="defaultHeaders" label="Default Headers" width="300"></el-table-column>
+        <el-table-column prop="order" label="Order" width="80"></el-table-column>
         <el-table-column prop="enabled" label="Enabled" width="120">
           <template slot-scope="scope">
             <el-switch
               @change="onRowEnableRequest(scope.row)"
               v-model="scope.row.enabled"
-              :inactive-value="0"
-              :active-value="1"
               active-color="#13ce66"
             ></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="Operation" min-width="180">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="onEdit(scope.row)"
-              >Edit</el-button
-            >
-            <el-button size="mini" type="danger" @click="onDelete(scope.row)"
-              >Remove</el-button
-            >
+            <el-button size="mini" type="primary" @click="onEdit(scope.row)">Edit</el-button>
+            <el-button size="mini" type="danger" @click="onDelete(scope.row)">Remove</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,17 +49,10 @@
             <el-input v-model="form.baseUrl" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Default Headers">
-            <el-input
-              v-model="form.defaultHeaders"
-              autocomplete="off"
-            ></el-input>
+            <el-input v-model="form.defaultHeaders" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Order">
-            <el-input
-              type="number"
-              v-model.number="form.order"
-              autocomplete="off"
-            ></el-input>
+            <el-input type="number" v-model.number="form.order" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,16 +62,12 @@
       </el-dialog>
     </template>
     <template #pager>
-      <el-pagination
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+      <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
     </template>
   </ducky-table-layout>
 </template>
 <script>
-import servers from "../api/servers";
+import api from "../../api/index";
 
 export default {
   data() {
@@ -117,18 +78,18 @@ export default {
         name: "",
         defaultHeaders: "",
         order: 0,
-        baseUrl: "",
+        baseUrl: ""
       },
       rules: {
         name: [
-          { required: true, message: "please input name", trigger: "blur" },
-        ],
+          { required: true, message: "please input name", trigger: "blur" }
+        ]
       },
       tableData: [],
       pageIndex: 1,
       pageSize: 15,
       total: 0,
-      filter: "",
+      filter: ""
     };
   },
   methods: {
@@ -150,27 +111,27 @@ export default {
       this.$confirm("confirm to remove this server?", "Warn", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "warning",
+        type: "warning"
       }).then(() => {
-        servers.remove(row.id).then(() => {
+        api.servers.remove(row.id).then(() => {
           this.getPagerData();
         });
       });
     },
     onAddServer() {
-      this.$refs.addServerForm.validate((valid) => {
+      this.$refs.addServerForm.validate(valid => {
         if (valid) {
           if (!this.form.id) {
-            servers
+            api.servers
               .add(this.form)
               .then(() => {
                 this.$refs.addServerForm.resetFields();
                 this.addServerFormVisible = false;
                 this.getPagerData();
               })
-              .catch((r) => r);
+              .catch(r => r);
           } else {
-            servers
+            api.servers
               .edit(this.form.id, this.form)
               .then(() => {
                 this.$refs.addServerForm.resetFields();
@@ -178,25 +139,25 @@ export default {
                 this.addServerFormVisible = false;
                 this.getPagerData();
               })
-              .catch((r) => r);
+              .catch(r => r);
           }
         }
       });
     },
     getPagerData() {
-      servers
+      api.servers
         .get(this.filter, this.pageIndex, this.pageSize)
-        .then((response) => {
+        .then(response => {
           this.tableData = response.data;
           this.total = response.total;
         })
-        .catch((r) => r);
-    },
+        .catch(r => r);
+    }
   },
   computed: {},
   mounted() {
     this.getPagerData();
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

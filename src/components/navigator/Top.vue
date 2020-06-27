@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:09:34
- * @LastEditTime: 2020-06-12 12:43:25
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:21:49
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/components/Top.vue
+ * @FilePath: /ducky-api-terminal/src/components/navigator/Top.vue
  * @
 -->
 <template>
@@ -31,9 +31,15 @@
       <!-- User Menu -->
       <div class="ducky-user-menu" v-show="showUserMenu">
         <span class="ducky-user-name">{{userIdentity.name}}</span>
-        <a href="javascript:;"><i class="el-icon-setting"></i> Settings</a>
-        <a href="javascript:;"><i class="el-icon-star-on"></i> GitHub</a>
-        <a href="javascript:;" @click="signOut"><i class="el-icon-switch-button"></i> Sign Out</a>
+        <a href="javascript:;">
+          <i class="el-icon-setting"></i> Settings
+        </a>
+        <a href="javascript:;">
+          <i class="el-icon-star-on"></i> GitHub
+        </a>
+        <a href="javascript:;" @click="signOut">
+          <i class="el-icon-switch-button"></i> Sign Out
+        </a>
       </div>
       <!-- Message Center -->
       <span class="ducky-message-center">
@@ -95,15 +101,15 @@ export default {
       }
       this.fullScreen = !this.fullScreen;
     },
-    signOut(){
-      this.$store.commit('signOut')
+    signOut() {
+      this.$store.commit("signOut");
     }
   },
   computed: {
     navCollapsed() {
       return this.$store.state.navCollapsed;
     },
-    userIdentity(){
+    userIdentity() {
       return this.$store.state.identity;
     }
   },
@@ -121,7 +127,7 @@ export default {
 <style lang="scss" scoped>
 $base-color: #3498db;
 
-.ducky-top-container{
+.ducky-top-container {
   width: 100%;
   display: flex;
   justify-content: space-between;

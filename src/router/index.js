@@ -44,6 +44,8 @@ router.beforeEach((to, from, next) => {
     if (!token) {
       next({ path: routes[0].path });
     } else {
+      // update user identity
+      store.commit('')
       next();
     }
   }

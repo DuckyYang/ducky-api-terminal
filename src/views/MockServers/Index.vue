@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:40
- * @LastEditTime: 2020-06-09 13:17:23
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:23:22
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/MockServer.vue
  * @
@@ -17,12 +17,7 @@
           placeholder="please input server name"
         ></el-input>
       </div>
-      <ducky-simple-tree
-        :data="data"
-        :filter="filterKey"
-        :simple="true"
-        @node-click="onNodeClick"
-      >
+      <ducky-simple-tree :data="data" :filter="filterKey" :simple="true" @node-click="onNodeClick">
         <template #title="slotProp">
           <span style="display:block;height:40px;line-height:40px;">
             <i
@@ -39,10 +34,7 @@
       </ducky-simple-tree>
     </div>
     <div class="ducky-default-container__right">
-      <mock-document
-        v-if="currentNode !== null"
-        :node="currentNode"
-      ></mock-document>
+      <mock-document v-if="currentNode !== null" :node="currentNode"></mock-document>
       <div class="no-data" v-else>
         <dl>
           <dt>
@@ -55,27 +47,27 @@
   </div>
 </template>
 <script>
-import data from "../static/data/demo-mocker";
-import MockDocument from "../components/MockDocument";
+import data from "../../static/data/demo-mocker";
+import MockDocument from "./Request";
 export default {
   data() {
     return {
       origin: data,
       data: data,
       currentNode: null,
-      filterKey: "",
+      filterKey: ""
     };
   },
   components: {
-    "mock-document": MockDocument,
+    "mock-document": MockDocument
   },
   methods: {
     onNodeClick(node) {
       if (node.children.length === 0) {
         this.currentNode = node;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

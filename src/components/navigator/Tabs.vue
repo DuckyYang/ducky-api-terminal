@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 16:12:52
- * @LastEditTime: 2020-06-08 19:47:14
+ * @LastEditTime: 2020-06-26 19:20:51
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/components/Tabs.vue
+ * @FilePath: /ducky-api-terminal/src/components/navigator/Tabs.vue
  * @
 -->
 <template>
@@ -33,9 +33,9 @@
   </div>
 </template>
 <script>
-import routes from "../router/routes";
-import "../plugin/array";
-import cache from "../plugin/cache";
+import routes from "../../router/routes";
+import "../../plugin/array";
+import cache from "../../plugin/cache";
 export default {
   data() {
     return {
@@ -43,18 +43,18 @@ export default {
       thisEndTabIndex: 0,
       tabs: [],
       nextHistories: [],
-      curTab: null,
+      curTab: null
     };
   },
   methods: {
     onTabClick(id) {
-      const route = this.tabs.find((x) => x.meta.id === id);
+      const route = this.tabs.find(x => x.meta.id === id);
       if (route) {
-        this.$router.push({ path: route.path }).catch((x) => x);
+        this.$router.push({ path: route.path }).catch(x => x);
       }
     },
     onTabClose(id) {
-      let index = this.tabs.findIndex((x) => x.meta.id === id);
+      let index = this.tabs.findIndex(x => x.meta.id === id);
       let target = this.tabs[index];
       // Home tab can not close
       if (target.path === "/") {
@@ -63,9 +63,9 @@ export default {
       // if close current tab
       if (target.meta.id === this.curTab.meta.id) {
         let prev = this.tabs[index - 1];
-        this.$router.push({ path: prev.path }).catch((x) => x);
+        this.$router.push({ path: prev.path }).catch(x => x);
       }
-      this.tabs = this.tabs.remove((x) => x.meta.id === id);
+      this.tabs = this.tabs.remove(x => x.meta.id === id);
     },
     onTabPrev() {
       if (this.nextHistories.length === 0) {
@@ -80,7 +80,7 @@ export default {
         .filter((item, index) => {
           return index === prev;
         })
-        .forEachExt((item) => {
+        .forEachExt(item => {
           this.tabLeft = -item.offsetLeft + 50;
           this.nextHistories.pop();
           return false;
@@ -107,12 +107,12 @@ export default {
             return false;
           }
         });
-    },
+    }
   },
   watch: {
     $route: function(to) {
       if (
-        !this.tabs.some((x) => {
+        !this.tabs.some(x => {
           return x.meta.id === to.meta.id;
         })
       ) {
@@ -124,11 +124,11 @@ export default {
       // if tabs changed,push new value to cache
       cache.update(
         "user-tabs",
-        this.tabs.map((x) => {
+        this.tabs.map(x => {
           return x.meta.id;
         })
       );
-    },
+    }
   },
   mounted() {},
   created() {
@@ -138,21 +138,21 @@ export default {
      */
     const userTabs = cache.get("user-tabs");
     if (userTabs) {
-      userTabs.forEach((id) => {
-        let tab = routes.find((item) => item.meta.id === id);
+      userTabs.forEach(id => {
+        let tab = routes.find(item => item.meta.id === id);
         if (tab) {
           this.tabs.push(tab);
         }
       });
     } else {
       if (this.$route.path !== "/") {
-        const home = routes.find((x) => x.path === "/");
+        const home = routes.find(x => x.path === "/");
         this.tabs.push(home);
       }
       this.tabs.push(this.$route);
     }
     this.curTab = this.$route;
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

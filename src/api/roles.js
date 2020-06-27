@@ -1,25 +1,25 @@
 /*
  * @Author: Ducky
  * @Date: 2020-06-12 19:57:51
- * @LastEditTime: 2020-06-17 09:11:25
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 11:58:21
+ * @LastEditors: Ducky
  * @Description:
  * @FilePath: /ducky-api-terminal/src/api/roles.js
  * @
  */
 
-import request from "../plugin/request";
+import Request from "../plugin/request";
 
-const baseURL = "api/Roles";
-const api = {
+const request = new Request('api/roles')
+
+export default {
   getAll() {
-    return request.get(baseURL);
+    return request.get();
   },
   getAuths() {
-    return request.get(baseURL + '/auths');
+    return request.get('auths');
   },
   add(roleName) {
-    return request.post(baseURL, { role: roleName });
+    return request.post('', { role: roleName });
   },
 };
-export default api;

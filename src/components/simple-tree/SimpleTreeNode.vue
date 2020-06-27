@@ -1,28 +1,27 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 12:30:22
- * @LastEditTime: 2020-06-10 14:22:56
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:58:06
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
- * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTreeNode.vue
+ * @FilePath: /ducky-api-terminal/src/components/simple-tree/SimpleTreeNode.vue
 -->
 <template>
   <!-- node item -->
   <div class="ducky-simpletree-node">
     <div class="ducky-simpletree-node__wrapper">
       <!-- only render node's title if node doesn't have any child nodes -->
-      <span
+      <div
         @click="onNodeClick(node)"
         class="ducky-simpletree-node__title"
         :class="{ 'is-current': node.isCurrent }"
         v-show="node.visible"
-        style="position:relative;z-index:99;"
       >
-        <span :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }">
+        <div :style="{ paddingLeft: (node.level + 1) * 15 + 'px' }">
           <slot name="title" :node="node"></slot>
-        </span>
-      </span>
-      <el-collapse-transition :style="{position:'relative','z-index':'98'}">
+        </div>
+      </div>
+      <el-collapse-transition>
         <div v-show="node.open">
           <div
             class="ducky-simpletree-node__panel"
@@ -81,11 +80,6 @@ export default {
     text-overflow: ellipsis;
     cursor: pointer;
     box-sizing: border-box;
-    span {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-    }
   }
   .ducky-simpletree-node__title:hover {
     background-color: #f6f6f6;

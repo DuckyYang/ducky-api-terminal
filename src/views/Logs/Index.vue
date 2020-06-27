@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:08:05
- * @LastEditTime: 2020-06-08 12:14:53
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:23:07
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Logs.vue
  * @
@@ -119,9 +119,9 @@
   </ducky-table-layout>
 </template>
 <script>
-import servers from "../static/data/demo-apiserver";
+import servers from "../../static/data/demo-apiserver";
 
-import api from "../api/logs";
+// import api from "../api/logs";
 export default {
   data() {
     return {
@@ -148,14 +148,14 @@ export default {
       this.pageIndex = curPage;
     },
     getPagerData() {
-      api.getLogs.get({
-        filter:'',
-        pageIndex:this.pageIndex,
-        pageSize:this.pageSize
-      }).then((response) => {
-          this.tableData = response.data
-          this.total = response.total
-      });
+      // api.getLogs.get({
+      //   filter:'',
+      //   pageIndex:this.pageIndex,
+      //   pageSize:this.pageSize
+      // }).then((response) => {
+      //     this.tableData = response.data
+      //     this.total = response.total
+      // });
     },
   },
   watch: {

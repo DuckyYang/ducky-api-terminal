@@ -3,8 +3,8 @@
  * @Version: 1.0
  * @Author: Ducky Yang
  * @Date: 2020-06-09 12:41:31
- * @LastEditors: Ducky Yang
- * @LastEditTime: 2020-06-09 12:55:09
+ * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-26 19:22:19
 -->
 <template>
   <div class="ducky-tree-table" role="tree">
@@ -18,21 +18,21 @@
 </template>
 <script>
 import TreeNode from "./TreeNode";
-import utils from "../../utils";
+import utils from "../../plugin/utils";
 export default {
   data() {
     return {
       nodes: [],
       isTree: true,
-      currentNode: null,
+      currentNode: null
     };
   },
   props: {
     data: Array,
-    filter: String,
+    filter: String
   },
   components: {
-    "tree-node": TreeNode,
+    "tree-node": TreeNode
   },
   methods: {
     setCurrentNode(node) {
@@ -59,7 +59,7 @@ export default {
 
       const buildChildren = function(node, root) {
         if (node.children && node.children.length > 0) {
-          node.children.forEach((child) => {
+          node.children.forEach(child => {
             let r = utils.deepClone(child);
 
             r.level = root.level + 1;
@@ -73,7 +73,7 @@ export default {
         }
       };
 
-      this.data.forEach((root) => {
+      this.data.forEach(root => {
         let r = utils.deepClone(root);
 
         r.level = 0;
@@ -84,11 +84,11 @@ export default {
         me.nodes.push(r);
         buildChildren(root, r);
       });
-    },
+    }
   },
   provide() {
     return {
-      setCurrentNode: this.setCurrentNode,
+      setCurrentNode: this.setCurrentNode
     };
   },
   mounted() {
@@ -102,11 +102,11 @@ export default {
       if (!val) {
         const rec = function(node) {
           node.visible = true;
-          node.children.forEach((item) => {
+          node.children.forEach(item => {
             rec(item);
           });
         };
-        this.nodes.forEach((item) => {
+        this.nodes.forEach(item => {
           item.visible = true;
           rec(item);
         });
@@ -115,7 +115,7 @@ export default {
         const rec = function(node) {
           if (node.children.length > 0) {
             node.visible = false;
-            node.children.forEach((item) => {
+            node.children.forEach(item => {
               node.visible = rec(item) || node.visible;
             });
           } else {
@@ -124,16 +124,16 @@ export default {
           }
           return node.visible;
         };
-        this.nodes.forEach((item) => {
+        this.nodes.forEach(item => {
           if (item.children.length > 0) {
             item.visible = false;
-            item.children.forEach((x) => {
+            item.children.forEach(x => {
               item.visible = rec(x) || item.visible;
             });
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

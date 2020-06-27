@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-24 15:09:14
- * @LastEditTime: 2020-06-23 20:05:12
+ * @LastEditTime: 2020-06-27 19:10:02
  * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/views/Documents.vue
+ * @FilePath: /ducky-api-terminal/src/views/Request/Index.vue
  * @
 -->
 <template>
@@ -12,14 +12,16 @@
   <div class="ducky-default-container">
     <!-- left -->
     <div class="ducky-default-container__left">
-      <server-select :currentNode="currentNode"></server-select>
+      <server-select @request-click="onRequestClick" ref="request"></server-select>
     </div>
     <!-- right -->
     <div class="ducky-default-container__right">
-      <request-document
-        v-if="currentNode !== null"
-        :node="currentNode"
-      ></request-document>
+      <request-detail
+        @request-save="onRequestSaved"
+        @request-remove="onRequestRemoved"
+        v-if="currentRequest !== null"
+        :request="currentRequest"
+      ></request-detail>
       <div class="no-data" v-else>
         <dl>
           <dt>
@@ -32,28 +34,29 @@
   </div>
 </template>
 <script>
-import RequestDoc from "../components/RequestDocument";
-import ServerSelect from '../components/ServerSelect'
+import RequestDetail from "./Detail";
+import ServerSelect from "./ServerSelect";
+
 export default {
   data() {
     return {
-      currentNode: null
+      currentRequest: null,
     };
   },
   components: {
-    "request-document": RequestDoc,
-    'server-select':ServerSelect
+    "request-detail": RequestDetail,
+    'server-select': ServerSelect
   },
   methods: {
-    
-  },
-  watch:{
-    currentNode(){
-      console.log(this.currentNode)
-    }
-  },
-  mounted() {
-   
+    onRequestClick(data) {
+      this.currentRequest = data.request;
+    },
+    onRequestSaved() {
+      this.$refs.request.reload();
+    },
+    onRequestRemoved(){
+      this.$refs.request.reload();
+    },
   },
 };
 </script>

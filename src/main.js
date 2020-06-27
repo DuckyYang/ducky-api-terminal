@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-12 12:12:30
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-27 10:28:34
+ * @LastEditors: Ducky
  * @Description:
  * @FilePath: /ducky-api-terminal/src/main.js
  * @
@@ -15,16 +15,20 @@ import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import VCharts from "v-charts";
-import DuckyUI from "../src/ducky-ui/index";
+import CommonComponents from './components/index'
+import api from './api/index'
+import './plugin/array'
+import './plugin/string'
 
 Vue.config.productionTip = false;
+Vue.prototype.$api = api;
 // using mock
 // require('./mock')
 // store.commit('setMockMode')
 
 Vue.use(VCharts);
 Vue.use(ElementUI);
-Vue.use(DuckyUI);
+Vue.use(CommonComponents);
 
 new Vue({
   router,

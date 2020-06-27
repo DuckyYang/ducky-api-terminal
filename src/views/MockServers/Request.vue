@@ -1,10 +1,10 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-06-07 09:28:23
- * @LastEditTime: 2020-06-08 11:27:23
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:37:28
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/components/MockDocument.vue
+ * @FilePath: /ducky-api-terminal/src/views/MockServers/Request.vue
  * @
 -->
 <template>
@@ -106,7 +106,7 @@
   </div>
 </template>
 <script>
-import utils from "../plugin/utils";
+import utils from "../../plugin/utils";
 export default {
   data() {
     return {

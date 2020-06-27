@@ -3,19 +3,19 @@
  * @Version: 1.0
  * @Author: Ducky Yang
  * @Date: 2020-06-16 12:53:03
- * @LastEditors: Ducky Yang
- * @LastEditTime: 2020-06-18 16:25:56
+ * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-26 11:51:39
  */
 
-import request from "../plugin/request";
+import Request from "../plugin/request";
 
-const baseURL = "api/RoleAuths/";
-const api = {
+const request = new Request('api/RoleAuths');
+
+export default {
   changeViewAuth(id) {
-    return request.put(baseURL + id + "/viewable");
+    return request.put('{id}/viewable', {}, { id: id });
   },
   changeOperateAuth(id) {
-    return request.put(baseURL + id + "/operable");
+    return request.put('{id}/operable', {}, { id: id });
   },
 };
-export default api;

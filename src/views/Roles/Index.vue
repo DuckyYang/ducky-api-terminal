@@ -1,17 +1,15 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-06-08 19:51:15
- * @LastEditTime: 2020-06-18 16:04:57
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:36:57
+ * @LastEditors: Ducky
  * @Description: 
- * @FilePath: /ducky-api-terminal/src/views/Roles.vue
+ * @FilePath: /ducky-api-terminal/src/views/Roles/Index.vue
  * @
 -->
 <template>
   <div class="ducky-default-layout__container">
-    <el-button type="primary" size="small" @click="addRoleFormVisible = true"
-      >Add Role</el-button
-    >
+    <el-button type="primary" size="small" @click="addRoleFormVisible = true">Add Role</el-button>
     <div>
       <el-table
         :data="roles"
@@ -23,12 +21,9 @@
         @row-click="onRowClick"
         ref="role"
       >
-        <el-table-column prop="role" label="Role Name" width="180">
-        </el-table-column>
-        <el-table-column prop="menu" label="Menu Name" width="180">
-        </el-table-column>
-        <el-table-column prop="menu_path" label="Menu Path" width="180">
-        </el-table-column>
+        <el-table-column prop="role" label="Role Name" width="180"></el-table-column>
+        <el-table-column prop="menu" label="Menu Name" width="180"></el-table-column>
+        <el-table-column prop="menu_path" label="Menu Path" width="180"></el-table-column>
         <el-table-column prop="viewable" label="Viewable" min-width="180">
           <template slot-scope="scope">
             <el-switch
@@ -66,51 +61,56 @@
   </div>
 </template>
 <script>
-import utils from "../plugin/utils";
-import roleAuths from "../api/role_auths";
-import roles from "../api/roles";
+import utils from "../../plugin/utils";
+import api from "../../api/index";
 export default {
   data() {
     return {
       roles: [],
       addRoleFormVisible: false,
       addRoleForm: {
-        name: "", // role name
-      },
+        name: "" // role name
+      }
     };
   },
   methods: {
     onAddRole() {
       if (this.addRoleForm.name) {
-        roles
+        api.roles
           .add(this.addRoleForm.name)
           .then(() => {
-            this.addRoleForm.name = '';
+            this.addRoleForm.name = "";
             this.addRoleFormVisible = false;
             this.getRoleAuths();
           })
-          .catch((r) => r);
+          .catch(r => r);
       }
     },
     onRowClick(row) {
       this.$refs.role.toggleRowExpansion(row);
     },
-    onViewAuthChange(row){
-      roleAuths.changeViewAuth(row.id).then(()=>{}).catch(r=>r);
+    onViewAuthChange(row) {
+      api.role_auths
+        .changeViewAuth(row.id)
+        .then(() => {})
+        .catch(r => r);
     },
-    onOperateAuthChange(row){
-      roleAuths.changeOperateAuth(row.id).then(()=>{}).catch(r=>r);
+    onOperateAuthChange(row) {
+      api.role_auths
+        .changeOperateAuth(row.id)
+        .then(() => {})
+        .catch(r => r);
     },
     getRoleAuths() {
-      roles
+      api.roles
         .getAuths()
-        .then((response) => {
+        .then(response => {
           let root = response.data
-            .map((x) => {
+            .map(x => {
               return x.role;
             })
             .unique();
-          this.roles = root.map((x) => {
+          this.roles = root.map(x => {
             let role = {
               id: utils.uuid(),
               role: x,
@@ -119,28 +119,28 @@ export default {
               viewable: "",
               operable: "",
               children: response.data
-                .filter((r) => r.role === x)
-                .map((r) => {
+                .filter(r => r.role === x)
+                .map(r => {
                   let data = {
                     id: r.id,
                     role: "",
                     menu: r.menu,
                     menuPath: r.menuPath,
                     viewable: r.viewable,
-                    operable: r.operable,
+                    operable: r.operable
                   };
                   return data;
-                }),
+                })
             };
             return role;
           });
         })
-        .catch((r) => r);
-    },
+        .catch(r => r);
+    }
   },
   mounted() {
     this.getRoleAuths();
-  },
+  }
 };
 </script>
 <style lang="scss">

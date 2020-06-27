@@ -1,46 +1,34 @@
 /*
  * @Author: Ducky
  * @Date: 2020-06-16 18:33:56
- * @LastEditTime: 2020-06-18 17:00:30
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 11:54:42
+ * @LastEditors: Ducky
  * @Description:
  * @FilePath: /ducky-api-terminal/src/api/servers.js
  * @
  */
-import request from "../plugin/request";
+import Request from "../plugin/request";
 
-const baseURL = "api/servers";
-const api = {
+const request = new Request('api/servers');
+
+export default {
   get(filter, pageIndex, pageSize) {
-    return request.get(baseURL, {
+    return request.get('', {
       filter: filter,
       pageIndex: pageIndex,
       pageSize: pageSize,
     });
   },
   add(data) {
-    return request.post(baseURL, data);
+    return request.post('', data);
   },
   edit(id, data) {
-    return request.put(baseURL + "/" + id, data);
+    return request.put('{id}', data, { id: id });
   },
   remove(id) {
-    return request.delete(baseURL + "/" + id);
+    return request.delete('{id}', { id: id });
   },
   addCollection(id, name) {
-    return request.post(baseURL + "/" + id + "/collection", { name: name });
-  },
-  addRequest(id, name, collectionId) {
-    let url = "";
-    if (collectionId) {
-      url = baseURL + "/" + id + "/" + collectionId + "/request";
-    } else {
-      url = baseURL + "/" + id + "/request";
-    }
-    return request.post(url, {
-      name: name,
-    });
+    return request.post("{id}/collection", { name: name }, { id: id });
   },
 };
-
-export default api;

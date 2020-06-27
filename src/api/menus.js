@@ -4,15 +4,13 @@
  * @Author: Ducky Yang
  * @Date: 2020-06-16 12:22:50
  * @LastEditors: Ducky
- * @LastEditTime: 2020-06-16 19:55:14
- */ 
-import request from '../plugin/request'
+ * @LastEditTime: 2020-06-26 11:50:34
+ */
+import Request from '../plugin/request';
 
-const baseURL = 'api/menus';
- const api = {
-     get(){
-         return request.get(baseURL);
-     }
- }
-
- export default api;
+const request = new Request('api/menus');
+export default {
+    get() {
+        return request.get();
+    }
+};

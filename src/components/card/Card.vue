@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-27 12:53:29
- * @LastEditTime: 2020-05-27 13:12:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-06-26 19:21:14
+ * @LastEditors: Ducky
  * @Description: render a card
- * @FilePath: \ducky-api-terminal\src\ducky-ui\components\Card.vue
+ * @FilePath: /ducky-api-terminal/src/components/card/Card.vue
 -->
 <template>
   <div class="ducky-card" :class="colCls">
@@ -16,13 +16,13 @@
 <script>
 export default {
   props: {
-    col: Number,
+    col: Number
   },
   computed: {
     colCls() {
       return "col" + this.col;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

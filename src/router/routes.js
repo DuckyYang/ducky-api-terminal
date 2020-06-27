@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-24 15:16:01
- * @LastEditTime: 2020-06-10 14:58:48
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:36:10
+ * @LastEditors: Ducky
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/router/routes.js
  * @
@@ -12,7 +12,7 @@ const Routes = [
     {
       path:'/',
       name:'DashBoard',
-      component: ()=>import('../views/DashBoard'),
+      component: ()=>import('../views/DashBoard/Index'),
       meta:{
         id:1,
         cnName:'工作台',
@@ -22,7 +22,7 @@ const Routes = [
     {
       path:'/logs',
       name:'Logs',
-      component:()=>import( '../views/Logs' ),
+      component:()=>import( '../views/Logs/Index' ),
       meta:{
         id:2,
         cnName:'接口日志',
@@ -32,7 +32,7 @@ const Routes = [
     {
       path:'/servers',
       name:'Servers',
-      component:()=>import( '../views/Servers' ),
+      component:()=>import( '../views/Servers/Index' ),
       meta:{
         id:3,
         cnName:'接口列表',
@@ -40,9 +40,9 @@ const Routes = [
       }
     },
     {
-      path:'/documents',
-      name:'Documents',
-      component:()=>import( '../views/Documents' ),
+      path:'/requests',
+      name:'Requests',
+      component:()=>import( '../views/Request/Index' ),
       meta:{
         id:4,
         cnName:'接口文档',
@@ -52,7 +52,7 @@ const Routes = [
     {
       path:'/MockServer',
       name:'MockServer',
-      component:()=>import( '../views/MockServer' ),
+      component:()=>import( '../views/MockServers/Index' ),
       meta:{
         id:5,
         cnName:'Mock服务',
@@ -62,7 +62,7 @@ const Routes = [
     {
       path:'/Users',
       name:'Users',
-      component:()=>import( '../views/Users' ),
+      component:()=>import( '../views/Users/Index' ),
       meta:{
         id:6,
         cnName:'用户管理',
@@ -72,7 +72,7 @@ const Routes = [
     {
       path:'/roles',
       name:'Roles',
-      component:()=>import('../views/Roles'),
+      component:()=>import('../views/Roles/Index'),
       meta:{
         id:7,
         cnName:'角色管理',
@@ -82,7 +82,7 @@ const Routes = [
     {
       path:'/settings',
       name:'Settings',
-      component:()=>import('../views/Settings'),
+      component:()=>import('../views/Settings/Index'),
       meta:{
         id:8,
         cnName:'系统设置',

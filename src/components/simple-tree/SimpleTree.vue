@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-28 11:21:07
- * @LastEditTime: 2020-06-09 12:46:38
- * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-26 19:40:13
+ * @LastEditors: Ducky
  * @Description: In User Settings Edit
- * @FilePath: /ducky-api-terminal/src/ducky-ui/components/simpletree/SimpleTree.vue
+ * @FilePath: /ducky-api-terminal/src/components/simple-tree/SimpleTree.vue
 -->
 <template>
   <!-- tree root -->
@@ -19,7 +19,7 @@
 </template>
 <script>
 import simpleTreeNode from "./SimpleTreeNode";
-import utils from "../../utils";
+import utils from "../../plugin/utils";
 export default {
   data() {
     return {
@@ -47,9 +47,8 @@ export default {
       }
 
       node.isCurrent = true;
-      if (node.children.length > 0) {
-        node.open = !node.open;
-      }
+      node.open = !node.open;
+
       this.currentNode = node;
 
       this.$emit("node-click", node);

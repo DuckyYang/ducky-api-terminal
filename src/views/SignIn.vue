@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import user from '../api/users'
+import api from '../api/index'
 export default {
   data() {
     return {
@@ -77,7 +77,7 @@ export default {
         });
         return;
       }
-      user.signIn(this.email,this.password).then(response=>{
+      api.accesstoken.get(this.email,this.password).then(response=>{
         this.$store.commit('setToken',response.data.accesstoken)
         this.$store.commit('setUserIdentity',response.data)
 

@@ -4,7 +4,7 @@
  * @Author: Ducky Yang
  * @Date: 2020-06-23 18:53:03
  * @LastEditors: Ducky
- * @LastEditTime: 2020-06-23 21:46:16
+ * @LastEditTime: 2020-06-27 19:11:40
 -->
 <template>
   <div>
@@ -15,17 +15,26 @@
         placeholder="please input server name"
       ></el-input>
     </div>
-    <ducky-simple-tree :data="data" :simple="true" :filter="filterKey" @node-click="onNodeClick">
+    <ducky-simple-tree
+      :data="requests"
+      :simple="true"
+      :filter="filterKey"
+      @node-click="onNodeClick"
+    >
       <template #title="slotProp">
         <div class="ducky-server">
           <i
-            v-if="slotProp.node.children.length > 0"
+            v-if="slotProp.node.isServer || slotProp.node.isCollection"
             :class="
               slotProp.node.open
                 ? 'el-icon-caret-bottom'
                 : 'el-icon-caret-right'
             "
           ></i>
+          <span
+            v-if="slotProp.node.request && slotProp.node.request.method"
+            :class="'ducky-method '+slotProp.node.request.method"
+          >{{slotProp.node.request.method}}</span>
           {{ slotProp.node.title }}
           <div
             v-if="slotProp.node.isServer || slotProp.node.isCollection"
@@ -43,8 +52,12 @@
                 >Add Collection</el-dropdown-item>
                 <el-dropdown-item :command="{ node: slotProp.node, type: 1 }">Add Request</el-dropdown-item>
                 <el-dropdown-item
-                  v-if="!slotProp.node.isServer"
+                  v-if="!slotProp.node.isServer && slotProp.node.isCollection"
                   :command="{ node: slotProp.node, type: 2 }"
+                >Remove</el-dropdown-item>
+                <el-dropdown-item
+                  v-if="!slotProp.node.isServer && !slotProp.node.isCollection"
+                  :command="{ node: slotProp.node, type: 3 }"
                 >Remove</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -52,14 +65,14 @@
         </div>
       </template>
     </ducky-simple-tree>
-    <el-dialog :visible.sync="addCollectionFromVisible" :title="collectionFormTitle">
+    <el-dialog :visible.sync="addCollectionFormVisible" :title="collectionFormTitle">
       <el-form :model="collectionForm" :rules="rules" ref="collectionForm">
         <el-form-item label="Name" prop="name">
           <el-input v-model="collectionForm.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addCollectionFromVisible = false">Cancel</el-button>
+        <el-button @click="addCollectionFormVisible = false">Cancel</el-button>
         <el-button v-if="collectionForm.type === 0" type="primary" @click="onAddCollection">Add</el-button>
         <el-button v-if="collectionForm.type === 1" type="primary" @click="onAddRequest">Add</el-button>
       </div>
@@ -67,16 +80,15 @@
   </div>
 </template>
 <script>
-import documents from "../api/documents";
-import servers from "../api/servers";
+import api from "../../api/index";
+import cache from "../../plugin/cache";
 export default {
   data() {
     return {
-      currentNode: null,
-      origin: [],
-      data: [],
+      currentRequest: null,
+      requests: [],
       filterKey: "",
-      addCollectionFromVisible: false,
+      addCollectionFormVisible: false,
       collectionFormTitle: "",
       collectionForm: {
         serverId: "",
@@ -92,11 +104,23 @@ export default {
     };
   },
   methods: {
-    onNodeClick(node) {
+    onNodeClick(request) {
       // the last stage node
-      if (!node.isServer && !node.isCollection) {
-        this.currentNode = node;
+      if (!request.isServer && !request.isCollection) {
+        this.currentRequest = request;
+        this.$emit("request-click", request);
       }
+      // save tree node status
+      let opened = cache.get("open-servers");
+      if (!opened) {
+        opened = [];
+      }
+      if (request.open) {
+        opened.push(request.id);
+      } else {
+        opened.remove(x => x === request.id);
+      }
+      cache.set("open-servers", opened);
     },
     onServerMenuClick(data) {
       switch (data.type) {
@@ -105,7 +129,10 @@ export default {
           this.onShowCollectionForm(data);
           break;
         case 2:
-          this.onRemoveCollectionOrRequest(data);
+          this.onRemoveCollection(data);
+          break;
+        case 3:
+          this.onRemoveRequest(data);
           break;
         default:
           break;
@@ -124,37 +151,45 @@ export default {
       } else {
         this.collectionFormTitle = "Add Request";
       }
-      this.addCollectionFromVisible = true;
+      this.addCollectionFormVisible = true;
     },
-    onRemoveCollectionOrRequest(data) {
-      let msg = "";
-      if (data.node.isCollection) {
-        msg = "confirm to remove this collection?";
-      } else {
-        msg = "confirm to remove this request?";
-      }
+    onRemoveCollection(data) {
+      let msg = "confirm to remove this collection?";
       this.$confirm(msg, "Warnning", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
         type: "warning"
-      }).then(() => {
-        documents.remove(data.node.id);
-        this.getServers();
-      }).catch(r=>r);
+      })
+        .then(() => {
+          api.collections.remove(data.node.id);
+        })
+        .catch(r => r);
+    },
+    onRemoveRequest(data) {
+      let msg = "confirm to remove this collection?";
+      this.$confirm(msg, "Warnning", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        type: "warning"
+      })
+        .then(() => {
+          api.request.remove(data.node.id);
+        })
+        .catch(r => r);
     },
     onAddCollection() {
       this.$refs.collectionForm.validate(valid => {
         if (valid) {
           // add collection
-          servers
+          api.servers
             .addCollection(
               this.collectionForm.serverId,
               this.collectionForm.name
             )
             .then(() => {
-              this.getServers();
-              this.addCollectionFromVisible = false;
+              this.addCollectionFormVisible = false;
               this.collectionForm.name = "";
+              this.getRequests();
             })
             .catch(r => r);
         }
@@ -163,33 +198,40 @@ export default {
     onAddRequest() {
       this.$refs.collectionForm.validate(valid => {
         if (valid) {
-          servers
+          api.collections
             .addRequest(
-              this.collectionForm.serverId,
-              this.collectionForm.name,
-              this.collectionForm.collectionId
+              this.collectionForm.collectionId,
+              this.collectionForm.name
             )
             .then(() => {
-              this.getServers();
-              this.addCollectionFromVisible = false;
+              this.addCollectionFormVisible = false;
               this.collectionForm.name = "";
+              this.getRequests();
             })
             .catch(r => r);
         }
       });
     },
-    getServers() {
-      documents
+    getRequests() {
+      api.request
         .get()
         .then(response => {
-          this.origin = response.data;
-          this.data = response.data;
+          let opened = cache.get("open-servers");
+          response.data.forEach(x => {
+            if (opened.some(item => item === x.id)) {
+              x.open = true;
+            }
+          });
+          this.requests = response.data;
         })
         .catch(r => r);
+    },
+    reload(){
+      this.getRequests();
     }
   },
   mounted() {
-    this.getServers();
+    this.getRequests();
   }
 };
 </script>
@@ -216,6 +258,34 @@ export default {
     right: 5px;
     height: 40px;
     line-height: 40px;
+  }
+  .ducky-method {
+    font-size: 12px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    padding: 2px 4px;
+    &.GET {
+      border-color: #e1f3d8;
+      background-color: #f0f9eb;
+      color: #67c23a;
+    }
+    &.POST {
+      border-color: #d9ecff;
+      background-color: #ecf5ff;
+      color: #409eff;
+    }
+    &.DELETE {
+      border-color: #fde2e2;
+      background-color: #fef0f0;
+      color: #f56c6c;
+    }
+    &.PUT {
+      border-color: #faecd8;
+      background-color: #fdf6ec;
+      color: #e6a23c;
+    }
   }
 }
 </style>
