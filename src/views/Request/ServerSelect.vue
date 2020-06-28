@@ -3,8 +3,8 @@
  * @Version: 1.0
  * @Author: Ducky Yang
  * @Date: 2020-06-23 18:53:03
- * @LastEditors: Ducky
- * @LastEditTime: 2020-06-27 19:11:40
+ * @LastEditors: Ducky Yang
+ * @LastEditTime: 2020-06-28 12:48:28
 -->
 <template>
   <div>
@@ -216,7 +216,7 @@ export default {
       api.request
         .get()
         .then(response => {
-          let opened = cache.get("open-servers");
+          let opened = cache.get("open-servers") || [];
           response.data.forEach(x => {
             if (opened.some(item => item === x.id)) {
               x.open = true;

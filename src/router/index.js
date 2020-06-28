@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
       next({ path: routes[0].path });
     } else {
       // update user identity
-      store.commit('')
+      store.commit('refreshUserStatus');
       next();
     }
   }

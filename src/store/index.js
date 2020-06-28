@@ -1,8 +1,8 @@
 /*
  * @Author: Ducky
  * @Date: 2020-05-22 22:14:00
- * @LastEditTime: 2020-06-27 22:06:21
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-28 10:55:54
+ * @LastEditors: Ducky Yang
  * @Description:
  * @FilePath: /ducky-api-terminal/src/store/index.js
  * @
@@ -55,6 +55,17 @@ export default new Vuex.Store({
       state.accesstoken = '';
       state.identity = {};
     },
+    /**
+     * refresh user status
+     * @param {*} state 
+     */
+    refreshUserStatus(state){
+      let accesstoken = cookie.get('accesstoken') || '';
+      let identity = cookie.get('user') || '';
+
+      state.accesstoken = accesstoken;
+      state.identity = utils.parse(identity);
+    }
   },
   getters:{
     accesstoken(state){
