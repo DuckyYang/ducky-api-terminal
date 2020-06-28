@@ -4,7 +4,7 @@
  * @Author: Ducky Yang
  * @Date: 2020-06-23 18:53:03
  * @LastEditors: Ducky Yang
- * @LastEditTime: 2020-06-28 12:48:28
+ * @LastEditTime: 2020-06-28 17:52:02
 -->
 <template>
   <div>
@@ -34,7 +34,7 @@
           <span
             v-if="slotProp.node.request && slotProp.node.request.method"
             :class="'ducky-method '+slotProp.node.request.method"
-          >{{slotProp.node.request.method}}</span>
+          >{{slotProp.node.request.method.toUpperCase().indexOf('DEL') > -1 ? 'DEL' : slotProp.node.request.method.toUpperCase()}}</span>
           {{ slotProp.node.title }}
           <div
             v-if="slotProp.node.isServer || slotProp.node.isCollection"
@@ -271,7 +271,7 @@ export default {
       background-color: #f0f9eb;
       color: #67c23a;
     }
-    &.POST {
+    &.PUT {
       border-color: #d9ecff;
       background-color: #ecf5ff;
       color: #409eff;
@@ -281,7 +281,7 @@ export default {
       background-color: #fef0f0;
       color: #f56c6c;
     }
-    &.PUT {
+    &.POST {
       border-color: #faecd8;
       background-color: #fdf6ec;
       color: #e6a23c;

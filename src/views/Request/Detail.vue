@@ -1,8 +1,8 @@
 <!--
  * @Author: Ducky
  * @Date: 2020-05-31 20:52:37
- * @LastEditTime: 2020-06-27 10:33:03
- * @LastEditors: Ducky
+ * @LastEditTime: 2020-06-28 17:49:38
+ * @LastEditors: Ducky Yang
  * @Description: 
  * @FilePath: /ducky-api-terminal/src/views/Request/Detail.vue
  * @
@@ -13,9 +13,7 @@
     <div class="ducky-request-name">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item v-for="(item, index) in data.path" :key="index">
-          {{
-          item
-          }}
+          {{ item }}
         </el-breadcrumb-item>
       </el-breadcrumb>
       <el-button
@@ -23,19 +21,22 @@
         type="danger"
         size="small"
         style="position:absolute;right:160px;top:0;"
-      >Remove</el-button>
+        >Remove</el-button
+      >
       <el-button
         @click="onReset"
         type="primary"
         size="small"
         style="position:absolute;right:80px;top:0;"
-      >Reset</el-button>
+        >Reset</el-button
+      >
       <el-button
         @click="onSave"
         type="primary"
         size="small"
         style="position:absolute;right:10px;top:0;"
-      >Save</el-button>
+        >Save</el-button
+      >
     </div>
     <div class="ducky-request-info">
       <!-- Protocal and Reuqest Address -->
@@ -45,13 +46,17 @@
           v-model="data.address"
           class="input-with-select"
         >
-          <el-select v-model="data.method" slot="prepend" placeholder="please choose method">
+          <el-select
+            v-model="data.method"
+            slot="prepend"
+            placeholder="please choose method"
+          >
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
             <el-option label="PUT" value="PUT"></el-option>
             <el-option label="DELETE" value="DELETE"></el-option>
           </el-select>
-          <el-button slot="append">Send</el-button>
+          <el-button type="primary" slot="append" @click.stop="onSendRequest">Send</el-button>
         </el-input>
       </div>
       <!-- Request Headers  -->
@@ -62,7 +67,8 @@
           style="margin-left:10px;"
           type="primary"
           size="small"
-        >Add Header</el-button>
+          >Add Header</el-button
+        >
         <el-table
           :data="data.headers"
           :height="defaultHeaderTableHeight"
@@ -77,7 +83,12 @@
           </el-table-column>
           <el-table-column fixed="right" label width="100">
             <template slot-scope="scope">
-              <el-button @click="onRemoveHeader(scope.row)" type="danger" size="mini">Remove</el-button>
+              <el-button
+                @click="onRemoveHeader(scope.row)"
+                type="danger"
+                size="mini"
+                >Remove</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -92,7 +103,8 @@
               style="margin-left:10px;"
               type="primary"
               size="small"
-            >Add Parameter</el-button>
+              >Add Parameter</el-button
+            >
             <el-table
               :data="data.params"
               :height="defaultParamTableHeight"
@@ -104,11 +116,19 @@
                 <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
               <el-table-column prop="value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
+                <el-input
+                  slot-scope="scope"
+                  v-model="scope.row.value"
+                ></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
                 <template slot-scope="scope">
-                  <el-button @click="onRemoveParam(scope.row)" type="danger" size="mini">Remove</el-button>
+                  <el-button
+                    @click="onRemoveParam(scope.row)"
+                    type="danger"
+                    size="mini"
+                    >Remove</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -119,10 +139,19 @@
               type="primary"
               @click="formatJson"
               size="mini"
-            >Format</el-button>
-            <el-button size="mini" type="primary" @click="compactJson">Compact</el-button>
-            <el-button size="mini" type="primary" @click="getJson">Get Value</el-button>
-            <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.json" ref="jsonEditor"></ducky-json-editor>
+              >Format</el-button
+            >
+            <el-button size="mini" type="primary" @click="compactJson"
+              >Compact</el-button
+            >
+            <el-button size="mini" type="primary" @click="getJson"
+              >Get Value</el-button
+            >
+            <ducky-json-editor
+              v-bind="jsonEditorData"
+              :jsonString="data.json"
+              ref="jsonEditor"
+            ></ducky-json-editor>
           </el-tab-pane>
           <el-tab-pane label="form-urlencoded" name="form">
             <el-button
@@ -130,7 +159,8 @@
               style="margin-left:10px;"
               type="primary"
               size="small"
-            >Add Parameter</el-button>
+              >Add Parameter</el-button
+            >
             <el-table
               :data="data.body"
               :height="defaultBodyTableHeight"
@@ -142,11 +172,19 @@
                 <el-input slot-scope="scope" v-model="scope.row.key"></el-input>
               </el-table-column>
               <el-table-column prop="value" label="Value">
-                <el-input slot-scope="scope" v-model="scope.row.value"></el-input>
+                <el-input
+                  slot-scope="scope"
+                  v-model="scope.row.value"
+                ></el-input>
               </el-table-column>
               <el-table-column fixed="right" label width="100">
                 <template slot-scope="scope">
-                  <el-button @click="onRemoveBodyParam(scope)" type="danger" size="mini">Remove</el-button>
+                  <el-button
+                    @click="onRemoveBodyParam(scope)"
+                    type="danger"
+                    size="mini"
+                    >Remove</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -156,7 +194,12 @@
       <!-- Server Response -->
       <el-divider content-position="left">Response Message</el-divider>
       <div class="ducky-response-info">
-        <ducky-json-editor v-bind="jsonEditorData" :jsonString="data.response"></ducky-json-editor>
+        <ducky-json-editor
+          v-if="responseIsJson"
+          v-bind="jsonEditorData"
+          :jsonString="data.response"
+        ></ducky-json-editor>
+        <el-input type="textarea" v-else readonly v-model="data.response" :rows="4"></el-input>
       </div>
     </div>
   </div>
@@ -177,20 +220,21 @@ export default {
         params: [{ id: utils.uuid(), key: "", value: "" }], // url parameters
         body: [{ id: utils.uuid(), key: "", value: "" }], // body parameter
         json: "", // json parameter
-        response: ""
+        response: "",
       },
       defaultMethod: "GET",
+      responseIsJson: true,
       jsonEditorData: {
         height: 280,
         configs: {
-          mainMenuBar: false
+          mainMenuBar: false,
         },
-        jsonString: ""
-      }
+        jsonString: "",
+      },
     };
   },
   props: {
-    request: Object
+    request: Object,
   },
   methods: {
     onTabClick(tab) {
@@ -214,20 +258,20 @@ export default {
     },
     getJson() {},
     onSave() {
-      if (this.data.contentType === 'json') {
+      if (this.data.contentType === "json") {
         this.data.json = this.$refs.jsonEditor.getText();
       }
       api.request
         .update(this.data.id, this.data)
         .then(() => {
           // notify parent component to update requests list
-          this.$emit('request-save');
+          this.$emit("request-save");
           this.$message({
             message: "the request save successfully!",
-            type: "success"
+            type: "success",
           });
         })
-        .catch(r => r);
+        .catch((r) => r);
     },
     onReset() {
       this.data = {
@@ -239,12 +283,12 @@ export default {
         params: [{ id: utils.uuid(), key: "", value: "" }], // url parameters
         body: [{ id: utils.uuid(), key: "", value: "" }], // body parameter
         json: "", // json parameter
-        response: ""
+        response: "",
       };
       this.$nextTick(() => {
         this.$message({
           message: "the request has been reset!",
-          type: "success"
+          type: "success",
         });
       });
     },
@@ -252,21 +296,21 @@ export default {
       this.data.headers.push({ id: utils.uuid(), key: "", value: "" });
     },
     onRemoveHeader(row) {
-      let index = this.data.headers.findIndex(x => x.id === row.id);
+      let index = this.data.headers.findIndex((x) => x.id === row.id);
       this.data.headers.splice(index, 1);
     },
     onAddParameter() {
       this.data.params.push({ id: utils.uuid(), key: "", value: "" });
     },
     onRemoveParam(row) {
-      let index = this.data.params.findIndex(x => x.id === row.id);
+      let index = this.data.params.findIndex((x) => x.id === row.id);
       this.data.params.splice(index, 1);
     },
     onAddBodyParam() {
       this.data.body.push({ id: utils.uuid(), key: "", value: "" });
     },
     onRemoveBodyParam(row) {
-      let index = this.data.body.findIndex(x => x.id === row.id);
+      let index = this.data.body.findIndex((x) => x.id === row.id);
       this.data.body.splice(index, 1);
     },
     onRemove() {
@@ -276,23 +320,38 @@ export default {
         {
           confirmButtonText: "OK",
           cancelButtonText: "Cancel",
-          type: "warning"
+          type: "warning",
         }
       )
         .then(() => {
           api.request
             .remove(this.data.id)
             .then(() => {
-              this.$emit('request-removed');
+              this.$emit("request-removed");
               this.$message({
                 type: "success",
-                message: "remove successfully!"
+                message: "remove successfully!",
               });
             })
-            .catch(r => r);
+            .catch((r) => r);
         })
         .catch(() => {});
-    }
+    },
+    onSendRequest() {
+      // save request first
+      api.request.update(this.data.id, this.data).then(() => {
+        api.request
+          .send(this.data.id)
+          .then((response) => {
+            this.responseIsJson = true;
+            this.data.response = response.data;
+          })
+          .catch((r) => {
+            this.responseIsJson = false;
+            this.data.response = r;
+          });
+      }).catch(r=>r);
+    },
   },
   computed: {
     defaultHeaderTableHeight() {
@@ -303,20 +362,20 @@ export default {
     },
     defaultParamTableHeight() {
       return this.data.params.length * 65 + 50;
-    }
+    },
   },
   watch: {
     request: function() {
       if (this.request) {
         utils.assign(this.data, this.request);
       }
-    }
+    },
   },
   created() {
     if (this.request) {
       utils.assign(this.data, this.request);
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
