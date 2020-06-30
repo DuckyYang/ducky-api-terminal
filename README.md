@@ -9,7 +9,7 @@
 ## DAT (ducky-api-terminal)
 > Author: Ducky Yang
 
-> Special thanks to ZhangWeiii([https://github.com/zhangweiii]).
+> Special thanks to [ZhangWeiii](https://github.com/zhangweiii).
 
 <p align="center"><img src="https://github.com/DuckyYang/ducky-api-terminal/blob/dev/src/assets/logo.png" /></p>
 
